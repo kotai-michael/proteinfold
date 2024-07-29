@@ -3,7 +3,7 @@
  */
 process RUN_ALPHAFOLD2 {
     tag "$meta.id"
-    label 'process_medium', 'gpu_compute'
+    label 'process_medium'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://nfcore/proteinfold_alphafold2_standard:1.0.0' :
