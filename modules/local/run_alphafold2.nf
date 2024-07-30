@@ -34,17 +34,17 @@ process RUN_ALPHAFOLD2 {
 
     script:
     def args = task.ext.args ?: ''
-    def db_preset = db_preset ? "full_dbs --bfd_database_path=./bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt --uniclust30_database_path=./uniclust30/uniclust30_2018_08/uniclust30_2018_08" :
-        "reduced_dbs --small_bfd_database_path=./small_bfd/bfd-first_non_consensus_sequences.fasta"
+    def db_preset = db_preset ? "full_dbs --bfd_database_path=${params.bfd_variable}bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt --uniclust30_database_path=${params.uniclust30_variable}uniclust30_2018_08/uniclust30_2018_08" :
+        "reduced_dbs --small_bfd_database_path=${params.small_bfd_path}bfd-first_non_consensus_sequences.fasta"
     if (alphafold2_model_preset == 'multimer') {
-        alphafold2_model_preset += " --pdb_seqres_database_path=./pdb_seqres/pdb_seqres.txt --uniprot_database_path=./uniprot/uniprot.fasta "
+        alphafold2_model_preset += " --pdb_seqres_database_path=${params.pdb_seqres_variable}pdb_seqres.txt --uniprot_database_path=${params.uniprot_variable}uniprot.fasta "
     }
     else {
-        alphafold2_model_preset += " --pdb70_database_path=./pdb70/pdb70_from_mmcif_200916/pdb70 "
+        alphafold2_model_preset += " --pdb70_database_path=${params.pdb70_variable}pdb70 "
     }
     """
-    if [ -f pdb_seqres/pdb_seqres.txt ]
-        then sed -i "/^\\w*0/d" pdb_seqres/pdb_seqres.txt
+    if [ -f ${params.pdb_seqres_variable}pdb_seqres.txt ]
+        then sed -i "/^\\w*0/d" ${params.pdb_seqres_variable}pdb_seqres.txt
     fi
     if [ -d params/alphafold_params_* ]; then ln -r -s params/alphafold_params_*/* params/; fi
     python3 /app/alphafold/run_alphafold.py \
@@ -53,10 +53,9 @@ process RUN_ALPHAFOLD2 {
         --db_preset=${db_preset} \
         --output_dir=\$PWD \
         --data_dir=\$PWD \
-        --uniref90_database_path=./uniref90/uniref90.fasta \
-        --mgnify_database_path=./mgnify/mgy_clusters_2018_12.fa \
-        --template_mmcif_dir=./pdb_mmcif/mmcif_files \
-        --obsolete_pdbs_path=./pdb_mmcif/obsolete.dat \
+        --uniref90_database_path=${params.uniref90_variable}uniref90.fasta \
+        --template_mmcif_dir=${params.pdb_mmcif_variable}mmcif_files \
+        --obsolete_pdbs_path=${params.pdb_mmcif_variable}obsolete.dat \
         --random_seed=53343 \
         $args
 
