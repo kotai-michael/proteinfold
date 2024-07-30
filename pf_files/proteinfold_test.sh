@@ -1,4 +1,5 @@
 module load nextflow/23.04.4 java/11
+
 export SINGULARITY_CACHE_DIR=/srv/scratch/sbf/singularity_cache
 export NXF_SINGULARITY_CACHEDIR=/srv/scratch/sbf/singularity_cache
 
