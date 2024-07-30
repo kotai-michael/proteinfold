@@ -1,5 +1,9 @@
 module load nextflow/23.04.4 java/11
-nextflow run /srv/scratch/sbf/nextflow_pipelines-dev/proteinfold/main.nf \
+
+export SINGULARITY_CACHE_DIR=/srv/scratch/sbf/singularity_cache
+export NXF_SINGULARITY_CACHEDIR=/srv/scratch/sbf/singularity_cache
+
+nextflow run /srv/scratch/z5378336/proteinfold/main.nf \
     --input samplesheet.csv \
     --outdir test_out \
     --mode alphafold2 \
