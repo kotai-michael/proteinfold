@@ -44,10 +44,10 @@ process RUN_ALPHAFOLD2_MSA {
         alphafold2_model_preset += " --pdb70_database_path=${params.pdb70_dir_path}${params.pdb70_name} "
     }
     """
-    #if [ -f pdb_seqres/pdb_seqres.txt ]
+    #if [ -f ${params.pdb_seqres_dir_path}/${params.pbd_seqres_txt_name} ]
     #    \$PDB_SEQRES_TEMP=\$(mktemp --directory)
-    #    cp ${params.pdb_seqres_variable}pdb_seqres.txt \${PDB_SEQRES_TEMP}/
-    #    then sed -i "/^\\w*0/d" \$PDB_SEQERS_TEMP/pdb_seqres.txt
+    #    cp ${params.pdb_seqres_dir_path}${params.pdb_seqres_txt_name} \${PDB_SEQRES_TEMP}/
+    #    then sed -i "/^\\w*0/d" \$PDB_SEQERS_TEMP/${params.pdb_seqres_txt_name}
     #fi
     python3 /app/alphafold/run_msa.py \
         --fasta_paths=${fasta} \
