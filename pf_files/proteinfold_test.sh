@@ -12,4 +12,4 @@ nextflow run ../main.nf \
     --alphafold2_model_preset monomer \
     --alphafold2_mode 'split_msa_prediction' \
     --use_gpu true \
-    -profile singularity
+    -profile singularity \ 
