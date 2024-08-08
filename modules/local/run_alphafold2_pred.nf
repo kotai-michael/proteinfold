@@ -8,6 +8,7 @@ process RUN_ALPHAFOLD2_PRED {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://nfcore/proteinfold_alphafold2_split:1.0.0' :
         'nfcore/proteinfold_alphafold2_split:1.0.0' }"
+    echo 'true'
 
     input:
     tuple val(meta), path(fasta)
@@ -36,7 +37,8 @@ process RUN_ALPHAFOLD2_PRED {
     script:
     def args = task.ext.args ?: ''
     """
-    if [ -d params/alphafold_params_* ]; then ln -r -s params/alphafold_params_*/* params/; fi
+    echo \$PWD
+    #if [ -d params/alphafold_params_* ]; then ln -r -s params/alphafold_params_*/* params/; fi
     python3 /app/alphafold/run_predict.py \
         --fasta_paths=${fasta} \
         --model_preset=${alphafold2_model_preset} \
