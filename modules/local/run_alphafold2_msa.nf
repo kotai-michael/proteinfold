@@ -35,7 +35,7 @@ process RUN_ALPHAFOLD2_MSA {
 
     script:
     def args = task.ext.args ?: ''
-    def db_preset = db_preset ? "full_dbs --bfd_database_path=${params.bfd_dir_path}${params.bfd_metaclust_clu_complete_id30_c90_final_seq_sorted_opt_name} --uniclust30_database_path=${params.uniclust30_dir_path}${uniclust30_db_name}" :
+    def db_preset = db_preset ? "full_dbs --bfd_database_path=${params.bfd_dir_path}${params.bfd_metaclust_clu_complete_id30_c90_final_seq_sorted_opt_name} --uniclust30_database_path=${params.uniclust30_dir_path}${params.uniclust30_db_name}" :
         "reduced_dbs --small_bfd_database_path=${params.small_bfd_path}${params.bfd_first_non_consensus_sequences_name}"
     if (alphafold2_model_preset == 'multimer') {
         alphafold2_model_preset += " --pdb_seqres_database_path=${params.pdb_seqres_dir_path}${params.pdb_seqres_txt_name} --uniprot_database_path=${params.uniprot_dir_path}/${params.uniprot_fasta_name} "
