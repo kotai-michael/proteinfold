@@ -1,4 +1,4 @@
-module load nextflow/23.04.4 java/11
+module load nextflow/23.04.4 java/11 cuda/11.8.0
 
 export SINGULARITY_CACHE_DIR=/srv/scratch/$USER/Singularity/cache
 export NXF_SINGULARITY_CACHEDIR=/srv/scratch/$USER/Singularity/cache

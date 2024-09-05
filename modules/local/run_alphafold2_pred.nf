@@ -9,7 +9,6 @@ process RUN_ALPHAFOLD2_PRED {
         'docker://nfcore/proteinfold_alphafold2_split:1.0.0' :
         'nfcore/proteinfold_alphafold2_split:1.0.0' }"
     echo 'true'
-
     input:
     tuple val(meta), path(fasta)
     val   db_preset
@@ -38,9 +37,10 @@ process RUN_ALPHAFOLD2_PRED {
     def args = task.ext.args ?: ''
     """
     echo \$PWD
-    if [ -d ${params.alphafold2_db}/${params.alphafold2_params_path} ]; 
-        then ln -r -s params/alphafold_params_*/* params/
-    fi
+    #if [ -d ${params.alphafold2_params_path} ]; 
+    #then
+    ln -r -f -s ${params.alphafold2_params_path}* params/
+    #fi
     python3 /app/alphafold/run_predict.py \
         --fasta_paths=${fasta} \
         --model_preset=${alphafold2_model_preset} \
