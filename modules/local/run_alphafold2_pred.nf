@@ -3,12 +3,15 @@
  */
 process RUN_ALPHAFOLD2_PRED {
     tag   "$meta.id"
-    label 'process_medium', 'gpu_compute'
+    label 'process_medium'
+    label 'gpu_compute'
 
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'docker://nfcore/proteinfold_alphafold2_split:1.0.0' :
-        'nfcore/proteinfold_alphafold2_split:1.0.0' }"
-    echo 'true'
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error("Local RUN_ALPHAFOLD2_PRED module does not support Conda. Please use Docker / Singularity / Podman instead.")
+    }
+
+    container "nf-core/proteinfold_alphafold2_split:1.1.1"
 
     input:
     tuple val(meta), path(fasta)
@@ -20,7 +23,7 @@ process RUN_ALPHAFOLD2_PRED {
     path ('mgnify/*')
     path ('pdb70/*')
     path ('pdb_mmcif/*')
-    path ('uniclust30/*')
+    path ('uniref30/*')
     path ('uniref90/*')
     path ('pdb_seqres/*')
     path ('uniprot/*')
@@ -37,8 +40,7 @@ process RUN_ALPHAFOLD2_PRED {
     script:
     def args = task.ext.args ?: ''
     """
-    echo \$PWD
-    #if [ -d params/alphafold_params_* ]; then ln -r -s params/alphafold_params_*/* params/; fi
+    if [ -d ${params.alphafold2_db}/params/ ]; then ln -r -s ${params.alphafold2_db}/params params; fi
     python3 /app/alphafold/run_predict.py \
         --fasta_paths=${fasta} \
         --model_preset=${alphafold2_model_preset} \
@@ -46,6 +48,7 @@ process RUN_ALPHAFOLD2_PRED {
         --data_dir=\$PWD \
         --random_seed=53343 \
         --msa_path=${msa} \
+        --use_gpu_relax \
         $args
 
     cp "${fasta.baseName}"/ranked_0.pdb ./"${fasta.baseName}".alphafold.pdb
