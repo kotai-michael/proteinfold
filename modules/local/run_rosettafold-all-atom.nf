@@ -32,7 +32,7 @@ process RUN_ROSETTAFOLD-ALL-ATOM {
 	--env pdb100="${params.pdb100}" \
 	RoseTTAFold-All-Atom-dev.sif "$file"
     }
-#    cp "${file.baseName}"/ranked_0.pdb ./"${file.baseName}".rosettafold-all-atom.pdb
+#    cp "${file.baseName}"/ranked_0.pdb ./"${file.baseName}".rosettafold_all_atom.pdb
 #    cd "${file.baseName}"
 #    awk '{print \$6"\\t"\$11}' ranked_0.pdb | uniq > ranked_0_plddt.tsv
 #    for i in 1 2 3 4
@@ -51,7 +51,7 @@ process RUN_ROSETTAFOLD-ALL-ATOM {
 
     stub:
     ""
-    touch ./"${file.baseName}".rosettafold-all-atom.pdb
+    touch ./"${file.baseName}".rosettafold_all_atom.pdb
     touch ./"${file.baseName}"_mqc.tsv
 
     cat <<-END_VERSIONS > versions.yml

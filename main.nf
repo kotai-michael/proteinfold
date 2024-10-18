@@ -26,9 +26,9 @@ if (params.mode == "alphafold2") {
 } else if (params.mode == "esmfold") {
     include { PREPARE_ESMFOLD_DBS } from './subworkflows/local/prepare_esmfold_dbs'
     include { ESMFOLD             } from './workflows/esmfold'
-} else if (params.mode == "rosettafold-all-atom") {
-    include { PREPARE_ROSETTAFOLD-ALL-ATOM_DBS } from './subworkflows/local/prepare_rosettafold-all-atom_dbs' ## To be created
-    include { ROSETTAFOLD-ALL-ATOM             } from './workflows/rosettafold-all-atom'
+} else if (params.mode == "rosettafold_all_atom") {
+    include { PREPARE_ROSETTAFOLD_ALL_ATOM_DBS } from './subworkflows/local/prepare_rosettafold_all_atom_dbs'
+    include { ROSETTAFOLD_ALL_ATOM } from './workflows/rosettafold'
 }
 
 include { PIPELINE_INITIALISATION          } from './subworkflows/local/utils_nfcore_proteinfold_pipeline'
@@ -154,13 +154,6 @@ workflow NFCORE_PROTEINFOLD {
     }
 
     //
-    // WORKFLOW: Run rosettafold-all-atom
-    //
-    if(params.mode == "rosettafold-all-atom") {
-        ROSETTAFOLD-ALL-ATOM ()
-    }
-
-    //
     // WORKFLOW: Run esmfold
     //
     else if(params.mode == "esmfold") {
@@ -186,6 +179,42 @@ workflow NFCORE_PROTEINFOLD {
         )
         ch_multiqc  = ESMFOLD.out.multiqc_report
         ch_versions = ch_versions.mix(ESMFOLD.out.versions)
+    }
+
+    //
+    // WORKFLOW: Run rosettafold_all_atom
+    //
+    else if(params.mode == "rosettafold_all_atom") {
+        //
+        // SUBWORKFLOW: Prepare Rosttafold-all-atom DBs
+        //
+        PREPARE_ROSETTAFOLD_ALL_ATOM_DBS (
+            params.bfd_path,
+            params.uniref30_rosettafold_all_atom_path,
+            params.pdb100_path,
+            params.blast_path,
+            params.RFAA_paper_weights_path,
+            params.bfd_link,
+            params.uniref30_rosettafold_all_atom_link,
+            params.pdb100_link,
+            params.blast_link,
+            params.RFAA_paper_weights_link
+        )
+        ch_versions = ch_versions.mix(PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.versions)
+
+        //
+        // WORKFLOW: Run nf-core/rosettafold_all_atom workflow
+        //
+        ROSETTAFOLD_ALL_ATOM (
+            ch_versions,
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.blast,
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.bfd.ifEmpty([]).first(),
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.uniref30_rosettafold_all_atom,
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.pdb100,
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.RFAA_paper_weights
+        )
+        ch_multiqc  = ROSETTAFOLD_ALL_ATOM.out.multiqc_report
+        ch_versions = ch_versions.mix(ROSETTAFOLD_ALL_ATOM.out.versions)
     }
     emit:
     multiqc_report = ch_multiqc  // channel: /path/to/multiqc_report.html

@@ -1,4 +1,4 @@
-## Currently just based on the AF2 .nf workflow, requires modification.
+// Currently just based on the AF2 .nf workflow, requires modification.
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -14,7 +14,7 @@ WorkflowRosettafold-All-Atom.initialise(params, log)
 // Check input path parameters to see if they exist
 def checkPathParamList = [
     params.input,
-    params.rosettafold-all-atom_db
+    params.rosettafold_all_atom_db
 ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
@@ -41,13 +41,13 @@ ch_multiqc_custom_methods_description = params.multiqc_methods_description ? fil
 //
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
-include { INPUT_CHECK } from '../subworkflows/local/rfaa_input_check' ## Doesn't exist, RFAA takes different inputs than AF2
-include { PREPARE_ROSETTAFOLD-ALL-ATOM_DBS } from '../subworkflows/local/prepare_rosettafold-all-atom_dbs' ## Doesn't exist
+include { INPUT_CHECK } from '../subworkflows/local/rfaa_input_check' // Doesn't exist, RFAA takes different inputs than AF2
+include { PREPARE_ROSETTAFOLD-ALL-ATOM_DBS } from '../subworkflows/local/prepare_rosettafold_all_atom_dbs' // Doesn't exist
 
 //
 // MODULE: Local to the pipeline
 //
-include { RUN_ROSETTAFOLD-ALL-ATOM      } from '../modules/local/run_rosettafold-all-atom'
+include { RUN_ROSETTAFOLD-ALL-ATOM      } from '../modules/local/run_rosettafold_all_atom'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -75,78 +75,10 @@ workflow ROSETTAFOLD-ALL-ATOM {
     ch_versions = Channel.empty()
 
     //
-    // SUBWORKFLOW: Read in samplesheet, validate and stage input files
-    //
-    if (params.rosettafold-all-atom_model_preset != 'multimer') {
-        INPUT_CHECK (
-            ch_input
-        )
-        .fastas
-        .map {
-            meta, fasta ->
-            [ meta, fasta.splitFasta(file:true) ]
-        }
-        .transpose()
-        .set { ch_fasta }
-    } else {
-        INPUT_CHECK (
-            ch_input
-        )
-        .fastas
-        .set { ch_fasta }
-    }
-    ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
-
-    //
     // SUBWORKFLOW: Download databases and params for Rosettafold-All-Atom
     //
     PREPARE_ROSETTAFOLD-ALL-ATOM_DBS ( )
     ch_versions = ch_versions.mix(PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.versions)
-
-    if (params.rosettafold-all-atom_mode == 'standard') {
-        //
-        // SUBWORKFLOW: Run Rosettafold-All-Atom standard mode
-        //
-        RUN_ROSETTAFOLD-ALL-ATOM (
-            ch_fasta,
-            params.full_dbs,
-            params.rosettafold-all-atom_model_preset,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.params,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.bfd.ifEmpty([]),
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.small_bfd.ifEmpty([]),
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.mgnify,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.pdb70,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.pdb_mmcif,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.uniclust30,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.uniref90,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.pdb_seqres,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.uniprot,
-        )
-        ch_versions = ch_versions.mix(RUN_ROSETTAFOLD-ALL-ATOM.out.versions)
-        ch_multiqc_rep = RUN_ROSETTAFOLD-ALL-ATOM.out.multiqc.collect()
-    } else if (params.rosettafold-all-atom_mode == 'split_msa_prediction') {
-        //
-        // SUBWORKFLOW: Run Rosettafold-All-Atom split mode, MSA and prediction
-        //
-        RUN_ROSETTAFOLD-ALL-ATOM_MSA (
-            ch_fasta,
-            params.full_dbs,
-            params.rosettafold-all-atom_model_preset,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.params,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.bfd.ifEmpty([]),
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.small_bfd.ifEmpty([]),
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.mgnify,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.pdb70,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.pdb_mmcif,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.uniclust30,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.uniref90,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.pdb_seqres,
-            PREPARE_ROSETTAFOLD-ALL-ATOM_DBS.out.uniprot
-
-        )
-        ch_versions = ch_versions.mix(RUN_ROSETTAFOLD-ALL-ATOM_MSA.out.versions)
-
-    }
 
     //
     // MODULE: Pipeline reporting
