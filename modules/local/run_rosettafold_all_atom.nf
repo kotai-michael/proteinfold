@@ -13,12 +13,12 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     container "RoseTTAFold_All_Atom.sif"
 
     input:
-    tuple val(meta), path(file)
+    tuple val(meta), path(fasta)
     
     output:
-    path ("${file.baseName}*")
+    path ("${fasta.baseName}*")
     path "*_mqc.tsv", emit: multiqc
-    path "versions.yaml", emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,9 +30,9 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
 	--env bfd_path="${params.bfd_path}" \
 	--env uniref30_path="${params.uniref30_variable}" \
 	--env pdb100="${params.pdb100_path}" \
-	RoseTTAFold_All_Atom.sif "$file"
+	RoseTTAFold_All_Atom.sif "$fasta"
     
-    cat <<-END_VERSIONS > versions.yaml
+    cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python3 --version | sed 's/Python //g')
     END_VERSIONS
@@ -40,8 +40,8 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
 
     stub:
     """
-    touch ./"${file.baseName}".rosettafold_all_atom.pdb
-    touch ./"${file.baseName}"_mqc.tsv
+    touch ./"${fasta.baseName}".rosettafold_all_atom.pdb
+    touch ./"${fasta.baseName}"_mqc.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
