@@ -18,7 +18,7 @@
                     "exists": true,
                     "schema": "assets/schema_input.json",
                     "mimetype": "text/csv",
-                    "pattern": "^\\S+\\.csv$",
+                    "pattern": "^\\S+\\.(csv|yaml|yml)$",
                     "description": "Path to comma-separated file containing information about the samples in the experiment.",
                     "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row. See [usage docs](https://nf-co.re/proteinfold/usage#samplesheet-input).",
                     "fa_icon": "fas fa-file-csv"
@@ -33,7 +33,7 @@
                     "type": "string",
                     "default": "alphafold2",
                     "description": "Specifies the mode in which the pipeline will be run",
-                    "enum": ["alphafold2", "colabfold", "esmfold"],
+                    "enum": ["alphafold2", "colabfold", "esmfold", "rosettafold_all_atom"],
                     "fa_icon": "fas fa-cogs"
                 },
                 "use_gpu": {
@@ -195,10 +195,10 @@
             }
         },
         "rosettafold_all_atom_options": {
-            "title": "RoseTTAFold-all-atom options",
+            "title": "RoseTTAFold_all_atom options",
             "type": "object",
             "fa_icon": "fas fa-coins",
-            "description": "RoseTTAFold-all-atom options",
+            "description": "RoseTTAFold_all_atom options",
             "properties": {
                 "rosettafold_all_atom_db": {
                     "type": "string",
@@ -536,29 +536,29 @@
             }
         },
         "rosettafold_all_atom_dbs_and_parameters_path_options": {
-            "title": "RosettaFold-All-Atom DBs and parameters path options",
+            "title": "RosettaFold_All_Atom DBs and parameters path options",
             "type": "object",
-            "description": "Parameters used to provide paths to the databases and parameters for RosettaFold-All-Atom.",
+            "description": "Parameters used to provide paths to the databases and parameters for RosettaFold_All_Atom.",
             "fa_icon": "fas fa-database",
             "properties": {
                 "uniref30_rosettafold_all_atom_path": {
                     "type": "string",
-                    "description": "Path to the UniRef30 database for RosettaFold-All-Atom",
+                    "description": "Path to the UniRef30 database for RosettaFold_All_Atom",
                     "fa_icon": "fas fa-folder-open"
                 },
                 "blast_path": {
                     "type": "string",
-                    "description": "Path to the BLAST database for RosettaFold-All-Atom",
+                    "description": "Path to the BLAST database for RosettaFold_All_Atom",
                     "fa_icon": "fas fa-folder-open"
                 },
                 "pdb100_path": {
                     "type": "string",
-                    "description": "Path to the PDB100 database for RosettaFold-All-Atom",
+                    "description": "Path to the PDB100 database for RosettaFold_All_Atom",
                     "fa_icon": "fas fa-folder-open"
                 },
                 "RFAA_paper_weights_path": {
                     "type": "string",
-                    "description": "Path to the weights file used in the RFAA paper for RosettaFold-All-Atom",
+                    "description": "Path to the weights file used in the RFAA paper for RosettaFold_All_Atom",
                     "fa_icon": "fas fa-folder-open"
                 }
             }
@@ -704,6 +704,9 @@
             "$ref": "#/definitions/esmfold_options"
         },
         {
+            "$ref": "#/definitions/rosettafold_all_atom_options"
+        },
+        {
             "$ref": "#/definitions/process_skipping_options"
         },
         {
@@ -729,6 +732,9 @@
         },
         {
             "$ref": "#/definitions/esmfold_parameters_path_options"
+        },
+        {
+            "$ref": "#/definitions/rosettafold_all_atom_dbs_and_parameters_path_options"
         },
         {
             "$ref": "#/definitions/generic_options"
