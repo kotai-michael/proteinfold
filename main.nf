@@ -28,7 +28,7 @@ if (params.mode == "alphafold2") {
     include { ESMFOLD             } from './workflows/esmfold'
 } else if (params.mode == "rosettafold_all_atom") {
     include { PREPARE_ROSETTAFOLD_ALL_ATOM_DBS } from './subworkflows/local/prepare_rosettafold_all_atom_dbs'
-    include { ROSETTAFOLD_ALL_ATOM } from './workflows/rosettafold'
+    include { ROSETTAFOLD_ALL_ATOM } from './workflows/rosettafold_all_atom'
 }
 
 include { PIPELINE_INITIALISATION          } from './subworkflows/local/utils_nfcore_proteinfold_pipeline'
