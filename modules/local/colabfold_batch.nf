@@ -7,7 +7,7 @@ process COLABFOLD_BATCH {
         error("Local COLABFOLD_BATCH module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
 
-    container "nf-core/proteinfold_colabfold:1.1.1"
+    container "nf-core/proteinfold_colabfold:dev"
 
     input:
     tuple val(meta), path(fasta)
@@ -18,9 +18,10 @@ process COLABFOLD_BATCH {
     val   numRec
 
     output:
-    path ("*")         , emit: pdb
-    path ("*_mqc.png") , emit: multiqc
-    path "versions.yml", emit: versions
+    tuple val(meta), path ("*_relaxed_rank_*.pdb"), emit: pdb
+    tuple val(meta), path ("*_coverage.png")      , emit: msa
+    tuple val(meta), path ("*_mqc.png")           , emit: multiqc
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -52,6 +53,11 @@ process COLABFOLD_BATCH {
     """
     touch ./"${fasta.baseName}"_colabfold.pdb
     touch ./"${fasta.baseName}"_mqc.png
+    touch ./${fasta.baseName}_relaxed_rank_01.pdb
+    touch ./${fasta.baseName}_relaxed_rank_02.pdb
+    touch ./${fasta.baseName}_relaxed_rank_03.pdb
+    touch ./${fasta.baseName}_coverage.png
+    touch ./${fasta.baseName}_scores_rank.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -39,6 +39,8 @@ An [example samplesheet](../assets/samplesheet.csv) has been provided with the p
 
 The typical commands for running the pipeline on AlphaFold2, Colabfold and ESMFold modes are shown below.
 
+> You can run any combination of the models by providing them to the `--mode` parameter separated by a comma. For example: `--mode alphafold2,esmfold,colabfold` will run the three models in parallel.
+
 AlphaFold2 regular can be run using this command:
 
 ```bash
@@ -236,7 +238,7 @@ nextflow run nf-core/proteinfold \
       --colabfold_db <null (default) | DB_PATH> \
       --num_recycles_colabfold 3 \
       --use_amber <true/false> \
-      --colabfold_model_preset "AlphaFold2-ptm" \
+      --colabfold_model_preset "alphafold2_ptm" \
       --use_gpu <true/false> \
       --db_load_mode 0 \
       -profile <docker/singularity/.../institute>
@@ -254,7 +256,7 @@ nextflow run nf-core/proteinfold \
       --colabfold_db <null (default) | DB_PATH> \
       --num_recycles_colabfold 3 \
       --use_amber <true/false> \
-      --colabfold_model_preset "AlphaFold2-ptm" \
+      --colabfold_model_preset "alphafold2_ptm" \
       --use_gpu <true/false> \
       -profile <docker/singularity/.../institute>
 ```
@@ -447,9 +449,9 @@ The above pipeline run specified with a params file in yaml format:
 nextflow run nf-core/proteinfold -profile docker -params-file params.yaml
 ```
 
-with `params.yaml` containing:
+with:
 
-```yaml
+```yaml title="params.yaml"
 input: './samplesheet.csv'
 outdir: './results/'
 genome: 'GRCh37'
