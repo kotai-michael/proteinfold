@@ -11,7 +11,7 @@ params {
 
     // Input options
     input                       = null
-    mode                        = 'alphafold2' // {alphafold2, colabfold, esmfold, rosettafold_all_atom}
+    mode                        = 'alphafold2' // {alphafold2, colabfold, esmfold}
     use_gpu                     = false
 
     // Alphafold2 parameters
@@ -79,12 +79,9 @@ params {
     // Esmfold paths
     esmfold_params_path         = null
 
-    // Rosettafold-all-atom parameters
-    rosettafold_all_atom_db               = null
-    uniref30_rosettafold_all_atom_path    = null
-    blast_path                            = null
-    pdb100_path                           = null
-    RFAA_paper_weights_path               = null
+    // Foldseek params
+    foldseek_search = null
+    foldseek_easysearch_arg = null
 
     // Process skipping options
     skip_multiqc               = false
@@ -370,9 +367,6 @@ if (params.mode.toLowerCase().split(",").contains("colabfold")) {
 }
 if (params.mode.toLowerCase().split(",").contains("esmfold")) {
     includeConfig 'conf/modules_esmfold.config'
-}
-if (params.mode.toLowerCase().split(",").contains("rosettafold_all_atom")) {
-    includeConfig 'conf/modules_rosettafold_all_atom.config'
 }
 
 // Load links to DBs and parameters
