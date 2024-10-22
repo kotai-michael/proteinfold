@@ -46,13 +46,6 @@ process RUN_ALPHAFOLD2 {
         alphafold2_model_preset += " --pdb70_database_path=${params.alphafold2_db}/pdb70/pdb70_from_mmcif_200916/pdb70 "
     }
     """
-    RUNTIME_TMP=\$(mktemp -d)
-    nvcc --version 2>&1 | tee /home/z3545907/nvcc.txt
-    nvidia-smi 2>&1 | tee /home/z3545907/nvidia-smi.txt
-    if [ -f ${params.alphafold2_db}/pdb_seqres/pdb_seqres.txt ]
-        cp ${params.alphafold2_db}/pdb_seqres/pdb_seqres.txt \${RUNTIME_TMP}
-        then sed -i "/^\\w*0/d" \${RUNTIME_TMP}/pdb_seqres.txt
-    fi
     if [ -d ${params.alphafold2_db}/params/ ]; then ln -r -s ${params.alphafold2_db}/params params; fi
     python3 /app/alphafold/run_alphafold.py \
         --fasta_paths=${fasta} \
@@ -77,7 +70,6 @@ process RUN_ALPHAFOLD2 {
     echo -e Positions"\\t"rank_0"\\t"rank_1"\\t"rank_2"\\t"rank_3"\\t"rank_4 > header.tsv
     cat header.tsv plddt.tsv > ../"${fasta.baseName}"_plddt_mqc.tsv
     cd ..
-    rm -rf "\${RUNTIME_TMP}"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
