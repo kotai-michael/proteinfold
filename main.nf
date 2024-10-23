@@ -225,6 +225,7 @@ workflow NFCORE_PROTEINFOLD {
         // WORKFLOW: Run nf-core/rosettafold_all_atom workflow
         //
         ROSETTAFOLD_ALL_ATOM (
+            ch_samplesheet,
             ch_versions,
             PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.blast,
             PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.bfd.ifEmpty([]).first(),
