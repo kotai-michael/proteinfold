@@ -25,21 +25,18 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
 
     script:
     """
-    apptainer exec -B /mnt/af2,/srv /srv/scratch/z5378336/RoseTTAFold_All_Atom.sif ls
+	apptainer run --nv -B /mnt/af2,/srv \
+	--env blast_path="${params.blast_path}" \
+	--env bfd_path="${params.bfd_path}" \
+	--env uniref30_path="${params.uniref30_rosettafold_all_atom_path}" \
+	--env pdb100="${params.pdb100_path}" \
+	/srv/scratch/z5378336/RoseTTAFold_All_Atom.sif "${fasta}"
+    cat <<-END_VERSIONS > versions.yml
+
+    "${task.process}":
+        python: \$(python3 --version | sed 's/Python //g')
+    END_VERSIONS
     """
-    
-//	apptainer run --nv -B /mnt/af2,/srv \
-//	--env blast_path="${params.blast_path}" \
-//	--env bfd_path="${params.bfd_path}" \
-//	--env uniref30_path="${params.uniref30_rosettafold_all_atom_path}" \
-//	--env pdb100="${params.pdb100_path}" \
-//	/srv/scratch/z5378336/RoseTTAFold_All_Atom.sif "${fasta}"
-//    cat <<-END_VERSIONS > versions.yml
-//
-//    "${task.process}":
-//        python: \$(python3 --version | sed 's/Python //g')
-//    END_VERSIONS
-//    """
 
     stub:
     """
