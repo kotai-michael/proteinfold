@@ -28,7 +28,7 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
 	apptainer run --nv -B /mnt/af2,/srv \
 	--env blast_path="${params.blast_path}" \
 	--env bfd_path="${params.bfd_path}" \
-	--env uniref30_path="${params.uniref30_variable}" \
+	--env uniref30_path="${params.uniref30}" \
 	--env pdb100="${params.pdb100_path}" \
 	RoseTTAFold_All_Atom.sif "$fasta"
     
