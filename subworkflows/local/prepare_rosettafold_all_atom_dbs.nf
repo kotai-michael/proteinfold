@@ -12,7 +12,6 @@ workflow PREPARE_ROSETTAFOLD_ALL_ATOM_DBS {
     pdb100_path
 
     main:
-    ch_versions     = Channel.empty()
     ch_bfd          = Channel.value(file(bfd_path))
     ch_uniref30     = Channel.value(file(uniref30_rosettafold_all_atom_path, type: 'any'))
     ch_blast        = Channel.value(file(blast_path, type: 'string'))
@@ -21,7 +20,6 @@ workflow PREPARE_ROSETTAFOLD_ALL_ATOM_DBS {
     emit:
     bfd        = ch_bfd
     uniref30   = ch_uniref30
-    pdb100     = ch_pdb100
     blast      = ch_blast
-    versions   = ch_versions
+    pdb100     = ch_pdb100
 }

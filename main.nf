@@ -217,7 +217,7 @@ workflow NFCORE_PROTEINFOLD {
             params.bfd_path,
             params.uniref30_rosettafold_all_atom_path,
             params.pdb100_path,
-            params.blast_path,
+            params.blast_path
         )
         ch_versions = ch_versions.mix(PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.versions)
 
@@ -230,7 +230,7 @@ workflow NFCORE_PROTEINFOLD {
             PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.blast,
             PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.bfd.ifEmpty([]).first(),
             PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.uniref30,
-            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.pdb100,
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.pdb100
         )
 //        ch_multiqc  = ROSETTAFOLD_ALL_ATOM.out.multiqc_report
         ch_versions = ch_versions.mix(ROSETTAFOLD_ALL_ATOM.out.versions)

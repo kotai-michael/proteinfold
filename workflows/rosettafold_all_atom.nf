@@ -39,10 +39,10 @@ workflow ROSETTAFOLD_ALL_ATOM {
     take:
     ch_samplesheet
     ch_versions             // channel: [ path(versions.yml) ]
-    ch_bfd                  // channel: path(bfd)
-    ch_uniref30             // channel: path(uniref30)
-    ch_blast
-    ch_pdb100
+//    ch_bfd                  // channel: path(bfd)
+//    ch_uniref30             // channel: path(uniref30)
+//    ch_blast
+//    ch_pdb100
 
     main:
     ch_multiqc_files = Channel.empty()
