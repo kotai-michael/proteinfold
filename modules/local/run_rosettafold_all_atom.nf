@@ -10,14 +10,14 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
         error("Local RUN_ROSETTAFOLD_ALL_ATOM module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
 
-//    container "/srv/scratch/z5378336/apptainers/RoseTTAFold-All-Atom-dev.sif"
+    container "/srv/scratch/z5378336/RoseTTAFold_All_Atom.sif"
 
     input:
     tuple val(meta), path(fasta)
-//    path ('bfd/*')
-//    path ('uniref30/*')
-//    path ('blast/*')
-//    path ('pdb100/*')
+    path ('bfd/*')
+    path ('UniRef30_2020_06/*')
+    path ('pdb100_2021Mar03/*')
+    path ('blast-2.2.26/*')
     
     output:
     path ("${fasta.baseName}*")
@@ -28,11 +28,12 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     task.ext.when == null || task.ext.when
 
     script:
-//    mamba run --name RFAA python -m rf2aa.run_inference --config-name "${fasta}"
     """
-    echo "DEBUG: Contents of bfd path:"
-    ls -lh /
-    
+    ln -s /app/RoseTTAFold-All-Atom/make_msa.sh .
+   mamba run --name RFAA python -m rf2aa.run_inference \
+  --config-dir $PWD --config-path $PWD \
+  --config-name "${fasta}" 
+
     cat <<-END_VERSIONS > versions.yml
 
     "${task.process}":
