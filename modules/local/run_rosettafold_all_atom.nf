@@ -36,8 +36,7 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     --config-path $PWD \
     --config-name "${fasta}"
 
-    cp "${fasta.baseName}"/*.pdb ./"${fasta.baseName}".rosettafold_all_atom.pdb
-    cd "${fasta.baseName}"
+    cp "${fasta.baseName}".pdb ./"${fasta.baseName}".rosettafold_all_atom.pdb
     awk '{print \$6"\\t"\$11}' "${fasta.baseName}".rosettafold_all_atom.pdb | uniq > plddt.tsv
     echo -e Positions"\\t" > header.tsv
     cat header.tsv plddt.tsv > ../"${fasta.baseName}"_plddt_mqc.tsv
