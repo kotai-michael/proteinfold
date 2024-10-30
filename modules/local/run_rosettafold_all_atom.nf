@@ -30,12 +30,20 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     script:
     """
     ln -s /app/RoseTTAFold-All-Atom/make_msa.sh .
-   mamba run --name RFAA python -m rf2aa.run_inference \
-  --config-dir $PWD --config-path $PWD \
-  --config-name "${fasta}" 
+
+    mamba run --name RFAA python -m rf2aa.run_inference \
+    --config-dir $PWD \
+    --config-path $PWD \
+    --config-name "${fasta}"
+
+    cp "${fasta.baseName}"/*.pdb ./"${fasta.baseName}".rosettafold_all_atom.pdb
+    cd "${fasta.baseName}"
+    awk '{print \$6"\\t"\$11}' "${fasta.baseName}".rosettafold_all_atom.pdb | uniq > plddt.tsv
+    echo -e Positions"\\t" > header.tsv
+    cat header.tsv plddt.tsv > ../"${fasta.baseName}"_plddt_mqc.tsv
+    cd ..
 
     cat <<-END_VERSIONS > versions.yml
-
     "${task.process}":
         python: \$(python3 --version | sed 's/Python //g')
     END_VERSIONS
