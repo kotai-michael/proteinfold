@@ -42,7 +42,6 @@ workflow ROSETTAFOLD_ALL_ATOM {
     ch_bfd                  // channel: path(bfd)
     ch_uniref30             // channel: path(uniref30)
     ch_pdb100
-    ch_blast
 
     main:
     ch_multiqc_files = Channel.empty()
@@ -54,8 +53,7 @@ workflow ROSETTAFOLD_ALL_ATOM {
         ch_samplesheet,
         ch_bfd,
         ch_uniref30,
-        ch_pdb100,        
-        ch_blast
+        ch_pdb100
     )
     ch_multiqc_rep = RUN_ROSETTAFOLD_ALL_ATOM.out.multiqc.collect()
     ch_versions    = ch_versions.mix(RUN_ROSETTAFOLD_ALL_ATOM.out.versions)
@@ -91,7 +89,9 @@ workflow ROSETTAFOLD_ALL_ATOM {
             ch_multiqc_files.collect(),
             ch_multiqc_config.toList(),
             ch_multiqc_custom_config.toList(),
-            ch_multiqc_logo.toList()
+            ch_multiqc_logo.toList(),
+            [],
+            []
         )
         ch_multiqc_report = MULTIQC.out.report.toList()
     }
