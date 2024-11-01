@@ -214,7 +214,7 @@ workflow NFCORE_PROTEINFOLD {
         // SUBWORKFLOW: Prepare Rosttafold-all-atom DBs
         //
         PREPARE_ROSETTAFOLD_ALL_ATOM_DBS (
-            params.bfd_path,
+            params.bfd_rosettafold_all_atom_path,
             params.uniref30_rosettafold_all_atom_path,
             params.pdb100_path
         )
