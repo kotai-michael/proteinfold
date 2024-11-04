@@ -3,6 +3,7 @@
  */
 process RUN_ROSETTAFOLD_ALL_ATOM {
     tag "$meta.id"
+    label 'process_medium'
     label 'gpu_compute'
 
     // Exit if running this module with -profile conda / -profile mamba
