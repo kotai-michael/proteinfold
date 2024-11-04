@@ -189,8 +189,7 @@
                     "type": "string",
                     "description": "Specifies whether is a 'monomer' or 'multimer' prediction",
                     "enum": ["monomer", "multimer"],
-                    "fa_icon": "fas fa-stream",
-                    "default": "monomer"
+                    "fa_icon": "fas fa-stream"
                 }
             }
         },
@@ -386,32 +385,27 @@
                 "small_bfd_path": {
                     "type": "string",
                     "description": "Path to a reduced version of the BFD database",
-                    "fa_icon": "fas fa-folder-open",
-                    "default": "null/smallbfd/*"
+                    "fa_icon": "fas fa-folder-open"
                 },
                 "alphafold2_params_path": {
                     "type": "string",
                     "description": "Path to the Alphafold2 parameters",
-                    "fa_icon": "fas fa-folder-open",
-                    "default": "null/params/alphafold_params_*/*"
+                    "fa_icon": "fas fa-folder-open"
                 },
                 "mgnify_path": {
                     "type": "string",
                     "description": "Path to the MGnify database",
-                    "fa_icon": "fas fa-folder-open",
-                    "default": "null/mgnify/*"
+                    "fa_icon": "fas fa-folder-open"
                 },
                 "pdb70_path": {
                     "type": "string",
                     "description": "Path to the PDB70 database",
-                    "fa_icon": "fas fa-folder-open",
-                    "default": "null/pdb70/**"
+                    "fa_icon": "fas fa-folder-open"
                 },
                 "pdb_mmcif_path": {
                     "type": "string",
                     "description": "Path to the PDB mmCIF database",
-                    "fa_icon": "fas fa-folder-open",
-                    "default": "null/pdb_mmcif/**"
+                    "fa_icon": "fas fa-folder-open"
                 },
                 "uniref30_alphafold2_path": {
                     "type": "string",
@@ -484,8 +478,7 @@
                 "colabfold_alphafold2_params_tags": {
                     "type": "object",
                     "description": "Dictionary with Alphafold2 parameters tags",
-                    "fa_icon": "fas fa-stream",
-                    "default": "[alphafold2_multimer_v1:'alphafold_params_colab_2021-10-27', alphafold2_multimer_v2:'alphafold_params_colab_2022-03-02', alphafold2_multimer_v3:'alphafold_params_colab_2022-12-06', alphafold2_ptm:'alphafold_params_2021-07-14']"
+                    "fa_icon": "fas fa-stream"
                 }
             }
         },
@@ -684,188 +677,13 @@
             "type": "string",
             "default": "null/pdb100_2021Mar03/*"
         },
-        "RFAA_paper_weights_path": {
-            "type": "string"
-        },
-        "cpuQueue": {
+        "bfd_rosettafold_all_atom_path": {
             "type": "string",
-            "default": "submission"
-        },
-        "gpuQueue": {
-            "type": "string",
-            "default": "mwacgpu2"
-        },
-        "bfd": {
-            "type": "string",
-            "default": "https://storage.googleapis.com/alphafold-databases/casp14_versions/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt.tar.gz"
-        },
-        "small_bfd": {
-            "type": "string",
-            "default": "https://storage.googleapis.com/alphafold-databases/reduced_dbs/bfd-first_non_consensus_sequences.fasta.gz"
-        },
-        "alphafold2_params": {
-            "type": "string",
-            "default": "https://storage.googleapis.com/alphafold/alphafold_params_2022-03-02.tar"
-        },
-        "mgnify": {
-            "type": "string",
-            "default": "https://storage.googleapis.com/alphafold-databases/casp14_versions/mgy_clusters_2018_12.fa.gz"
-        },
-        "pdb70": {
-            "type": "string",
-            "default": "http://wwwuser.gwdg.de/~compbiol/data/hhsuite/databases/hhsuite_dbs/old-releases/pdb70_from_mmcif_200916.tar.gz"
-        },
-        "pdb_mmcif": {
-            "type": "string",
-            "default": "rsync.rcsb.org::ftp_data/structures/divided/mmCIF/"
-        },
-        "pdb_obsolete": {
-            "type": "string",
-            "default": "ftp://ftp.wwpdb.org/pub/pdb/data/status/obsolete.dat"
+            "default": "null/bfd/*"
         },
         "uniref30": {
             "type": "string",
             "default": "http://wwwuser.gwdg.de/~compbiol/uniclust/2020_06/UniRef30_2020_06_hhsuite.tar.gz"
-        },
-        "uniref90": {
-            "type": "string",
-            "default": "ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref90/uniref90.fasta.gz"
-        },
-        "pdb_seqres": {
-            "type": "string",
-            "default": "ftp://ftp.wwpdb.org/pub/pdb/derived_data/pdb_seqres.txt"
-        },
-        "uniprot_sprot": {
-            "type": "string",
-            "default": "ftp://ftp.ebi.ac.uk/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz"
-        },
-        "uniprot_trembl": {
-            "type": "string",
-            "default": "ftp://ftp.ebi.ac.uk/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_trembl.fasta.gz"
-        },
-        "bfd_name": {
-            "type": "string",
-            "default": "bfd"
-        },
-        "smallbfd_name": {
-            "type": "string",
-            "default": "smallbfd"
-        },
-        "mgnify_name": {
-            "type": "string",
-            "default": "mgnify"
-        },
-        "pdb70_name": {
-            "type": "string",
-            "default": "pdb70"
-        },
-        "pdb_mmcif_name": {
-            "type": "string",
-            "default": "pdb_mmcif"
-        },
-        "uniref30_name": {
-            "type": "string",
-            "default": "uniref30"
-        },
-        "uniref90_name": {
-            "type": "string",
-            "default": "uniref90"
-        },
-        "pdb_seqres_name": {
-            "type": "string",
-            "default": "pdb_seqres"
-        },
-        "uniprot_name": {
-            "type": "string",
-            "default": "uniprot"
-        },
-        "alphafold_params_name": {
-            "type": "string",
-            "default": "params/alphafold_params_*"
-        },
-        "mmcif_files_name": {
-            "type": "string",
-            "default": "pdb_mmcif/mmcif_files/"
-        },
-        "mmcif_obsolete_name": {
-            "type": "string",
-            "default": "pdb_mmcif/obsolete.dat"
-        },
-        "uniref30_db_name": {
-            "type": "string",
-            "default": "uniref30_2018_08"
-        },
-        "bfd_first_non_consensus_sequences_name": {
-            "type": "string",
-            "default": "bfd-first_non_consensus_sequences.fasta"
-        },
-        "uniprot_fasta_name": {
-            "type": "string",
-            "default": "uniprot.fasta"
-        },
-        "pdb_seqres_txt_name": {
-            "type": "string",
-            "default": "pdb_seqres.txt"
-        },
-        "bfd_metaclust_clu_complete_id30_c90_final_seq_sorted_opt_name": {
-            "type": "string",
-            "default": "bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt"
-        },
-        "uniref90_fasta_name": {
-            "type": "string",
-            "default": "uniref90.fasta"
-        },
-        "mgy_clusters_fasta_name": {
-            "type": "string",
-            "default": "mgy_clusters_2022_05.fa"
-        },
-        "bfd_dir_path": {
-            "type": "string",
-            "default": "null/bfd/"
-        },
-        "small_bfd_dir_path": {
-            "type": "string",
-            "default": "null/smallbfd/"
-        },
-        "mgnify_dir_path": {
-            "type": "string",
-            "default": "null/mgnify/"
-        },
-        "pdb70_dir_path": {
-            "type": "string",
-            "default": "null/pdb70/"
-        },
-        "pdb_mmcif_dir_path": {
-            "type": "string",
-            "default": "null/pdb_mmcif/"
-        },
-        "uniref30_dir_path": {
-            "type": "string",
-            "default": "null/uniref30/"
-        },
-        "uniref90_dir_path": {
-            "type": "string",
-            "default": "null/uniref90/"
-        },
-        "pdb_seqres_dir_path": {
-            "type": "string",
-            "default": "null/pdb_seqres/"
-        },
-        "uniprot_dir_path": {
-            "type": "string",
-            "default": "null/uniprot/"
-        },
-        "mgnify_database_path": {
-            "type": "string",
-            "default": "null/mgnify/"
-        },
-        "template_mmcif_dir": {
-            "type": "string",
-            "default": "null/pdb_mmcif/mmcif_files//"
-        },
-        "obsolete_pdbs_path": {
-            "type": "string",
-            "default": "null/pdb_mmcif/obsolete.dat"
         },
         "pdb100": {
             "type": "string",
