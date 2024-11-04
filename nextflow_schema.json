@@ -680,10 +680,6 @@
             "type": "string",
             "default": "null/uniref30/UniRef30_2020_06/*"
         },
-        "blast_path": {
-            "type": "string",
-            "default": "/srv/scratch/z5378336/apptainers/blast-2.2.26/data"
-        },
         "pdb100_path": {
             "type": "string",
             "default": "null/pdb100_2021Mar03/*"
