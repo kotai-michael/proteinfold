@@ -21,7 +21,7 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     
     output:
     path ("${fasta.baseName}*")
-    tuple val(meta), path ("${fasta.baseName}*pdb"), emit: pdb
+    tuple val(meta), path ("*pdb"), emit: pdb
     tuple val(meta), path ("*_mqc.tsv"), emit: multiqc
     path "versions.yml", emit: versions
 
