@@ -1,5 +1,5 @@
 /*
- * Run RoseTTAFold_All_Atom 
+ * Run RoseTTAFold_All_Atom
  */
 process RUN_ROSETTAFOLD_ALL_ATOM {
     tag "$meta.id"
@@ -18,7 +18,7 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     path ('bfd/*')
     path ('UniRef30_2020_06/*')
     path ('pdb100_2021Mar03/*')
-    
+
     output:
     path ("${fasta.baseName}*")
     tuple val(meta), path ("*pdb"), emit: pdb
