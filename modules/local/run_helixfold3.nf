@@ -26,16 +26,16 @@ process RUN_HELIXFOLD3 {
     task.ext.when == null || task.ext.when
 
     script:
-
     def MAXIT_SRC="${params.helixfold3_db}/maxit-v11.200-prod-src"
     def PATH="$MAXIT_SRC/bin:opt/miniforge/envs/helixfold/bin:$PATH"
     def RCSBROOT="${MAXIT_SRC}"
     def OBABEL_BIN="/opt/miniforge/envs/helixfold/bin"
-    
+    def CUDA_VISIBLE_DEVICES=0
+
     """
     ln -s /srv/scratch/sbf/apptainers/PaddleHelix/apps/protein_folding/helixfold3/* .
 
-    CUDA_VISIBLE_DEVICES=0 /opt/miniforge/envs/helixfold/bin/python3.9 inference.py \
+    /opt/miniforge/envs/helixfold/bin/python3.9 inference.py \
         --maxit_binary "${MAXIT_SRC}/bin/maxit" \
         --jackhmmer_binary_path "/opt/miniforge/envs/helixfold/bin/jackhmmer" \
         --hhblits_binary_path "/opt/miniforge/envs/helixfold/bin/hhblits" \
@@ -60,11 +60,11 @@ process RUN_HELIXFOLD3 {
         --output_dir="\$PWD" \
         --model_name allatom_demo \
         --init_model init_models/HelixFold3-240814.pdparams \
-        --infer_times 5 \
+        --infer_times 1 \
         --precision "bf16"
 
 
-    cat <<-END_VERSIONS > versions.yaml
+    cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python3 --version | sed 's/Python //g')
     END_VERSIONS
