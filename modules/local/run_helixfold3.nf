@@ -26,17 +26,16 @@ process RUN_HELIXFOLD3 {
     task.ext.when == null || task.ext.when
 
     script:
-    def MAXIT_SRC="${params.helixfold3_db}/maxit-v11.200-prod-src"
-    def PATH="$MAXIT_SRC/bin:opt/miniforge/envs/helixfold/bin:$PATH"
-    def RCSBROOT="${MAXIT_SRC}"
-    def OBABEL_BIN="/opt/miniforge/envs/helixfold/bin"
-    def CUDA_VISIBLE_DEVICES=0
-
     """
-    ln -s /srv/scratch/sbf/apptainers/PaddleHelix/apps/protein_folding/helixfold3/* .
+    export MAXIT_SRC="${params.helixfold3_db}/maxit-v11.200-prod-src"
+    export RCSBROOT="\$MAXIT_SRC"
+    export PATH="\$MAXIT_SRC/bin:opt/miniforge/envs/helixfold/bin:$PATH"
+    export OBABEL_BIN="/opt/miniforge/envs/helixfold/bin"
+
+    ln -s /app/helixfold3/* .
 
     /opt/miniforge/envs/helixfold/bin/python3.9 inference.py \
-        --maxit_binary "${MAXIT_SRC}/bin/maxit" \
+        --maxit_binary "\$MAXIT_SRC/bin/maxit" \
         --jackhmmer_binary_path "/opt/miniforge/envs/helixfold/bin/jackhmmer" \
         --hhblits_binary_path "/opt/miniforge/envs/helixfold/bin/hhblits" \
         --hhsearch_binary_path "/opt/miniforge/envs/helixfold/bin/hhsearch" \
@@ -59,7 +58,7 @@ process RUN_HELIXFOLD3 {
         --input_json="${fasta}" \
         --output_dir="\$PWD" \
         --model_name allatom_demo \
-        --init_model init_models/HelixFold3-240814.pdparams \
+        --init_model "${params.helixfold3_init_models_path}/HelixFold3-240814.pdparams" \
         --infer_times 1 \
         --precision "bf16"
 
