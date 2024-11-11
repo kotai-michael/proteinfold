@@ -1,8 +1,8 @@
 #!/usr/bin/env nextflow
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     nf-core/proteinfold
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Github : https://github.com/nf-core/proteinfold
     Website: https://nf-co.re/proteinfold
     Slack  : https://nfcore.slack.com/channels/proteinfold
@@ -27,6 +27,14 @@ if (params.mode.toLowerCase().split(",").contains("esmfold")) {
     include { PREPARE_ESMFOLD_DBS } from './subworkflows/local/prepare_esmfold_dbs'
     include { ESMFOLD             } from './workflows/esmfold'
 }
+if (params.mode == "rosettafold_all_atom") {
+    include { PREPARE_ROSETTAFOLD_ALL_ATOM_DBS  } from './subworkflows/local/prepare_rosettafold_all_atom_dbs'
+    include { ROSETTAFOLD_ALL_ATOM              } from './workflows/rosettafold_all_atom'
+}
+if (params.mode == "helixfold3") {
+    include { PREPARE_HELIXFOLD3_DBS     } from './subworkflows/local/prepare_helixfold3_dbs'
+    include { HELIXFOLD3                } from './workflows/helixfold3'
+}
 
 include { PIPELINE_INITIALISATION          } from './subworkflows/local/utils_nfcore_proteinfold_pipeline'
 include { PIPELINE_COMPLETION              } from './subworkflows/local/utils_nfcore_proteinfold_pipeline'
@@ -44,9 +52,9 @@ params.colabfold_alphafold2_params_link = getColabfoldAlphafold2Params()
 params.colabfold_alphafold2_params_path = getColabfoldAlphafold2ParamsPath()
 
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     NAMED WORKFLOWS FOR PIPELINE
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
 //
@@ -219,6 +227,69 @@ workflow NFCORE_PROTEINFOLD {
             .map{[it[0]["id"], it[0], it[1], it[2]]}
             .set{ch_esmfold_out}
     }
+
+    //
+    // WORKFLOW: Run rosettafold_all_atom
+    //
+    if(params.mode == "rosettafold_all_atom") {
+        //
+        // SUBWORKFLOW: Prepare Rosettafold-all-atom DBs
+        //
+        PREPARE_ROSETTAFOLD_ALL_ATOM_DBS (
+            params.bfd_rosettafold_all_atom_path,
+            params.uniref30_rosettafold_all_atom_path,
+            params.pdb100_path
+        )
+        ch_versions = ch_versions.mix(PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.versions)
+
+        //
+        // WORKFLOW: Run nf-core/rosettafold_all_atom workflow
+        //
+        ROSETTAFOLD_ALL_ATOM (
+            ch_samplesheet,
+            ch_versions,
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.bfd.ifEmpty([]).first(),
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.uniref30,
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.pdb100
+        )
+        ch_multiqc  = ROSETTAFOLD_ALL_ATOM.out.multiqc_report
+        ch_versions = ch_versions.mix(ROSETTAFOLD_ALL_ATOM.out.versions)
+    }
+
+
+    //
+    // WORKFLOW: Run helixfold3
+    //
+    if(params.mode == "helixfold3") {
+        //
+        // SUBWORKFLOW: Prepare helixfold3 DBs
+        //
+        PREPARE_HELIXFOLD3_DBS (
+            params.uniclust30_path,
+            params.ccd_preprocessed_path,
+            params.rfam_path,
+            params.uniclust30_path,
+            params.ccd_preprocessed_path,
+            params.rfam_path
+        )
+        ch_versions = ch_versions.mix(PREPARE_HELIXFOLD3_DBS.out.versions)
+
+        //
+        // WORKFLOW: Run nf-core/helixfold3 workflow
+        //
+        HELIXFOLD3 (
+            ch_samplesheet,
+            ch_versions,
+            PREPARE_HELIXFOLD3_DBS.out.uniclust30,
+            PREPARE_HELIXFOLD3_DBS.out.ccd_preprocessed,
+            PREPARE_HELIXFOLD3_DBS.out.rfam
+        )
+        ch_multiqc  = HELIXFOLD3.out.multiqc_report
+        ch_versions = ch_versions.mix(HELIXFOLD3.out.versions)
+    }
+
+
+    //
     //
     // POST PROCESSING: generate visulaisation reports
     //
@@ -300,7 +371,7 @@ workflow {
 }
 
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     THE END
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */

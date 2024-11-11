@@ -4,7 +4,6 @@
 process RUN_ALPHAFOLD2_PRED {
     tag   "$meta.id"
     label 'process_medium'
-    label 'gpu_compute'
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
@@ -49,7 +48,6 @@ process RUN_ALPHAFOLD2_PRED {
         --model_preset=${alphafold2_model_preset} \
         --output_dir=\$PWD \
         --data_dir=\$PWD \
-        --random_seed=53343 \
         --msa_path=${msa} \
         --use_gpu_relax \
         $args
