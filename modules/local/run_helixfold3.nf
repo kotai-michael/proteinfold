@@ -3,7 +3,6 @@
  */
 process RUN_HELIXFOLD3 {
     tag "$meta.id"
-    label 'process_medium'
     label 'gpu_compute'
 
     // Exit if running this module with -profile conda / -profile mamba
@@ -90,6 +89,7 @@ process RUN_HELIXFOLD3 {
 
     stub:
     """
+    touch ./"${meta.id}"_helixfold3.cif
     touch ./"${meta.id}"_helixfold3.pdb
     touch ./"${meta.id}"_mqc.tsv
     mkdir "${fasta.baseName}"
