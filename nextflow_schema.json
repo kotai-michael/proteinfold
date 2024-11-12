@@ -703,23 +703,22 @@
         },
         "uniclust30_path": {
             "type": "string",
-            "default": "{params.helixfold3_db}/uniclust30/*"
+            "default": "null/uniclust30/*"
         },
         "ccd_preprocessed_path": {
             "type": "string",
-            "default": "{params.helixfold3_db}/*"
+            "default": "null/ccd_preprocessed_etkdg.pkl.gz"
         },
         "rfam_path": {
             "type": "string",
-            "default": "{params.helixfold3_db}/*"
+            "default": "null/Rfam-14.9_rep_seq.fasta"
         },
         "helixfold3_init_models_link": {
             "type": "string",
             "default": "https://paddlehelix.bd.bcebos.com/HelixFold3/params/HelixFold3-params-240814.zip"
         },
         "helixfold3_init_models_path": {
-            "type": "string",
-            "default": "$helixfold3_db"
+            "type": "string"
         },
         "helixfold3_db": {
             "type": "string"
