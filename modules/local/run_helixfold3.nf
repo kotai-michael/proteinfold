@@ -18,6 +18,7 @@ process RUN_HELIXFOLD3 {
 
     output:
     path ("${fasta.baseName}*")
+    tuple val(meta), path ("${meta.id}_helixfold3.pdb"), emit: main_pdb
     tuple val(meta), path ("*pdb"), emit: pdb
     tuple val(meta), path ("*_mqc.tsv"), emit: multiqc
     path "versions.yml", emit: versions
@@ -29,7 +30,7 @@ process RUN_HELIXFOLD3 {
     """
     export MAXIT_SRC="${params.helixfold3_db}/maxit-v11.200-prod-src"
     export RCSBROOT="\$MAXIT_SRC"
-    export PATH="\$MAXIT_SRC/bin:opt/miniforge/envs/helixfold/bin:$PATH"
+    export PATH="\$MAXIT_SRC/bin:/opt/miniforge/envs/helixfold/bin:$PATH"
     export OBABEL_BIN="/opt/miniforge/envs/helixfold/bin"
 
     ln -s /app/helixfold3/* .
@@ -60,6 +61,7 @@ process RUN_HELIXFOLD3 {
         --model_name allatom_demo \
         --init_model "${params.helixfold3_init_models_path}/HelixFold3-240814.pdparams" \
         --infer_times 1 \
+        --diff_batch_size 1 \
         --precision "bf16"
 
 

@@ -712,6 +712,14 @@
         "rfam_path": {
             "type": "string",
             "default": "{params.helixfold3_db}/*"
+        },
+        "helixfold3_init_models_link": {
+            "type": "string",
+            "default": "https://paddlehelix.bd.bcebos.com/HelixFold3/params/HelixFold3-params-240814.zip"
+        },
+        "helixfold3_init_models_path": {
+            "type": "string",
+            "default": "$helixfold3_db"
         }
     }
 }
