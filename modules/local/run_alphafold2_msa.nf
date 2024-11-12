@@ -10,15 +10,7 @@ process RUN_ALPHAFOLD2_MSA {
         error("Local RUN_ALPHAFOLD2_MSA module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    container "nf-core/proteinfold_alphafold2_msa:1.1.1"
-=======
     container "nf-core/proteinfold_alphafold2_msa:dev"
->>>>>>> upstream/dev
-=======
-    container "nf-core/proteinfold_alphafold2_msa:dev"
->>>>>>> 456b9e5c0196780239a51a50e3b2c6ed24f2492b
 
     input:
     tuple val(meta), path(fasta)

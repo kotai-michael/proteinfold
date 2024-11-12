@@ -720,6 +720,9 @@
         "helixfold3_init_models_path": {
             "type": "string",
             "default": "$helixfold3_db"
+        },
+        "helixfold3_db": {
+            "type": "string"
         }
     }
 }
