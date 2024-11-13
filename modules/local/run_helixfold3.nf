@@ -17,11 +17,10 @@ process RUN_HELIXFOLD3 {
 
     output:
     path ("${fasta.baseName}*")
-    tuple val(meta), path ("${meta.id}_helixfold3.cif"), emit: main_cif
-    tuple val(meta), path ("${meta.id}_helixfold3.pdb"), emit: main_pdb
-    tuple val(meta), path ("${fasta.baseName}/ranked*pdb"), emit: pdb
-    tuple val(meta), path ("${fasta.baseName}/*_msa.tsv") , emit: msa
-    tuple val(meta), path ("*_mqc.tsv")                   , emit: multiqc
+    tuple val(meta), path ("${meta.id}_helixfold3.cif")     , emit: main_cif
+    tuple val(meta), path ("${meta.id}_helixfold3.pdb")     , emit: main_pdb
+    tuple val(meta), path ("ranked*pdb")                    , emit: pdb
+    tuple val(meta), path ("*_mqc.tsv")                     , emit: multiqc
     path "versions.yml", emit: versions
 
     when:
@@ -61,8 +60,9 @@ process RUN_HELIXFOLD3 {
         --output_dir="\$PWD" \
         --model_name allatom_demo \
         --init_model "${params.helixfold3_init_models_path}/HelixFold3-240814.pdparams" \
-        --infer_times 1 \
+        --infer_times 4 \
         --diff_batch_size 1 \
+        --logging_level "ERROR" \
         --precision "bf16"
 
     cp "${fasta.baseName}"/"${fasta.baseName}"-rank1/predicted_structure.pdb ./"${meta.id}"_helixfold3.pdb
@@ -77,7 +77,7 @@ process RUN_HELIXFOLD3 {
     cat header.tsv plddt.tsv > ../"${meta.id}"_plddt_mqc.tsv
     cp final_features.pkl ../
     for i in 2 3 4
-        do cp "${fasta.baseName}"-rank\$i/predicted_structure.pdb" ../ranked_\$i.pdb
+        do cp ""${fasta.baseName}"-rank\$i/predicted_structure.pdb" ../ranked_\$i.pdb
     done
     cd ..
 
@@ -92,12 +92,10 @@ process RUN_HELIXFOLD3 {
     touch ./"${meta.id}"_helixfold3.cif
     touch ./"${meta.id}"_helixfold3.pdb
     touch ./"${meta.id}"_mqc.tsv
-    mkdir "${fasta.baseName}"
-    touch "${fasta.baseName}/ranked_1.pdb"
-    touch "${fasta.baseName}/ranked_2.pdb"
-    touch "${fasta.baseName}/ranked_3.pdb"
-    touch "${fasta.baseName}/ranked_4.pdb"
-    touch "${fasta.baseName}/${fasta.baseName}_msa.tsv"
+    touch "ranked_1.pdb"
+    touch "ranked_2.pdb"
+    touch "ranked_3.pdb"
+    touch "ranked_4.pdb"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
