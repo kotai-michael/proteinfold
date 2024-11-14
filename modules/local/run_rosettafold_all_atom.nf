@@ -4,6 +4,7 @@
 process RUN_ROSETTAFOLD_ALL_ATOM {
     tag "$meta.id"
     label 'gpu_compute'
+    label 'process_medium'
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
