@@ -11,10 +11,21 @@ process RUN_HELIXFOLD3 {
         error("Local RUN_HELIXFOLD3 module does not support Conda. Please use Docker / Singularity / Podman / Apptainer instead.")
     }
 
-    container "/srv/scratch/sbf/apptainers/helixfold3.sif"
+    container "/srv/scratch/sbf-pipelines/proteinfold/singularity/helixfold3.sif"
 
     input:
     tuple val(meta), path(fasta)
+    path ('uniclust30/*')
+    path ('*')
+    path ('*')
+    path ('bfd/*')
+    path ('small_bfd/*')
+    path ('uniprot/*')
+    path ('pdb_seqres/*')
+    path ('uniref90/*')
+    path ('mgnify/*')
+    path ('pdb_mmcif/*')
+    path ('init_models/*')
 
     output:
     path ("${fasta.baseName}*")
@@ -45,22 +56,22 @@ process RUN_HELIXFOLD3 {
         --hmmsearch_binary_path "/opt/miniforge/envs/helixfold/bin/hmmsearch" \
         --hmmbuild_binary_path "/opt/miniforge/envs/helixfold/bin/hmmbuild" \
         --preset='reduced_dbs' \
-        --bfd_database_path="${params.alphafold2_db}/bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt" \
-        --small_bfd_database_path="${params.helixfold3_db}/bfd-first_non_consensus_sequences.fasta" \
-        --uniclust30_database_path="${params.helixfold3_db}/uniclust30/uniclust30_2018_08" \
-        --uniprot_database_path="${params.alphafold2_db}/uniprot/uniprot.fasta" \
-        --pdb_seqres_database_path="${params.alphafold2_db}/pdb_seqres/pdb_seqres.txt" \
-        --rfam_database_path="${params.helixfold3_db}/Rfam-14.9_rep_seq.fasta" \
-        --template_mmcif_dir="${params.alphafold2_db}/pdb_mmcif/mmcif_files" \
-        --obsolete_pdbs_path="${params.alphafold2_db}/pdb_mmcif/obsolete.dat" \
-        --ccd_preprocessed_path="${params.helixfold3_db}/ccd_preprocessed_etkdg.pkl.gz" \
-        --uniref90_database_path "${params.helixfold3_db}/uniref90/uniref90.fasta" \
-        --mgnify_database_path "${params.helixfold3_db}/mgnify/mgy_clusters_2018_12.fa" \
+        --bfd_database_path="./bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt" \
+        --small_bfd_database_path="./small_bfd/bfd-first_non_consensus_sequences.fasta" \
+        --uniclust30_database_path="./uniclust30/uniclust30_2018_08" \
+        --uniprot_database_path="./uniprot/uniprot.fasta" \
+        --pdb_seqres_database_path="./pdb_seqres/pdb_seqres.txt" \
+        --rfam_database_path="./Rfam-14.9_rep_seq.fasta" \
+        --template_mmcif_dir="./pdb_mmcif/mmcif_files" \
+        --obsolete_pdbs_path="./pdb_mmcif/obsolete.dat" \
+        --ccd_preprocessed_path="./ccd_preprocessed_etkdg.pkl.gz" \
+        --uniref90_database_path "./uniref90/uniref90.fasta" \
+        --mgnify_database_path "./mgnify/mgy_clusters_2018_12.fa" \
         --max_template_date=2024-08-14 \
         --input_json="${fasta}" \
         --output_dir="\$PWD" \
         --model_name allatom_demo \
-        --init_model "${params.helixfold3_init_models_path}/HelixFold3-240814.pdparams" \
+        --init_model "./init_models/HelixFold3-240814.pdparams" \
         --infer_times 4 \
         --diff_batch_size 1 \
         --logging_level "ERROR" \

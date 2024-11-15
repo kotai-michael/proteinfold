@@ -39,9 +39,18 @@ workflow HELIXFOLD3 {
     take:
     ch_samplesheet
     ch_versions             // channel: [ path(versions.yml) ]
-    ch_uniclust30
-    ch_ccd_preprocessed
-    ch_rfam
+    ch_helixfold3_uniclust30
+    ch_helixfold3_ccd_preprocessed
+    ch_helixfold3_rfam
+    ch_helixfold3_bfd
+    ch_helixfold3_small_bfd
+    ch_helixfold3_uniprot
+    ch_helixfold3_pdb_seqres
+    ch_helixfold3_uniref90
+    ch_helixfold3_mgnify
+    ch_helixfold3_pdb_mmcif
+    ch_helixfold3_init_models
+
 
     main:
     ch_multiqc_files = Channel.empty()
@@ -50,7 +59,18 @@ workflow HELIXFOLD3 {
     // SUBWORKFLOW: Run helixfold3
     //
     RUN_HELIXFOLD3 (
-        ch_samplesheet
+        ch_samplesheet,
+        ch_helixfold3_uniclust30,
+        ch_helixfold3_ccd_preprocessed,
+        ch_helixfold3_rfam,
+        ch_helixfold3_bfd,
+        ch_helixfold3_small_bfd,
+        ch_helixfold3_uniprot,
+        ch_helixfold3_pdb_seqres,
+        ch_helixfold3_uniref90,
+        ch_helixfold3_mgnify,
+        ch_helixfold3_pdb_mmcif,
+        ch_helixfold3_init_models
     )
     ch_multiqc_rep = RUN_HELIXFOLD3.out.multiqc.collect()
     ch_versions    = ch_versions.mix(RUN_HELIXFOLD3.out.versions)

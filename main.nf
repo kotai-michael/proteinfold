@@ -265,12 +265,28 @@ workflow NFCORE_PROTEINFOLD {
         // SUBWORKFLOW: Prepare helixfold3 DBs
         //
         PREPARE_HELIXFOLD3_DBS (
-            params.uniclust30_path,
-            params.ccd_preprocessed_path,
-            params.rfam_path,
-            params.uniclust30_path,
-            params.ccd_preprocessed_path,
-            params.rfam_path
+            params.helixfold3_uniclust30_link,
+            params.helixfold3_ccd_preprocessed_link,
+            params.helixfold3_rfam_link,
+            params.helixfold3_init_models_link,
+            params.helixfold3_bfd_link,
+            params.helixfold3_small_bfd_link,
+            params.helixfold3_uniprot_link,
+            params.helixfold3_pdb_seqres_link,
+            params.helixfold3_uniref90_link,
+            params.helixfold3_mgnify_link,
+            params.helixfold3_pdb_mmcif_link,
+            params.helixfold3_uniclust30_path,
+            params.helixfold3_ccd_preprocessed_path,
+            params.helixfold3_rfam_path,
+            params.helixfold3_init_models_path,
+            params.helixfold3_bfd_path,
+            params.helixfold3_small_bfd_path,
+            params.helixfold3_uniprot_path,
+            params.helixfold3_pdb_seqres_path,
+            params.helixfold3_uniref90_path,
+            params.helixfold3_mgnify_path,
+            params.helixfold3_pdb_mmcif_path
         )
         ch_versions = ch_versions.mix(PREPARE_HELIXFOLD3_DBS.out.versions)
 
@@ -280,9 +296,17 @@ workflow NFCORE_PROTEINFOLD {
         HELIXFOLD3 (
             ch_samplesheet,
             ch_versions,
-            PREPARE_HELIXFOLD3_DBS.out.uniclust30,
-            PREPARE_HELIXFOLD3_DBS.out.ccd_preprocessed,
-            PREPARE_HELIXFOLD3_DBS.out.rfam
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_uniclust30,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_ccd_preprocessed,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_rfam,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_bfd,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_small_bfd,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_uniprot,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_pdb_seqres,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_uniref90,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_mgnify,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_pdb_mmcif,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_init_models
         )
         ch_multiqc  = HELIXFOLD3.out.multiqc_report
         ch_versions = ch_versions.mix(HELIXFOLD3.out.versions)
