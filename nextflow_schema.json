@@ -689,30 +689,6 @@
             "type": "string",
             "default": "https://files.ipd.uw.edu/pub/RoseTTAFold/pdb100_2021Mar03.tar.gz"
         },
-        "uniclust30_link": {
-            "type": "string",
-            "default": "https://storage.googleapis.com/alphafold-databases/casp14_versions/uniclust30_2018_08_hhsuite.tar.gz"
-        },
-        "ccd_preprocessed_link": {
-            "type": "string",
-            "default": "https://paddlehelix.bd.bcebos.com/HelixFold3/CCD/ccd_preprocessed_etkdg.pkl.gz"
-        },
-        "rfam_link": {
-            "type": "string",
-            "default": "https://paddlehelix.bd.bcebos.com/HelixFold3/MSA/Rfam-14.9_rep_seq.fasta"
-        },
-        "uniclust30_path": {
-            "type": "string",
-            "default": "null/uniclust30/*"
-        },
-        "ccd_preprocessed_path": {
-            "type": "string",
-            "default": "null/ccd_preprocessed_etkdg.pkl.gz"
-        },
-        "rfam_path": {
-            "type": "string",
-            "default": "null/Rfam-14.9_rep_seq.fasta"
-        },
         "helixfold3_init_models_link": {
             "type": "string",
             "default": "https://paddlehelix.bd.bcebos.com/HelixFold3/params/HelixFold3-params-240814.zip"
@@ -722,6 +698,79 @@
         },
         "helixfold3_db": {
             "type": "string"
+        },
+        "helixfold3_uniclust30_link": {
+            "type": "string",
+            "default": "https://storage.googleapis.com/alphafold-databases/casp14_versions/uniclust30_2018_08_hhsuite.tar.gz"
+        },
+        "helixfold3_ccd_preprocessed_link": {
+            "type": "string",
+            "default": "https://paddlehelix.bd.bcebos.com/HelixFold3/CCD/ccd_preprocessed_etkdg.pkl.gz"
+        },
+        "helixfold3_rfam_link": {
+            "type": "string",
+            "default": "https://paddlehelix.bd.bcebos.com/HelixFold3/MSA/Rfam-14.9_rep_seq.fasta"
+        },
+        "helixfold3_bfd_link": {
+            "type": "string"
+        },
+        "helixfold3_small_bfd_link": {
+            "type": "string"
+        },
+        "helixfold3_uniprot_link": {
+            "type": "string"
+        },
+        "helixfold3_pdb_seqres_link": {
+            "type": "string"
+        },
+        "helixfold3_uniref90_link": {
+            "type": "string"
+        },
+        "helixfold3_mgnify_link": {
+            "type": "string"
+        },
+        "helixfold3_pdb_mmcif_link": {
+            "type": "string"
+        },
+        "helixfold3_uniclust30_path": {
+            "type": "string",
+            "default": "null/uniclust30/*"
+        },
+        "helixfold3_ccd_preprocessed_path": {
+            "type": "string",
+            "default": "null/ccd_preprocessed_etkdg.pkl.gz"
+        },
+        "helixfold3_rfam_path": {
+            "type": "string",
+            "default": "null/Rfam-14.9_rep_seq.fasta"
+        },
+        "helixfold3_bfd_path": {
+            "type": "string",
+            "default": "null/bfd/*"
+        },
+        "helixfold3_small_bfd_path": {
+            "type": "string",
+            "default": "null/small_bfd/*"
+        },
+        "helixfold3_uniprot_path": {
+            "type": "string",
+            "default": "null/uniprot/*"
+        },
+        "helixfold3_pdb_seqres_path": {
+            "type": "string",
+            "default": "null/pdb_seqres/*"
+        },
+        "helixfold3_uniref90_path": {
+            "type": "string",
+            "default": "null/uniref90/*"
+        },
+        "helixfold3_mgnify_path": {
+            "type": "string",
+            "default": "null/mgnify/*"
+        },
+        "helixfold3_pdb_mmcif_path": {
+            "type": "string",
+            "default": "null/pdb_mmcif/*"
         }
     }
 }
