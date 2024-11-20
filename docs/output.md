@@ -13,6 +13,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and predicts pr
 - [AlphaFold2](https://github.com/deepmind/alphafold)
 - [ColabFold](https://github.com/sokrypton/ColabFold) - MMseqs2 (API server or local search) followed by ColabFold
 - [ESMFold](https://github.com/facebookresearch/esm)
+- [RoseTTAFold-All-Atom](https://github.com/baker-laboratory/RoseTTAFold-All-Atom/)
 
 See main [README.md](https://github.com/nf-core/proteinfold/blob/master/README.md) for a condensed overview of the steps in the pipeline, and the bioinformatics tools used at each step.
 
