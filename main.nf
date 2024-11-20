@@ -207,6 +207,7 @@ workflow NFCORE_PROTEINFOLD {
         ch_multiqc                = ch_multiqc.mix(ESMFOLD.out.multiqc_report.collect())
         ch_versions               = ch_versions.mix(ESMFOLD.out.versions)
         ch_report_input           = ch_report_input.mix(ESMFOLD.out.pdb_msa)
+    }
 
     //
     // WORKFLOW: Run rosettafold_all_atom
