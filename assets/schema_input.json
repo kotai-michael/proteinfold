@@ -17,8 +17,8 @@
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^\\S+\\.(fa(sta)?|yaml|yml)$",
-                "errorMessage": "Fasta or yaml file must be provided, cannot contain spaces and must have extension '.fa', '.fasta', '.yaml' or '.yml'"
+                "pattern": "^\\S+\\.fa(sta)?$",
+                "errorMessage": "Fasta file must be provided, cannot contain spaces and must have extension '.fa' or '.fasta'"
             }
         },
         "required": ["id", "fasta"]

@@ -41,7 +41,7 @@ def checkConfigProvided() {
 }
 
 //
-// Exit pipeline if --profile contains spaces
+// Exit pipeline if -profile contains spaces
 //
 def checkProfileProvided(nextflow_cli_args) {
     if (workflow.profile.endsWith(',')) {

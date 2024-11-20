@@ -1,5 +1,5 @@
 /*
- * Run RoseTTAFold_All_Atom
+ * Run RoseTTAFold_All_Atom 
  */
 process RUN_ROSETTAFOLD_ALL_ATOM {
     tag "$meta.id"
@@ -11,14 +11,14 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
         error("Local RUN_ROSETTAFOLD_ALL_ATOM module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
 
-    container "/srv/scratch/sbf/apptainers/RoseTTAFold_All_Atom.sif"
+    container "/srv/scratch/sbf-pipelines/proteinfold/singularity/rosettafold_all_atom.sif"
 
     input:
     tuple val(meta), path(fasta)
     path ('bfd/*')
     path ('UniRef30_2020_06/*')
     path ('pdb100_2021Mar03/*')
-
+    
     output:
     path ("${fasta.baseName}*")
     tuple val(meta), path ("${meta.id}_rosettafold_all_atom.pdb")   , emit: main_pdb
@@ -34,6 +34,7 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     ln -s /app/RoseTTAFold-All-Atom/* .
 
     mamba run --name RFAA python -m rf2aa.run_inference \
+    loader_params.MAXCYCLE=1 \
     checkpoint_path="/srv/scratch/sbf/rfaa/RFAA_paper_weights.pt" \
     --config-dir /app/RoseTTAFold-All-Atom/rf2aa/config/inference \
     --config-name "${fasta}"
