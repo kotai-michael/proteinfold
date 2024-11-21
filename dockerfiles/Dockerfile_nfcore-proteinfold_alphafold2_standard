@@ -49,9 +49,10 @@ RUN wget -q -P /tmp \
 
 # Install conda packages
 RUN /conda/bin/conda install -y -c conda-forge -c cuda \
+    # https://github.com/google-deepmind/alphafold/issues/923
     openmm=8.0.0 \
     cuda=12.2.2 \
-    pdbfixer \
+    pdbfixer==1.9 \
     pip \
     python=3.11 \
     && conda clean --all --force-pkgs-dirs --yes
