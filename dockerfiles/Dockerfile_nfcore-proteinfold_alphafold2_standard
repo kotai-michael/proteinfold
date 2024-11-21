@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.4.3-cudnn8-runtime-ubuntu18.04
+FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu20.04
 
 LABEL authors="Athanasios Baltzis, Jose Espinosa-Carrasco, Leila Mansouri" \
     title="nfcore/proteinfold_alphafold2_standard" \
@@ -16,7 +16,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     build-essential \
     cmake \
-    cuda-command-line-tools-11-4 \
+    cuda-command-line-tools-12-2 \
     git \
     hmmer \
     kalign \
@@ -35,8 +35,8 @@ RUN git clone https://github.com/deepmind/alphafold.git /app/alphafold && \
 # Compile HHsuite from source
 RUN git clone --branch v3.3.0 https://github.com/soedinglab/hh-suite.git /tmp/hh-suite \
     && mkdir /tmp/hh-suite/build \
-    &&  cd /tmp/hh-suite/build \
-    &&  cmake -DCMAKE_INSTALL_PREFIX=/opt/hhsuite -DHAVE_AVX2=1 .. \
+    && cd /tmp/hh-suite/build \
+    && cmake -DCMAKE_INSTALL_PREFIX=/opt/hhsuite -DHAVE_AVX2=1 .. \
     && make -j 4 && make install \
     && ln -s /opt/hhsuite/bin/* /usr/bin \
     && cd - && rm -rf /tmp/hh-suite
@@ -48,12 +48,12 @@ RUN wget -q -P /tmp \
     && rm /tmp/Miniconda3-latest-Linux-x86_64.sh
 
 # Install conda packages
-RUN /conda/bin/conda install -y -c conda-forge \
-    openmm=7.7.0 \
-    cudatoolkit==11.1.1 \
+RUN /conda/bin/conda install -y -c conda-forge -c cuda \
+    openmm=8.0.0 \
+    cuda=12.2.2 \
     pdbfixer \
     pip \
-    python=3.10 \
+    python=3.11 \
     && conda clean --all --force-pkgs-dirs --yes
 
 RUN wget -q -P /app/alphafold/alphafold/common/ \
@@ -63,8 +63,10 @@ RUN wget -q -P /app/alphafold/alphafold/common/ \
 RUN pip3 install --upgrade pip --no-cache-dir \
     && pip3 install -r /app/alphafold/requirements.txt --no-cache-dir \
     && pip3 install --upgrade --no-cache-dir \
-    jax==0.3.25 \
-    jaxlib==0.3.25+cuda11.cudnn805 \
+    # jax version should be 0.4.23 see https://github.com/YoshitakaMo/localcolabfold/issues/212
+    # and https://github.com/google-deepmind/alphafold/issues/924#issuecomment-2072061647
+    jax==0.4.23 \
+    jaxlib==0.4.23+cuda12.cudnn89 \
     -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 
 RUN sed -i "s|alphafold/common/stereo_chemical_props.txt|/app/alphafold/alphafold/common/stereo_chemical_props.txt|g" /app/alphafold/alphafold/common/residue_constants.py
