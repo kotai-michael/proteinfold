@@ -43,13 +43,16 @@ process RUN_ALPHAFOLD2 {
     def db_preset = db_preset ? "full_dbs --bfd_database_path=./bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt --uniref30_database_path=./uniref30/UniRef30_2021_03" :
         "reduced_dbs --small_bfd_database_path=./small_bfd/bfd-first_non_consensus_sequences.fasta"
     if (alphafold2_model_preset == 'multimer') {
-        alphafold2_model_preset += " --pdb_seqres_database_path=${params.alphafold2_db}/pdb_seqres/pdb_seqres.txt --uniprot_database_path=${params.alphafold2_db}/uniprot/uniprot.fasta "
+        alphafold2_model_preset += " --pdb_seqres_database_path=./pdb_seqres/pdb_seqres.txt --uniprot_database_path=./uniprot/uniprot.fasta "
     }
     else {
-        alphafold2_model_preset += " --pdb70_database_path=${params.alphafold2_db}/pdb70/pdb70_from_mmcif_200916/pdb70 "
+        alphafold2_model_preset += " --pdb70_database_path=./pdb70/pdb70_from_mmcif_200916/pdb70 "
     }
     """
-    if [ -d ${params.alphafold2_db}/params/ ]; then ln -r -s ${params.alphafold2_db}/params params; fi
+    if [ -f pdb_seqres/pdb_seqres.txt ]
+        then sed -i "/^\\w*0/d" pdb_seqres/pdb_seqres.txt
+    fi
+    if [ -d params/alphafold_params_* ]; then ln -r -s params/alphafold_params_*/* params/; fi
     python3 /app/alphafold/run_alphafold.py \
         --fasta_paths=${fasta} \
         --model_preset=${alphafold2_model_preset} \
@@ -61,7 +64,6 @@ process RUN_ALPHAFOLD2 {
         --template_mmcif_dir=./pdb_mmcif/mmcif_files \
         --obsolete_pdbs_path=./pdb_mmcif/obsolete.dat \
         --random_seed=53343 \
-        --use_gpu_relax \
         $args
 
     cp "${fasta.baseName}"/ranked_0.pdb ./"${meta.id}"_alphafold2.pdb

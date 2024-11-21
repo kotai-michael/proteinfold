@@ -10,7 +10,7 @@ process RUN_ALPHAFOLD2_PRED {
         error("Local RUN_ALPHAFOLD2_PRED module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
 
-    container "nf-core/proteinfold_alphafold2_split:1.1.1"
+    container "nf-core/proteinfold_alphafold2_split:dev"
 
     input:
     tuple val(meta), path(fasta)
@@ -42,14 +42,14 @@ process RUN_ALPHAFOLD2_PRED {
     script:
     def args = task.ext.args ?: ''
     """
-    if [ -d ${params.alphafold2_db}/params/ ]; then ln -r -s ${params.alphafold2_db}/params params; fi
+    if [ -d params/alphafold_params_* ]; then ln -r -s params/alphafold_params_*/* params/; fi
     python3 /app/alphafold/run_predict.py \
         --fasta_paths=${fasta} \
         --model_preset=${alphafold2_model_preset} \
         --output_dir=\$PWD \
         --data_dir=\$PWD \
+        --random_seed=53343 \
         --msa_path=${msa} \
-        --use_gpu_relax \
         $args
 
     cp "${fasta.baseName}"/ranked_0.pdb ./"${meta.id}"_alphafold2.pdb
