@@ -10,7 +10,6 @@ include {
     ARIA2_UNCOMPRESS as ARIA2_SMALL_BFD
     ARIA2_UNCOMPRESS as ARIA2_UNIPROT_SPROT
     ARIA2_UNCOMPRESS as ARIA2_UNIPROT_TREMBL
-    ARIA2_UNCOMPRESS as ARIA2_PDB_SEQRES
     ARIA2_UNCOMPRESS as ARIA2_UNIREF90
     ARIA2_UNCOMPRESS as ARIA2_MGNIFY
     ARIA2_UNCOMPRESS as ARIA2_INIT_MODELS
@@ -30,11 +29,13 @@ workflow PREPARE_HELIXFOLD3_DBS {
     helixfold3_init_models_link
     helixfold3_bfd_link
     helixfold3_small_bfd_link
-    helixfold3_uniprot_link
+    helixfold3_uniprot_sprot_link
+    helixfold3_uniprot_trembl_link
     helixfold3_pdb_seqres_link
     helixfold3_uniref90_link
     helixfold3_mgnify_link
     helixfold3_pdb_mmcif_link
+    helixfold3_pdb_obsolete_link
     helixfold3_uniclust30_path
     helixfold3_ccd_preprocessed_path
     helixfold3_rfam_path
@@ -46,9 +47,12 @@ workflow PREPARE_HELIXFOLD3_DBS {
     helixfold3_uniref90_path
     helixfold3_mgnify_path
     helixfold3_pdb_mmcif_path
+    helixfold3_maxit_src_path
 
     main:
-    if (helixofld3_db) {
+    helixfold3_maxit_src_path           = Channel.value(file(helixfold3_maxit_src_path))
+
+    if (helixfold3_db) {
         ch_helixfold3_uniclust30        = Channel.value(file(helixfold3_uniclust30_path))
         ch_helixfold3_ccd_preprocessed  = Channel.value(file(helixfold3_ccd_preprocessed_path))
         ch_helixfold3_rfam              = Channel.value(file(helixfold3_rfam_path))
@@ -132,5 +136,6 @@ workflow PREPARE_HELIXFOLD3_DBS {
     helixfold3_mgnify            = ch_helixfold3_mgnify
     helixfold3_pdb_mmcif         = ch_helixfold3_pdb_mmcif
     helixfold3_init_models       = ch_helixfold3_init_models
+    helixfold3_maxit_src         = ch_helixfold3_maxit_src
     versions                     = ch_versions
 }

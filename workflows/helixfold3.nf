@@ -50,7 +50,7 @@ workflow HELIXFOLD3 {
     ch_helixfold3_mgnify
     ch_helixfold3_pdb_mmcif
     ch_helixfold3_init_models
-
+    ch_helixfold3_maxit_src
 
     main:
     ch_multiqc_files = Channel.empty()
@@ -70,7 +70,8 @@ workflow HELIXFOLD3 {
         ch_helixfold3_uniref90,
         ch_helixfold3_mgnify,
         ch_helixfold3_pdb_mmcif,
-        ch_helixfold3_init_models
+        ch_helixfold3_init_models,
+        ch_helixfold3_maxit_src
     )
     ch_multiqc_rep = RUN_HELIXFOLD3.out.multiqc.collect()
     ch_versions    = ch_versions.mix(RUN_HELIXFOLD3.out.versions)

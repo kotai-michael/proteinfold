@@ -726,25 +726,28 @@
             "default": "https://paddlehelix.bd.bcebos.com/HelixFold3/MSA/Rfam-14.9_rep_seq.fasta"
         },
         "helixfold3_bfd_link": {
-            "type": "string"
+            "type": "string",
+            "default": "https://storage.googleapis.com/alphafold-databases/casp14_versions/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt.tar.gz"
         },
         "helixfold3_small_bfd_link": {
-            "type": "string"
-        },
-        "helixfold3_uniprot_link": {
-            "type": "string"
+            "type": "string",
+            "default": "https://storage.googleapis.com/alphafold-databases/reduced_dbs/bfd-first_non_consensus_sequences.fasta.gz"
         },
         "helixfold3_pdb_seqres_link": {
-            "type": "string"
+            "type": "string",
+            "default": "ftp://ftp.wwpdb.org/pub/pdb/derived_data/pdb_seqres.txt"
         },
         "helixfold3_uniref90_link": {
-            "type": "string"
+            "type": "string",
+            "default": "ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref90/uniref90.fasta.gz"
         },
         "helixfold3_mgnify_link": {
-            "type": "string"
+            "type": "string",
+            "default": "https://storage.googleapis.com/alphafold-databases/casp14_versions/mgy_clusters_2018_12.fa.gz"
         },
         "helixfold3_pdb_mmcif_link": {
-            "type": "string"
+            "type": "string",
+            "default": "rsync.rcsb.org::ftp_data/structures/divided/mmCIF/"
         },
         "helixfold3_uniclust30_path": {
             "type": "string",
@@ -785,6 +788,22 @@
         "helixfold3_pdb_mmcif_path": {
             "type": "string",
             "default": "null/pdb_mmcif/*"
+        },
+        "helixfold3_uniprot_sprot_link": {
+            "type": "string",
+            "default": "ftp://ftp.ebi.ac.uk/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz"
+        },
+        "helixfold3_uniprot_trembl_link": {
+            "type": "string",
+            "default": "ftp://ftp.ebi.ac.uk/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_trembl.fasta.gz"
+        },
+        "helixfold3_pdb_obsolete_link": {
+            "type": "string",
+            "default": "ftp://ftp.wwpdb.org/pub/pdb/data/status/obsolete.dat"
+        },
+        "helixfold3_maxit_src_path": {
+            "type": "string",
+            "default": "null/maxit-v11.200-prod-src/*"
         }
     }
 }

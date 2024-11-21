@@ -26,6 +26,7 @@ process RUN_HELIXFOLD3 {
     path ('mgnify/*')
     path ('pdb_mmcif/*')
     path ('init_models/*')
+    path ('maxit-src/*')
 
     output:
     path ("${fasta.baseName}*")
@@ -40,7 +41,7 @@ process RUN_HELIXFOLD3 {
 
     script:
     """
-    export MAXIT_SRC="${params.helixfold3_db}/maxit-v11.200-prod-src"
+    export MAXIT_SRC="./maxit-src"
     export RCSBROOT="\$MAXIT_SRC"
     export PATH="\$MAXIT_SRC/bin:/opt/miniforge/envs/helixfold/bin:$PATH"
     export OBABEL_BIN="/opt/miniforge/envs/helixfold/bin"

@@ -256,11 +256,13 @@ workflow NFCORE_PROTEINFOLD {
             params.helixfold3_init_models_link,
             params.helixfold3_bfd_link,
             params.helixfold3_small_bfd_link,
-            params.helixfold3_uniprot_link,
+            params.helixfold3_uniprot_sprot_link,
+            params.helixfold3_uniprot_trembl_link,
             params.helixfold3_pdb_seqres_link,
             params.helixfold3_uniref90_link,
             params.helixfold3_mgnify_link,
             params.helixfold3_pdb_mmcif_link,
+            params.helixfold3_pdb_obsolete_link,
             params.helixfold3_uniclust30_path,
             params.helixfold3_ccd_preprocessed_path,
             params.helixfold3_rfam_path,
@@ -271,7 +273,8 @@ workflow NFCORE_PROTEINFOLD {
             params.helixfold3_pdb_seqres_path,
             params.helixfold3_uniref90_path,
             params.helixfold3_mgnify_path,
-            params.helixfold3_pdb_mmcif_path
+            params.helixfold3_pdb_mmcif_path,
+            params.helixfold3_maxit_src_path
         )
         ch_versions = ch_versions.mix(PREPARE_HELIXFOLD3_DBS.out.versions)
 
@@ -291,7 +294,8 @@ workflow NFCORE_PROTEINFOLD {
             PREPARE_HELIXFOLD3_DBS.out.helixfold3_uniref90,
             PREPARE_HELIXFOLD3_DBS.out.helixfold3_mgnify,
             PREPARE_HELIXFOLD3_DBS.out.helixfold3_pdb_mmcif,
-            PREPARE_HELIXFOLD3_DBS.out.helixfold3_init_models
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_init_models,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_maxit_src
         )
         ch_multiqc  = HELIXFOLD3.out.multiqc_report
         ch_versions = ch_versions.mix(HELIXFOLD3.out.versions)
