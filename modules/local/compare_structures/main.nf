@@ -2,10 +2,10 @@ process COMPARE_STRUCTURES {
     tag   "$meta.id"
     label 'process_single'
 
-    conda "bioconda::multiqc:1.21"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/pip_biopython_matplotlib_plotly:e865101a15ad0014' :
-        'community.wave.seqera.io/library/pip_biopython_matplotlib_plotly:4d51afeb4bb75495' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/24/241f0746484727a3633f544c3747bfb77932e1c8c252e769640bd163232d9112/data' :
+        'community.wave.seqera.io/library/biopython_matplotlib_pip_plotly:35975fa0fc54b2d3' }"
 
     input:
     tuple val(meta), path(pdb)

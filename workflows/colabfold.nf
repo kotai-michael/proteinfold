@@ -35,7 +35,7 @@ workflow COLABFOLD {
     num_recycles           // int: Number of recycles for esmfold
 
     main:
-    ch_multiqc_files = Channel.empty()
+    ch_multiqc_report = Channel.empty()
 
     if (params.colabfold_server == 'webserver') {
         //
@@ -104,14 +104,53 @@ workflow COLABFOLD {
             ch_uniref30,
             num_recycles
         )
-        ch_versions = ch_versions.mix(COLABFOLD_BATCH.out.versions)
+        ch_versions    = ch_versions.mix(COLABFOLD_BATCH.out.versions)
     }
 
+    COLABFOLD_BATCH
+        .out
+        .top_ranked_pdb
+        .map { [ it[0]["id"], it[0], it[1] ] }
+        .join(
+            COLABFOLD_BATCH
+                .out
+                .msa
+                .map { [ it[0]["id"], it[1] ] },
+            remainder:true
+        )
+        .set { ch_top_ranked_pdb }
+
+    COLABFOLD_BATCH
+        .out
+        .pdb
+        .join(COLABFOLD_BATCH.out.msa)
+        .map {
+            it[0]["model"] = "colabfold"
+            it
+        }
+        .set { ch_pdb_msa }
+
+    COLABFOLD_BATCH
+        .out
+        .multiqc
+        .map { it[1] }
+        .toSortedList()
+        .map { [ [ "model":"colabfold"], it.flatten() ] }
+        .set { ch_multiqc_report  }
+
+    COLABFOLD_BATCH
+        .out
+        .multiqc
+
+    COLABFOLD_BATCH
+        .out
+        .multiqc
+        .collect()
+
     emit:
-    pdb = COLABFOLD_BATCH.out.pdb // channel: /path/to/*.pdb
-    main_pdb = COLABFOLD_BATCH.out.main_pdb // channel: /path/to/*.pdb
-    msa = COLABFOLD_BATCH.out.msa // channel: /path/to/*_coverage.png
-    multiqc_report = COLABFOLD_BATCH.out.multiqc.map{it[1]}.flatten().toList().map{[["model":"colabfold"], it]} // channel: /path/to/multiqc_report.html
+    top_ranked_pdb = ch_top_ranked_pdb // channel: [ id, /path/to/*.pdb ]
+    pdb_msa        = ch_pdb_msa        // channel: [ meta, /path/to/*.pdb, /path/to/*_coverage.png ]
+    multiqc_report = ch_multiqc_report // channel: /path/to/multiqc_report.html
     versions       = ch_versions       // channel: [ path(versions.yml) ]
 }
 

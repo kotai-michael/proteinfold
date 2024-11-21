@@ -16,7 +16,7 @@ process RUN_ESMFOLD {
     output:
     tuple val(meta), path ("${meta.id}_esmfold.pdb")  , emit: pdb
     tuple val(meta), path ("${meta.id}_plddt_mqc.tsv"), emit: multiqc
-    path "versions.yml", emit: versions
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
