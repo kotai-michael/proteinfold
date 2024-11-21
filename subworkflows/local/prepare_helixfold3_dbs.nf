@@ -23,6 +23,7 @@ include { DOWNLOAD_PDBMMCIF } from '../../modules/local/download_pdbmmcif'
 workflow PREPARE_HELIXFOLD3_DBS {
 
     take:
+    helixfold3_db
     helixfold3_uniclust30_link
     helixfold3_ccd_preprocessed_link
     helixfold3_rfam_link
@@ -50,7 +51,8 @@ workflow PREPARE_HELIXFOLD3_DBS {
     helixfold3_maxit_src_path
 
     main:
-    helixfold3_maxit_src_path           = Channel.value(file(helixfold3_maxit_src_path))
+    ch_helixfold3_maxit_src             = Channel.value(file(helixfold3_maxit_src_path))
+    ch_versions                         = Channel.empty()
 
     if (helixfold3_db) {
         ch_helixfold3_uniclust30        = Channel.value(file(helixfold3_uniclust30_path))
@@ -88,10 +90,6 @@ workflow PREPARE_HELIXFOLD3_DBS {
         ch_helixfold3_small_bfd = ARIA2_SMALL_BFD.out.db
         ch_versions = ch_versions.mix(ARIA2_SMALL_BFD.out.versions)
 
-        ARIA2_PDB_SEQRES(helixfold3_pdb_seqres_link)
-        ch_helixfold3_pdb_seqres = ARIA2_PDB_SEQRES.out.db
-        ch_versions = ch_versions.mix(ARIA2_PDB_SEQRES.out.versions)
-
         ARIA2_UNIREF90(helixfold3_uniref90_link)
         ch_helixfold3_uniref90 = ARIA2_UNIREF90.out.db
         ch_versions = ch_versions.mix(ARIA2_UNIREF90.out.versions)
@@ -107,6 +105,16 @@ workflow PREPARE_HELIXFOLD3_DBS {
         ARIA2_INIT_MODELS(helixfold3_init_models_link)
         ch_helixfold3_init_models = ARIA2_INIT_MODELS.out.db
         ch_versions = ch_versions.mix(ARIA2_INIT_MODELS.out.versions)
+
+        ARIA2_PDB_SEQRES (
+            [
+                [:],
+                helixfold3_pdb_seqres_link
+            ]
+        )
+        ch_helixfold3_pdb_seqres = ARIA2_PDB_SEQRES.out.downloaded_file.map{ it[1] }
+        ch_versions = ch_versions.mix(ARIA2_PDB_SEQRES.out.versions)
+
 
         ARIA2_UNIPROT_SPROT(
             helixfold3_uniprot_sprot_link

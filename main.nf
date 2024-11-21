@@ -250,6 +250,7 @@ workflow NFCORE_PROTEINFOLD {
         // SUBWORKFLOW: Prepare helixfold3 DBs
         //
         PREPARE_HELIXFOLD3_DBS (
+            params.helixfold3_db,
             params.helixfold3_uniclust30_link,
             params.helixfold3_ccd_preprocessed_link,
             params.helixfold3_rfam_link,
