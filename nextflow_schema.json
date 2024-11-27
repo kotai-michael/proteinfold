@@ -714,6 +714,10 @@
         "rfaa_paper_weights_path": {
             "type": "string",
             "default": "null/RFAA_paper_weights.pt"
+        },
+        "bfd_rosettafold_all_atom_link": {
+            "type": "string",
+            "default": "https://bfd.mmseqs.com/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt.tar.gz"
         }
     }
 }
