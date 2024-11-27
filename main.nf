@@ -218,10 +218,15 @@ workflow NFCORE_PROTEINFOLD {
         // SUBWORKFLOW: Prepare Rosettafold-all-atom DBs
         //
         PREPARE_ROSETTAFOLD_ALL_ATOM_DBS (
+            params.rosettafold_all_atom_db,
             params.bfd_rosettafold_all_atom_path,
             params.uniref30_rosettafold_all_atom_path,
             params.pdb100_rosettafold_all_atom_path,
-            params.rfaa_paper_weights_path
+            params.rfaa_paper_weights_path,
+            params.bfd_rosettafold_all_atom_link,
+            params.uniref30_rosettafold_all_atom_link,
+            params.pdb100_rosettafold_all_atom_link,
+            params.rfaa_paper_weights_link
         )
         ch_versions = ch_versions.mix(PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.versions)
 
@@ -231,7 +236,7 @@ workflow NFCORE_PROTEINFOLD {
         ROSETTAFOLD_ALL_ATOM (
             ch_samplesheet,
             ch_versions,
-            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.bfd.ifEmpty([]).first(),
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.bfd,
             PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.uniref30,
             PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.pdb100,
             PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.rfaa_paper_weights,
