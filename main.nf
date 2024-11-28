@@ -27,10 +27,6 @@ if (params.mode.toLowerCase().split(",").contains("esmfold")) {
     include { PREPARE_ESMFOLD_DBS } from './subworkflows/local/prepare_esmfold_dbs'
     include { ESMFOLD             } from './workflows/esmfold'
 }
-if (params.mode == "rosettafold_all_atom") {
-    include { PREPARE_ROSETTAFOLD_ALL_ATOM_DBS  } from './subworkflows/local/prepare_rosettafold_all_atom_dbs'
-    include { ROSETTAFOLD_ALL_ATOM              } from './workflows/rosettafold_all_atom'
-}
 if (params.mode == "helixfold3") {
     include { PREPARE_HELIXFOLD3_DBS     } from './subworkflows/local/prepare_helixfold3_dbs'
     include { HELIXFOLD3                } from './workflows/helixfold3'
@@ -213,35 +209,6 @@ workflow NFCORE_PROTEINFOLD {
         ch_versions               = ch_versions.mix(ESMFOLD.out.versions)
         ch_report_input           = ch_report_input.mix(ESMFOLD.out.pdb_msa)
     }
-
-    //
-    // WORKFLOW: Run rosettafold_all_atom
-    //
-    if(params.mode == "rosettafold_all_atom") {
-        //
-        // SUBWORKFLOW: Prepare Rosettafold-all-atom DBs
-        //
-        PREPARE_ROSETTAFOLD_ALL_ATOM_DBS (
-            params.bfd_rosettafold_all_atom_path,
-            params.uniref30_rosettafold_all_atom_path,
-            params.pdb100_path
-        )
-        ch_versions = ch_versions.mix(PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.versions)
-
-        //
-        // WORKFLOW: Run nf-core/rosettafold_all_atom workflow
-        //
-        ROSETTAFOLD_ALL_ATOM (
-            ch_samplesheet,
-            ch_versions,
-            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.bfd.ifEmpty([]).first(),
-            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.uniref30,
-            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.pdb100
-        )
-        ch_multiqc  = ROSETTAFOLD_ALL_ATOM.out.multiqc_report
-        ch_versions = ch_versions.mix(ROSETTAFOLD_ALL_ATOM.out.versions)
-    }
-
 
     //
     // WORKFLOW: Run helixfold3
