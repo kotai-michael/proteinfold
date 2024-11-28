@@ -73,6 +73,7 @@ workflow NFCORE_PROTEINFOLD {
     ch_alphafold_top_ranked_pdb = Channel.empty()
     ch_colabfold_top_ranked_pdb = Channel.empty()
     ch_esmfold_top_ranked_pdb   = Channel.empty()
+    ch_helixfold3_top_ranked_pdb   = Channel.empty()
     ch_multiqc                  = Channel.empty()
     ch_versions                 = Channel.empty()
     ch_report_input             = Channel.empty()
@@ -298,10 +299,11 @@ workflow NFCORE_PROTEINFOLD {
             PREPARE_HELIXFOLD3_DBS.out.helixfold3_init_models,
             PREPARE_HELIXFOLD3_DBS.out.helixfold3_maxit_src
         )
-        ch_multiqc  = HELIXFOLD3.out.multiqc_report
-        ch_versions = ch_versions.mix(HELIXFOLD3.out.versions)
+        ch_helixfold3_top_ranked_pdb = helixfold3.out.top_ranked_pdb
+        ch_multiqc                = ch_multiqc.mix(helixfold3.out.multiqc_report.collect())
+        ch_versions               = ch_versions.mix(helixfold3.out.versions)
+        ch_report_input           = ch_report_input.mix(helixfold3.out.pdb_msa)
     }
-
 
     //
     // POST PROCESSING: generate visualisation reports
@@ -345,7 +347,8 @@ workflow NFCORE_PROTEINFOLD {
         ch_multiqc_methods_description,
         ch_alphafold_top_ranked_pdb,
         ch_colabfold_top_ranked_pdb,
-        ch_esmfold_top_ranked_pdb
+        ch_esmfold_top_ranked_pdb,
+        ch_helixfold3_top_ranked_pdb
     )
 
     emit:
