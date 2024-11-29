@@ -426,6 +426,18 @@ If you specify the `--esmfold_db <PATH>` parameter, the directory structure of y
     └── esmfold_3B_v1.pt
 ```
 
+HelixFold3 can be run using this command (note that HF3 requires .json files not .fasta):
+
+```console
+nextflow run nf-core/proteinfold \
+      --input samplesheet.csv \
+      --outdir <OUTDIR> \
+      --mode helixfold3 \
+      --helixfold3_db <null (default) | DB_PATH> \
+      --use_gpu <true/false> \
+      -profile <docker>
+```
+
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
 
 Note that the pipeline will create the following files in your working directory:

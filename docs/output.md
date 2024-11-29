@@ -178,6 +178,18 @@ Below you can find an indicative example of the TSV file with the pLDDT scores p
 | 49                 | CB        | VAL          | 7                       | 52.74 |
 | 50                 | O         | VAL          | 7                       | 56.46 |
 
+### HelixFold3
+
+<details markdown="1">
+<summary>Output files</summary>
+
+- `run/`
+  - `<SEQUENCE NAME>_helixfold3.pdb` that is the structure with the highest pLDDT score (ranked first)
+  - `<SEQUENCE NAME>_plddt_mqc.tsv` that presents the pLDDT scores per residue for the predicted model
+  - `<SEQUENCE NAME>/` that contains the computed MSAs, prediction metadata, ranked structures, raw model outputs etc. 
+
+</details>
+
 ### MultiQC report
 
 <details markdown="1">
