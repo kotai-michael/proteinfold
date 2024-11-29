@@ -19,6 +19,10 @@ if (params.mode.toLowerCase().split(",").contains("alphafold2")) {
     include { PREPARE_ALPHAFOLD2_DBS } from './subworkflows/local/prepare_alphafold2_dbs'
     include { ALPHAFOLD2             } from './workflows/alphafold2'
 }
+if (params.mode.toLowerCase().split(",").contains("alphafold3")) {
+    include { PREPARE_ALPHAFOLD3_DBS } from './subworkflows/local/prepare_alphafold3_dbs'
+    include { ALPHAFOLD3             } from './workflows/alphafold3'
+}
 if (params.mode.toLowerCase().split(",").contains("colabfold")) {
     include { PREPARE_COLABFOLD_DBS } from './subworkflows/local/prepare_colabfold_dbs'
     include { COLABFOLD             } from './workflows/colabfold'
@@ -117,8 +121,8 @@ workflow NFCORE_PROTEINFOLD {
             params.alphafold2_mode,
             params.alphafold2_model_preset,
             PREPARE_ALPHAFOLD2_DBS.out.params,
-            PREPARE_ALPHAFOLD2_DBS.out.bfd.ifEmpty([]).first(),
-            PREPARE_ALPHAFOLD2_DBS.out.small_bfd.ifEmpty([]).first(),
+            PREPARE_ALPHAFOLD2_DBS.out.bfd.first().ifEmpty([]),
+            PREPARE_ALPHAFOLD2_DBS.out.small_bfd.first().ifEmpty([]),
             PREPARE_ALPHAFOLD2_DBS.out.mgnify,
             PREPARE_ALPHAFOLD2_DBS.out.pdb70,
             PREPARE_ALPHAFOLD2_DBS.out.pdb_mmcif,
@@ -131,6 +135,67 @@ workflow NFCORE_PROTEINFOLD {
         ch_multiqc                  = ch_multiqc.mix(ALPHAFOLD2.out.multiqc_report.collect())
         ch_versions                 = ch_versions.mix(ALPHAFOLD2.out.versions)
         ch_report_input             = ch_report_input.mix(ALPHAFOLD2.out.pdb_msa)
+    }
+
+    //
+    // WORKFLOW: Run alphafold3
+    //
+    if(requested_modes.contains("alphafold3")) {
+        //
+        // SUBWORKFLOW: Prepare Alphafold2 DBs
+        //
+        PREPARE_ALPHAFOLD3_DBS (
+            params.alphafold3_db,
+            // params.full_dbs,
+            // params.bfd_path,
+            params.small_bfd_path,
+            params.alphafold3_params_path,
+            params.mgnify_path,
+            params.pdb70_path,
+            params.pdb_mmcif_path,
+            // params.uniref30_alphafold3_path,
+            params.uniref90_path,
+            params.pdb_seqres_path,
+            params.uniprot_path,
+            params.bfd_link,
+            params.small_bfd_link,
+            params.alphafold3_params_link,
+            params.mgnify_link,
+            params.pdb70_link,
+            params.pdb_mmcif_link,
+            params.pdb_obsolete_link,
+            // params.uniref30_alphafold3_link,
+            params.uniref90_link,
+            params.pdb_seqres_link,
+            params.uniprot_sprot_link,
+            params.uniprot_trembl_link
+        )
+        ch_versions = ch_versions.mix(PREPARE_ALPHAFOLD3_DBS.out.versions)
+
+        //
+        // WORKFLOW: Run nf-core/alphafold3 workflow
+        //
+        ALPHAFOLD3 (
+            ch_samplesheet,
+            ch_versions,
+            // params.full_dbs,
+            params.alphafold3_mode,
+            // params.alphafold3_model_preset,
+            PREPARE_ALPHAFOLD3_DBS.out.params,
+            // PREPARE_ALPHAFOLD3_DBS.out.bfd.first().ifEmpty([]),
+            PREPARE_ALPHAFOLD3_DBS.out.small_bfd,
+            PREPARE_ALPHAFOLD3_DBS.out.mgnify,
+            // PREPARE_ALPHAFOLD3_DBS.out.pdb70,
+            PREPARE_ALPHAFOLD3_DBS.out.pdb_mmcif,
+            // PREPARE_ALPHAFOLD3_DBS.out.uniref30,
+            PREPARE_ALPHAFOLD3_DBS.out.uniref90,
+            PREPARE_ALPHAFOLD3_DBS.out.pdb_seqres,
+            PREPARE_ALPHAFOLD3_DBS.out.uniprot
+        )
+        // ch_alphafold_top_ranked_pdb = ALPHAFOLD3.out.top_ranked_pdb
+        // ch_multiqc                  = ch_multiqc.mix(ALPHAFOLD3.out.multiqc_report.collect())
+        // ch_versions                 = ch_versions.mix(ALPHAFOLD3.out.versions)
+        // ch_report_input             = ch_report_input.mix(ALPHAFOLD3.out.pdb_msa)
     }
 
     //
