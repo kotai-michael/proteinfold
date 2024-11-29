@@ -27,8 +27,8 @@ if (params.mode.toLowerCase().split(",").contains("esmfold")) {
     include { PREPARE_ESMFOLD_DBS } from './subworkflows/local/prepare_esmfold_dbs'
     include { ESMFOLD             } from './workflows/esmfold'
 }
-if (params.mode == "helixfold3") {
-    include { PREPARE_HELIXFOLD3_DBS     } from './subworkflows/local/prepare_helixfold3_dbs'
+if (params.mode.toLowerCase().split(",").contains("helixfold3")) {
+    include { PREPARE_HELIXFOLD3_DBS    } from './subworkflows/local/prepare_helixfold3_dbs'
     include { HELIXFOLD3                } from './workflows/helixfold3'
 }
 
@@ -213,7 +213,7 @@ workflow NFCORE_PROTEINFOLD {
     //
     // WORKFLOW: Run helixfold3
     //
-    if(params.mode == "helixfold3") {
+    if(requested_modes.contains("helixfold3")) {
         //
         // SUBWORKFLOW: Prepare helixfold3 DBs
         //
@@ -266,10 +266,10 @@ workflow NFCORE_PROTEINFOLD {
             PREPARE_HELIXFOLD3_DBS.out.helixfold3_init_models,
             PREPARE_HELIXFOLD3_DBS.out.helixfold3_maxit_src
         )
-        ch_helixfold3_top_ranked_pdb = helixfold3.out.top_ranked_pdb
-        ch_multiqc                = ch_multiqc.mix(helixfold3.out.multiqc_report.collect())
-        ch_versions               = ch_versions.mix(helixfold3.out.versions)
-        ch_report_input           = ch_report_input.mix(helixfold3.out.pdb_msa)
+        ch_helixfold3_top_ranked_pdb    = HELIXFOLD3.out.top_ranked_pdb
+        ch_multiqc                      = ch_multiqc.mix(HELIXFOLD3.out.multiqc_report.collect())
+        ch_versions                     = ch_versions.mix(HELIXFOLD3.out.versions)
+        ch_report_input                 = ch_report_input.mix(HELIXFOLD3.out.pdb_msa)
     }
 
     //

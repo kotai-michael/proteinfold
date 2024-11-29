@@ -30,9 +30,9 @@ process RUN_HELIXFOLD3 {
 
     output:
     path ("${fasta.baseName}*")
-    tuple val(meta), path ("${meta.id}_helixfold3.cif")     , emit: main_cif
-    tuple val(meta), path ("${meta.id}_helixfold3.pdb")     , emit: main_pdb
+    tuple val(meta), path ("${meta.id}_helixfold3.pdb")     , emit: top_ranked_pdb
     tuple val(meta), path ("ranked*pdb")                    , emit: pdb
+    tuple val(meta), path ("${meta.id}_helixfold3.cif")     , emit: main_cif
     tuple val(meta), path ("*_mqc.tsv")                     , emit: multiqc
     path "versions.yml", emit: versions
 
@@ -74,7 +74,6 @@ process RUN_HELIXFOLD3 {
         --model_name allatom_demo \
         --init_model "./init_models/HelixFold3-240814.pdparams" \
         --infer_times 4 \
-        --diff_batch_size 1 \
         --logging_level "ERROR" \
         --precision "bf16"
 

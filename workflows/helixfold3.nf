@@ -65,7 +65,7 @@ workflow HELIXFOLD3 {
         ch_helixfold3_maxit_src
     )
 
-    RUN_HELIXFOLD3_ALL_ATOM
+    RUN_HELIXFOLD3
         .out
         .multiqc
         .map { it[1] }
@@ -73,19 +73,9 @@ workflow HELIXFOLD3 {
         .map { [ [ "model": "helixfold3" ], it.flatten() ] }
         .set { ch_multiqc_report }
 
-    ch_pdb            = ch_pdb.mix(RUN_HELIXFOLD3_ALL_ATOM.out.pdb)
-    ch_top_ranked_pdb = ch_top_ranked_pdb.mix(RUN_HELIXFOLD3_ALL_ATOM.out.top_ranked_pdb)
-    ch_versions       = ch_versions.mix(RUN_HELIXFOLD3_ALL_ATOM.out.versions)
-
-    RUN_HELIXFOLD3_ALL_ATOM
-        .out
-        .pdb
-        .combine(ch_dummy_file)
-        .map {
-            it[0]["model"] = "helixfold3"
-            it
-        }
-        .set { ch_pdb_msa }
+    ch_pdb            = ch_pdb.mix(RUN_HELIXFOLD3.out.pdb)
+    ch_top_ranked_pdb = ch_top_ranked_pdb.mix(RUN_HELIXFOLD3.out.top_ranked_pdb)
+    ch_versions       = ch_versions.mix(RUN_HELIXFOLD3.out.versions)
 
     ch_top_ranked_pdb
         .map { [ it[0]["id"], it[0], it[1] ] }
@@ -100,9 +90,10 @@ workflow HELIXFOLD3 {
         .set { ch_pdb_msa }
 
     emit:
-    top_ranked_pdb = ch_top_ranked_pdb // channel: [ id, /path/to/*.pdb ]
-    multiqc_report = ch_multiqc_report // channel: /path/to/multiqc_report.html
-    versions       = ch_versions       // channel: [ path(versions.yml) ]
+    pdb_msa        = ch_pdb_msa          // channel: [ meta, /path/to/*.pdb, dummy_file ]
+    top_ranked_pdb = ch_top_ranked_pdb   // channel: [ id, /path/to/*.pdb ]
+    multiqc_report = ch_multiqc_report   // channel: /path/to/multiqc_report.html
+    versions       = ch_versions         // channel: [ path(versions.yml) ]
 }
 
 /*
