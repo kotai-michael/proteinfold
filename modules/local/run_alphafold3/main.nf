@@ -16,7 +16,7 @@ process RUN_ALPHAFOLD3 {
     path ('small_bfd/*')
     path ('mgnify/*') // ok
     // path ('pdb70/*') 
-    path ('pdb_mmcif/*') // ok
+    path ('mmcif_files/*') // ok
     // path ('uniref30/*')
     path ('uniref90/*') // ok
     path ('pdb_seqres/*') // ok
@@ -54,13 +54,15 @@ process RUN_ALPHAFOLD3 {
     fi
     if [ -d params/alphafold_params_* ]; then ln -r -s params/alphafold_params_*/* params/; fi
     python3 /app/alphafold/run_alphafold.py \\
-        --json_path=${json} \\                                    
+        --json_path=${json} \\
         --model_dir=./params/af3.bin \\
-        --output_dir=\$PWD \\                                      
-        --uniref90_database_path=./uniref90/uniref90.fasta \\
+        --uniref90_database_path=./uniref90/uniref90_2022_05.fa \\
         --mgnify_database_path=./mgnify/mgy_clusters_2022_05.fa \\
         --pdb_database_path=./mmcif_files \\
-        --seqres_database_path=./pdb_seqres_2022_09_28.fasta \\
+        --small_bfd_database_path=./small_bfd/bfd-first_non_consensus_sequences.fasta \\
+        --uniprot_cluster_annot_database_path=./uniprot/uniprot_all_2021_04.fa \\
+        --seqres_database_path=./pdb_seqres/pdb_seqres_2022_09_28.fasta \\
+        --output_dir=\$PWD \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

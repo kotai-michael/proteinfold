@@ -57,8 +57,7 @@ workflow ALPHAFOLD3 {
     //         .transpose()
     //         .set { ch_samplesheet }
     // }
-    ch_samplesheet.view()
-    println "................test\n\n"
+
     FASTA_TO_ALPHAFOLD3_JSON(ch_samplesheet)
     ch_versions       = ch_versions.mix(FASTA_TO_ALPHAFOLD3_JSON.out.versions)
 
