@@ -22,8 +22,8 @@ process FASTA_TO_ALPHAFOLD3_JSON {
     def prefix  = task.ext.prefix ?: "${meta.id}"
     """
     fasta_to_alphafold3_json.py \\
-        ${fasta}
-        ${prefix}.json
+        ${fasta} \\
+        ${prefix}.json \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
