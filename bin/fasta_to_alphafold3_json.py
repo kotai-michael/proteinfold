@@ -36,7 +36,7 @@ def fasta_to_alphafold3_json(file_in):
             if l.startswith(">"):
                 if sequence:
                     sequence_list.append(sequence)
-                id = l[1:]
+                id = l[1:6]
                 sequence = {"id": id, "sequence": ""}
             else:
                 sequence["sequence"] += l
@@ -46,41 +46,96 @@ def fasta_to_alphafold3_json(file_in):
 
     return sequence_list
 
+# json_string = '''{
+#   "name": "2PV7",
+#   "sequences": [
+#     {
+#       "protein": {
+#         "id": ["A", "B"],
+#         "sequence": "GMRESYANENQFGFKTINSDIHKIVIVGGYGKLGGLFARYLRASGYPISILDREDWAVAESILANADVVIVSVPINLTLETIERLKPYLTENMLLADLTSVKREPLAKMLEVHTGAVLGLHPMFGADIASMAKQVVVRCDGRFPERYEWLLEQIQIWGAKIYQTNATEHDHNMTYIQALRHFSTFANGLHLSKQPINLANLLALSSPIYRLELAMIGRLFAQDAELYADIIMDKSENLAVIETLKQTYDEALTFFENNDRQGFIDAFHKVRDWFGDYSEQFLKESRQLLQQANDLKQG"
+#       }
+#     }
+#   ],
+#   "modelSeeds": [1],
+#   "dialect": "alphafold3",
+#   "version": 1
+# }'''
+
+
+# def create_json_dict(sequence_list):
+#     """
+#     This function ... TODO
+#     """
+
+#     json_sequence_dict = {}
+
+#     for sequence in sequence_list:
+#         item = {
+#             "name": f"Job {sequence['id']}",
+            
+#             "sequences": [
+#                 {
+#                     "protein": {
+#                         "id": sequence["id"],
+#                         "sequence": sequence["sequence"],
+#                         "modifications": [],
+#                         "unpairedMsa": "",
+#                         "pairedMsa": "",
+#                         "templates": []
+#                     }
+#                 },
+#             ],
+#             "modelSeeds": [11],
+#             "dialect": "alphafold3",
+#             "version": 1
+#         }
+#         json_sequence_dict[sequence["id"]] = item
+
+#     return json_sequence_dict
+
+# "id": [{sequence['id']}],
+
 def create_json_dict(sequence_list):
     """
     This function ... TODO
     """
 
-    json_sequence_list = []
+    json_sequence_dict = {}
 
     for sequence in sequence_list:
         item = {
-            "name": "my_proteinfold_job",
-            "modelSeeds": [11],
+            "name": f"{sequence['id']}",
+            
             "sequences": [
                 {
                     "protein": {
-                        "id": sequence["id"],
-                        "sequence": sequence["sequence"],
-                        "modifications": [],
-                        "unpairedMsa": "",
-                        "pairedMsa": "",
-                        "templates": []
+                        "id": "A",
+                        "sequence": sequence["sequence"]
                     }
-                }
-            ]
+                },
+            ],
+            "modelSeeds": [11],
+            "dialect": "alphafold3",
+            "version": 1
         }
-        json_sequence_list.append(item)
 
-    return json_sequence_list
+        json_sequence_dict[sequence["id"]] = item
+
+    return json_sequence_dict
 
 def main(args=None):
     args = parse_args(args)
     sequences = fasta_to_alphafold3_json(args.FILE_IN)
-    json_list = create_json_dict(sequences)
+    json_dict = create_json_dict(sequences)
 
-    with open(args.FILE_OUT, "w") as fout:
-        json.dump(json_list, fout, indent=4)
+    for id, f_json in json_dict.items():
+        out_json = f"{id}.json"
+        with open(out_json, "w") as fout:
+            json.dump(json_dict[id], fout, indent=4)
+
+    with open(out_json, 'r') as f:
+        json_str = f.read()
+        
 
 if __name__ == "__main__":
     sys.exit(main())
