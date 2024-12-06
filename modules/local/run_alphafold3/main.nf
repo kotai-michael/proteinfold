@@ -9,21 +9,16 @@ process RUN_ALPHAFOLD3 {
 
     input:
     tuple val(meta), path(json)
-    // val   db_preset (now always small by default)
-    // val   alphafold3_model_preset // (multimer)
-    path ('params/*') // ok
-    // path ('bfd/*') 
+    path ('params/*')
     path ('small_bfd/*')
-    path ('mgnify/*') // ok
-    // path ('pdb70/*') 
-    path ('mmcif_files/*') // ok
-    // path ('uniref30/*')
-    path ('uniref90/*') // ok
-    path ('pdb_seqres/*') // ok
+    path ('mgnify/*')
+    path ('mmcif_files/*')
+    path ('uniref90/*')
+    path ('pdb_seqres/*')
     path ('uniprot/*')
 
     output:
-    path "*.pdb", emit: pdb
+    path "${meta.id.toLowerCase()}/*_model.cif", emit: top_ranked_cif
     // path ("${fasta.baseName}*")
     // tuple val(meta), path ("${meta.id}_alphafold2.pdb")   , emit: top_ranked_pdb
     // tuple val(meta), path ("${fasta.baseName}/ranked*pdb"), emit: pdb
@@ -53,9 +48,10 @@ process RUN_ALPHAFOLD3 {
         then sed -i "/^\\w*0/d" pdb_seqres/pdb_seqres.txt
     fi
     if [ -d params/alphafold_params_* ]; then ln -r -s params/alphafold_params_*/* params/; fi
+    
     python3 /app/alphafold/run_alphafold.py \\
         --json_path=${json} \\
-        --model_dir=./params/af3.bin \\
+        --model_dir=./params \\
         --uniref90_database_path=./uniref90/uniref90_2022_05.fa \\
         --mgnify_database_path=./mgnify/mgy_clusters_2022_05.fa \\
         --pdb_database_path=./mmcif_files \\
@@ -71,11 +67,10 @@ process RUN_ALPHAFOLD3 {
     END_VERSIONS
     """
     
-    // # --random_seed=53343 \                                     # no, TODO: find something similar
-        
     stub:
     """
-    touch test.pdb
+    mkdir ${meta.id.toLowerCase()}
+    touch ${meta.id.toLowerCase()}/${meta.id.toLowerCase()}_model.cif
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
