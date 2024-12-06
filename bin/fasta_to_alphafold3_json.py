@@ -46,6 +46,7 @@ def fasta_to_alphafold3_json(file_in):
 
     return sequence_list
 
+## Example from Alphafold3 docs
 # json_string = '''{
 #   "name": "2PV7",
 #   "sequences": [
@@ -61,39 +62,6 @@ def fasta_to_alphafold3_json(file_in):
 #   "version": 1
 # }'''
 
-
-# def create_json_dict(sequence_list):
-#     """
-#     This function ... TODO
-#     """
-
-#     json_sequence_dict = {}
-
-#     for sequence in sequence_list:
-#         item = {
-#             "name": f"Job {sequence['id']}",
-            
-#             "sequences": [
-#                 {
-#                     "protein": {
-#                         "id": sequence["id"],
-#                         "sequence": sequence["sequence"],
-#                         "modifications": [],
-#                         "unpairedMsa": "",
-#                         "pairedMsa": "",
-#                         "templates": []
-#                     }
-#                 },
-#             ],
-#             "modelSeeds": [11],
-#             "dialect": "alphafold3",
-#             "version": 1
-#         }
-#         json_sequence_dict[sequence["id"]] = item
-
-#     return json_sequence_dict
-
-# "id": [{sequence['id']}],
 
 def create_json_dict(sequence_list):
     """
