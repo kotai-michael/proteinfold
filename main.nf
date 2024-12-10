@@ -213,7 +213,7 @@ workflow NFCORE_PROTEINFOLD {
     //
     // WORKFLOW: Run rosettafold_all_atom
     //
-    if(params.mode == "rosettafold_all_atom") {
+    if(requested_modes.contains("rosettafold_all_atom")) {
         //
         // SUBWORKFLOW: Prepare Rosettafold-all-atom DBs
         //
