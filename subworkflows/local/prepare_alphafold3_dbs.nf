@@ -9,7 +9,7 @@ include { ARIA2_UNCOMPRESS as ARIA2_UNIREF90   } from './aria2_uncompress'
 include { ARIA2_UNCOMPRESS as ARIA2_PDB_SEQRES } from './aria2_uncompress'
 include { ARIA2_UNCOMPRESS as ARIA2_UNIPROT    } from './aria2_uncompress'    
 
-include { DOWNLOAD_PDBMMCIF } from '../../modules/local/download_pdbmmcif'
+include { DOWNLOAD_PDBMMCIF_AF3 } from '../../modules/local/download_pdbmmcif_af3'
 
 workflow PREPARE_ALPHAFOLD3_DBS {
 
@@ -68,13 +68,11 @@ workflow PREPARE_ALPHAFOLD3_DBS {
         ch_mmcif    = ARIA2_MMCIF.out.db
         ch_versions = ch_versions.mix(ARIA2_MMCIF.out.versions)
 
-    // TODO check that the above works and remove the code below
-    //     DOWNLOAD_PDBMMCIF(
-    //         pdb_mmcif_link,
-    //         pdb_obsolete_link
-    //     )
-    //     ch_mmcif = DOWNLOAD_PDBMMCIF.out.ch_db
-    //     ch_versions = ch_versions.mix(DOWNLOAD_PDBMMCIF.out.versions)
+        DOWNLOAD_PDBMMCIF_AF3(
+            pdb_mmcif_link
+        )
+        ch_mmcif    = DOWNLOAD_PDBMMCIF_AF3.out.ch_db
+        ch_versions = ch_versions.mix(DOWNLOAD_PDBMMCIF_AF3.out.versions)
 
         ARIA2_UNIREF90 (
             uniref90_link

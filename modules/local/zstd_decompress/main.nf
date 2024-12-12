@@ -28,7 +28,7 @@ process ZSTD_DECOMPRESS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        zstd: \$(echo \$(zstd --version 2>&1) | grep -o 'v[0-9]\+\.[0-9]\+\.[0-9]\+')
+        zstd: \$(echo \$(zstd --version 2>&1) | grep -o 'v[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+')
     END_VERSIONS
     """
 
@@ -39,7 +39,7 @@ process ZSTD_DECOMPRESS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        zstd: \$(echo \$(zstd --version 2>&1) | grep -o 'v[0-9]\+\.[0-9]\+\.[0-9]\+')
+        zstd: \$(echo \$(zstd --version 2>&1) | grep -o 'v[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+')
     END_VERSIONS
     """
 }

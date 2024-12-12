@@ -4,7 +4,7 @@
 include { UNTAR           } from '../../modules/nf-core/untar/main'
 include { GUNZIP          } from '../../modules/nf-core/gunzip/main'
 include { ARIA2           } from '../../modules/nf-core/aria2/main'
-include { ZSTD_DECOMPRESS } from '../../modules/local/zstd/main.nf'
+include { ZSTD_DECOMPRESS } from '../../modules/local/zstd_decompress/main.nf'
 
 workflow ARIA2_UNCOMPRESS {
     take:
