@@ -15,22 +15,19 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-if (params.mode.toLowerCase().split(",").contains("alphafold2")) {
-    include { PREPARE_ALPHAFOLD2_DBS } from './subworkflows/local/prepare_alphafold2_dbs'
-    include { ALPHAFOLD2             } from './workflows/alphafold2'
-}
-if (params.mode.toLowerCase().split(",").contains("alphafold3")) {
-    include { PREPARE_ALPHAFOLD3_DBS } from './subworkflows/local/prepare_alphafold3_dbs'
-    include { ALPHAFOLD3             } from './workflows/alphafold3'
-}
-if (params.mode.toLowerCase().split(",").contains("colabfold")) {
-    include { PREPARE_COLABFOLD_DBS } from './subworkflows/local/prepare_colabfold_dbs'
-    include { COLABFOLD             } from './workflows/colabfold'
-}
-if (params.mode.toLowerCase().split(",").contains("esmfold")) {
-    include { PREPARE_ESMFOLD_DBS } from './subworkflows/local/prepare_esmfold_dbs'
-    include { ESMFOLD             } from './workflows/esmfold'
-}
+
+include { PREPARE_ALPHAFOLD2_DBS } from './subworkflows/local/prepare_alphafold2_dbs'
+include { ALPHAFOLD2             } from './workflows/alphafold2'
+
+include { PREPARE_ALPHAFOLD3_DBS } from './subworkflows/local/prepare_alphafold3_dbs'
+include { ALPHAFOLD3             } from './workflows/alphafold3'
+
+include { PREPARE_COLABFOLD_DBS } from './subworkflows/local/prepare_colabfold_dbs'
+include { COLABFOLD             } from './workflows/colabfold'
+
+include { PREPARE_ESMFOLD_DBS } from './subworkflows/local/prepare_esmfold_dbs'
+include { ESMFOLD             } from './workflows/esmfold'
+
 
 include { PIPELINE_INITIALISATION          } from './subworkflows/local/utils_nfcore_proteinfold_pipeline'
 include { PIPELINE_COMPLETION              } from './subworkflows/local/utils_nfcore_proteinfold_pipeline'
@@ -57,8 +54,6 @@ params.colabfold_alphafold2_params_path = getColabfoldAlphafold2ParamsPath()
 // WORKFLOW: Run main analysis pipeline
 //
 
-ch_dummy_file = Channel.fromPath("$projectDir/assets/NO_FILE")
-
 workflow NFCORE_PROTEINFOLD {
 
     take:
@@ -75,6 +70,8 @@ workflow NFCORE_PROTEINFOLD {
     ch_foldseek_db              = Channel.empty()
     requested_modes             = params.mode.toLowerCase().split(",")
     requested_modes_size        = requested_modes.size()
+    
+    ch_dummy_file = Channel.fromPath("$projectDir/assets/NO_FILE")
 
     //
     // WORKFLOW: Run alphafold2
@@ -146,29 +143,19 @@ workflow NFCORE_PROTEINFOLD {
         //
         PREPARE_ALPHAFOLD3_DBS (
             params.alphafold3_db,
-            // params.full_dbs,
-            // params.bfd_path,
-            params.small_bfd_path,
             params.alphafold3_params_path,
+            params.small_bfd_path,
             params.mgnify_path,
-            params.pdb70_path,
             params.pdb_mmcif_path,
-            // params.uniref30_alphafold3_path,
             params.uniref90_path,
             params.pdb_seqres_path,
             params.uniprot_path,
-            params.bfd_link,
             params.small_bfd_link,
-            params.alphafold3_params_link,
             params.mgnify_link,
-            params.pdb70_link,
             params.pdb_mmcif_link,
-            params.pdb_obsolete_link,
-            // params.uniref30_alphafold3_link,
             params.uniref90_link,
             params.pdb_seqres_link,
-            params.uniprot_sprot_link,
-            params.uniprot_trembl_link
+            params.uniprot_link
         )
         ch_versions = ch_versions.mix(PREPARE_ALPHAFOLD3_DBS.out.versions)
 
@@ -178,16 +165,11 @@ workflow NFCORE_PROTEINFOLD {
         ALPHAFOLD3 (
             ch_samplesheet,
             ch_versions,
-            // params.full_dbs,
             params.alphafold3_mode,
-            // params.alphafold3_model_preset,
             PREPARE_ALPHAFOLD3_DBS.out.params,
-            // PREPARE_ALPHAFOLD3_DBS.out.bfd.first().ifEmpty([]),
             PREPARE_ALPHAFOLD3_DBS.out.small_bfd,
             PREPARE_ALPHAFOLD3_DBS.out.mgnify,
-            // PREPARE_ALPHAFOLD3_DBS.out.pdb70,
             PREPARE_ALPHAFOLD3_DBS.out.pdb_mmcif,
-            // PREPARE_ALPHAFOLD3_DBS.out.uniref30,
             PREPARE_ALPHAFOLD3_DBS.out.uniref90,
             PREPARE_ALPHAFOLD3_DBS.out.pdb_seqres,
             PREPARE_ALPHAFOLD3_DBS.out.uniprot
