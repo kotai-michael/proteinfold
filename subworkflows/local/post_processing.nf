@@ -106,9 +106,9 @@ workflow POST_PROCESSING {
     //
     softwareVersionsToYAML(ch_versions)
         .collectFile(
-            storeDir: "${outdir}/pipeline_info", 
+            storeDir: "${outdir}/pipeline_info",
             name: 'nf_core_'  +  'proteinfold_software_'  + 'mqc_'  + 'versions.yml',
-            sort: true, 
+            sort: true,
             newLine: true
         ).set { ch_collated_versions }
 
