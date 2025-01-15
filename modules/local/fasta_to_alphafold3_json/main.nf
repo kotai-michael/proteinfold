@@ -18,12 +18,12 @@ process FASTA_TO_ALPHAFOLD3_JSON {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
     """
     fasta_to_alphafold3_json.py \\
         ${fasta} \\
-        ${prefix}.json \\
+        ${prefix} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

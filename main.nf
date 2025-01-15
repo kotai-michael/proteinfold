@@ -172,7 +172,8 @@ workflow NFCORE_PROTEINFOLD {
             PREPARE_ALPHAFOLD3_DBS.out.pdb_mmcif,
             PREPARE_ALPHAFOLD3_DBS.out.uniref90,
             PREPARE_ALPHAFOLD3_DBS.out.pdb_seqres,
-            PREPARE_ALPHAFOLD3_DBS.out.uniprot
+            PREPARE_ALPHAFOLD3_DBS.out.uniprot,
+            ch_dummy_file
         )
         // ch_alphafold_top_ranked_pdb = ALPHAFOLD3.out.top_ranked_pdb
         // ch_multiqc                  = ch_multiqc.mix(ALPHAFOLD3.out.multiqc_report.collect())

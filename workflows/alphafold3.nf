@@ -7,8 +7,10 @@
 //
 // MODULE: Loaded from modules/local/
 //
-include { FASTA_TO_ALPHAFOLD3_JSON } from '../modules/local/fasta_to_alphafold3_json'
-include { RUN_ALPHAFOLD3           } from '../modules/local/run_alphafold3'
+include { FASTA_TO_ALPHAFOLD3_JSON          } from '../modules/local/fasta_to_alphafold3_json'
+include { RUN_ALPHAFOLD3                    } from '../modules/local/run_alphafold3'
+include { MMCIF2PDB as MMCIF2PDB_TOP_RANKED } from '../modules/local/mmcif2pdb/main.nf'
+include { MMCIF2PDB as MMCIF2PDB_MODELS     } from '../modules/local/mmcif2pdb/main.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,6 +37,7 @@ workflow ALPHAFOLD3 {
     ch_uniref90          // channel: path(uniref90)
     ch_pdb_seqres        // channel: path(pdb_seqres)
     ch_uniprot           // channel: path(uniprot)
+    ch_dummy_file        // channel: [ path(NO_FILE) ]
 
     main:
     ch_multiqc_files  = Channel.empty()
@@ -61,18 +64,60 @@ workflow ALPHAFOLD3 {
             ch_uniprot
         )
 
-    //     RUN_ALPHAFOLD3
-    //         .out
-    //         .multiqc
-    //         .map { it[1] }
-    //         .toSortedList()
-    //         .map { [ [ "model": "alphafold2" ], it.flatten() ] }
-    //         .set { ch_multiqc_report }
+        RUN_ALPHAFOLD3
+                .out
+                .cif
+                .groupTuple()
+                .map{
+                    meta, files ->
+                    [ meta, files.flatten() ]
+                }
+                .view { meta, files -> 
+                        "Meta: $meta, Files: ${files.join(', ')}"
+                }
 
-    //     ch_pdb            = ch_pdb.mix(RUN_ALPHAFOLD2.out.pdb)
-    //     ch_top_ranked_pdb = ch_top_ranked_pdb.mix(RUN_ALPHAFOLD2.out.top_ranked_pdb)
-    //     ch_msa            = ch_msa.mix(RUN_ALPHAFOLD2.out.msa)
-    //     ch_versions       = ch_versions.mix(RUN_ALPHAFOLD2.out.versions)
+        // TODO: Make it optional (or is needed for the report?)
+        MMCIF2PDB_MODELS (
+            RUN_ALPHAFOLD3
+                .out
+                .cif
+                .groupTuple()
+                .map{
+                    meta, files ->
+                    [ meta, files.flatten() ]
+                }
+        )
+
+        MMCIF2PDB_TOP_RANKED (
+            RUN_ALPHAFOLD3
+                .out
+                .top_ranked_cif
+        )
+
+        RUN_ALPHAFOLD3
+            .out
+            .multiqc
+            .map { it[1] }
+            .toSortedList()
+            .map { [ [ "model": "alphafold3" ], it.flatten() ] }
+            .set { ch_multiqc_report }
+
+        // TODO: Update once msa are obtained from alphafold3 either in a separate process or
+        // in the RUN_ALPHAFOLD3 process directly
+        // RUN_ALPHAFOLD3
+        //     .out
+        //     .pdb
+        //     .combine(ch_dummy_file)
+        //     .map {
+        //         it[0]["model"] = "alphafold3"
+        //         it
+        //     }
+        //     .set { ch_pdb_msa }
+
+        ch_pdb            = ch_pdb.mix(MMCIF2PDB_MODELS.out.pdb)
+        ch_top_ranked_pdb = ch_top_ranked_pdb.mix(MMCIF2PDB_TOP_RANKED.out.pdb)
+        // ch_msa            = ch_msa.mix(RUN_ALPHAFOLD3.out.msa)
+        ch_versions       = ch_versions.mix(RUN_ALPHAFOLD3.out.versions)
 
     }
 

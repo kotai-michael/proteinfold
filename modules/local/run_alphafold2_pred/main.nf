@@ -65,6 +65,7 @@ process RUN_ALPHAFOLD2_PRED {
     cd ..
     extract_output.py --name ${meta.id} \\
         --pkls ${msa}
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python3 --version | sed 's/Python //g')
