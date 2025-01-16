@@ -90,10 +90,10 @@ workflow ESMFOLD {
         .set { ch_top_ranked_pdb }
 
     emit:
-    pdb_msa        = ch_pdb_msa          // channel: [ meta, /path/to/*.pdb, dummy_file ]
-    top_ranked_pdb = ch_top_ranked_pdb   // channel: [ id, /path/to/*.pdb ]
-    multiqc_report = ch_multiqc_report   // channel: /path/to/multiqc_report.html
-    versions       = ch_versions         // channel: [ path(versions.yml) ]
+    top_ranked_pdb = ch_top_ranked_pdb // channel: [ id, /path/to/*.pdb ]
+    pdb_msa        = ch_pdb_msa        // channel: [ meta, /path/to/*.pdb, dummy_file ]
+    multiqc_report = ch_multiqc_report // channel: /path/to/multiqc_report.html
+    versions       = ch_versions       // channel: [ path(versions.yml) ]
 }
 
 /*

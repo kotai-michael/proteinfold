@@ -64,6 +64,7 @@ workflow ALPHAFOLD3 {
             ch_uniprot
         )
 
+        // Convert mmcif to pdbs
         RUN_ALPHAFOLD3
                 .out
                 .cif
@@ -76,7 +77,6 @@ workflow ALPHAFOLD3 {
                         "Meta: $meta, Files: ${files.join(', ')}"
                 }
 
-        // TODO: Make it optional (or is needed for the report?)
         MMCIF2PDB_MODELS (
             RUN_ALPHAFOLD3
                 .out
@@ -94,6 +94,7 @@ workflow ALPHAFOLD3 {
                 .top_ranked_cif
         )
 
+        // Prepare report input
         RUN_ALPHAFOLD3
             .out
             .multiqc
@@ -102,48 +103,30 @@ workflow ALPHAFOLD3 {
             .map { [ [ "model": "alphafold3" ], it.flatten() ] }
             .set { ch_multiqc_report }
 
+        MMCIF2PDB_TOP_RANKED
+            .out
+            .pdb
+            .map { [ it[0]["id"], it[0], it[1] ] }
+            .set { ch_top_ranked_pdb }
+
         // TODO: Update once msa are obtained from alphafold3 either in a separate process or
         // in the RUN_ALPHAFOLD3 process directly
-        // RUN_ALPHAFOLD3
-        //     .out
-        //     .pdb
-        //     .combine(ch_dummy_file)
-        //     .map {
-        //         it[0]["model"] = "alphafold3"
-        //         it
-        //     }
-        //     .set { ch_pdb_msa }
-
-        ch_pdb            = ch_pdb.mix(MMCIF2PDB_MODELS.out.pdb)
-        ch_top_ranked_pdb = ch_top_ranked_pdb.mix(MMCIF2PDB_TOP_RANKED.out.pdb)
-        // ch_msa            = ch_msa.mix(RUN_ALPHAFOLD3.out.msa)
-        ch_versions       = ch_versions.mix(RUN_ALPHAFOLD3.out.versions)
-
+        MMCIF2PDB_MODELS
+            .out
+            .pdb
+            .combine(ch_dummy_file)
+            .map {
+                it[0]["model"] = "alphafold3"
+                it
+            }
+            .set { ch_pdb_msa }
     }
 
-    // ch_top_ranked_pdb
-    //     .map { [ it[0]["id"], it[0], it[1] ] }
-    //     .set { ch_top_ranked_pdb }
-
-    // ch_pdb
-    //     .join(ch_msa)
-    //     .map {
-    //         it[0]["model"] = "alphafold2"
-    //         it
-    //     }
-    //     .set { ch_pdb_msa }
-
-    // emit:
-    // top_ranked_pdb = ch_top_ranked_pdb // channel: [ id, /path/to/*.pdb ]
-    // pdb_msa        = ch_pdb_msa        // channel: [ meta, /path/to/*.pdb, /path/to/*_coverage.png ]
-    // multiqc_report = ch_multiqc_report // channel: /path/to/multiqc_report.html
-    // versions       = ch_versions       // channel: [ path(versions.yml) ]
-    
     emit:
-    top_ranked_pdb = [] // channel: [ id, /path/to/*.pdb ]
-    pdb_msa        = []      // channel: [ meta, /path/to/*.pdb, /path/to/*_coverage.png ]
-    multiqc_report = [] // channel: /path/to/multiqc_report.html
-    versions       = []      // channel: [ path(versions.yml) ]
+    top_ranked_pdb = ch_top_ranked_pdb           // channel: [ id, /path/to/*.pdb ]
+    pdb_msa        = ch_pdb_msa                  // channel: [ meta, /path/to/*.pdb, /path/to/*_coverage.png ]
+    multiqc_report = ch_multiqc_report           // channel: /path/to/multiqc_report.html
+    versions       = RUN_ALPHAFOLD3.out.versions // channel: [ path(versions.yml) ]
 }
 
 /*
