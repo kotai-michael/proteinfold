@@ -60,16 +60,17 @@ workflow NFCORE_PROTEINFOLD {
     samplesheet // channel: samplesheet read in from --input
 
     main:
-    ch_samplesheet              = samplesheet
-    ch_alphafold_top_ranked_pdb = Channel.empty()
-    ch_colabfold_top_ranked_pdb = Channel.empty()
-    ch_esmfold_top_ranked_pdb   = Channel.empty()
-    ch_multiqc                  = Channel.empty()
-    ch_versions                 = Channel.empty()
-    ch_report_input             = Channel.empty()
-    ch_foldseek_db              = Channel.empty()
-    requested_modes             = params.mode.toLowerCase().split(",")
-    requested_modes_size        = requested_modes.size()
+    ch_samplesheet               = samplesheet
+    ch_alphafold2_top_ranked_pdb = Channel.empty()
+    ch_alphafold3_top_ranked_pdb = Channel.empty()
+    ch_colabfold_top_ranked_pdb  = Channel.empty()
+    ch_esmfold_top_ranked_pdb    = Channel.empty()
+    ch_multiqc                   = Channel.empty()
+    ch_versions                  = Channel.empty()
+    ch_report_input              = Channel.empty()
+    ch_foldseek_db               = Channel.empty()
+    requested_modes              = params.mode.toLowerCase().split(",")
+    requested_modes_size         = requested_modes.size()
     
     ch_dummy_file = Channel.fromPath("$projectDir/assets/NO_FILE")
 
@@ -128,10 +129,10 @@ workflow NFCORE_PROTEINFOLD {
             PREPARE_ALPHAFOLD2_DBS.out.pdb_seqres,
             PREPARE_ALPHAFOLD2_DBS.out.uniprot
         )
-        ch_alphafold_top_ranked_pdb = ALPHAFOLD2.out.top_ranked_pdb
-        ch_multiqc                  = ch_multiqc.mix(ALPHAFOLD2.out.multiqc_report.collect())
-        ch_versions                 = ch_versions.mix(ALPHAFOLD2.out.versions)
-        ch_report_input             = ch_report_input.mix(ALPHAFOLD2.out.pdb_msa)
+        ch_alphafold2_top_ranked_pdb = ALPHAFOLD2.out.top_ranked_pdb
+        ch_multiqc                   = ch_multiqc.mix(ALPHAFOLD2.out.multiqc_report.collect())
+        ch_versions                  = ch_versions.mix(ALPHAFOLD2.out.versions)
+        ch_report_input              = ch_report_input.mix(ALPHAFOLD2.out.pdb_msa)
     }
 
     //
@@ -139,7 +140,7 @@ workflow NFCORE_PROTEINFOLD {
     //
     if(requested_modes.contains("alphafold3")) {
         //
-        // SUBWORKFLOW: Prepare Alphafold2 DBs
+        // SUBWORKFLOW: Prepare Alphafold3 DBs
         //
         PREPARE_ALPHAFOLD3_DBS (
             params.alphafold3_db,
@@ -175,10 +176,10 @@ workflow NFCORE_PROTEINFOLD {
             PREPARE_ALPHAFOLD3_DBS.out.uniprot,
             ch_dummy_file
         )
-        // ch_alphafold_top_ranked_pdb = ALPHAFOLD3.out.top_ranked_pdb
-        // ch_multiqc                  = ch_multiqc.mix(ALPHAFOLD3.out.multiqc_report.collect())
-        // ch_versions                 = ch_versions.mix(ALPHAFOLD3.out.versions)
-        // ch_report_input             = ch_report_input.mix(ALPHAFOLD3.out.pdb_msa)
+        ch_alphafold3_top_ranked_pdb = ALPHAFOLD3.out.top_ranked_pdb
+        ch_multiqc                   = ch_multiqc.mix(ALPHAFOLD3.out.multiqc_report.collect())
+        ch_versions                  = ch_versions.mix(ALPHAFOLD3.out.versions)
+        ch_report_input              = ch_report_input.mix(ALPHAFOLD3.out.pdb_msa)
     }
 
     //
@@ -293,7 +294,8 @@ workflow NFCORE_PROTEINFOLD {
         ch_multiqc_custom_config,
         ch_multiqc_logo,
         ch_multiqc_methods_description,
-        ch_alphafold_top_ranked_pdb,
+        ch_alphafold2_top_ranked_pdb,
+        ch_alphafold3_top_ranked_pdb,
         ch_colabfold_top_ranked_pdb,
         ch_esmfold_top_ranked_pdb
     )
