@@ -36,6 +36,7 @@ workflow POST_PROCESSING {
     ch_multiqc_logo
     ch_multiqc_methods_description
     ch_alphafold2_top_ranked_pdb
+    ch_alphafold3_top_ranked_pdb
     ch_colabfold_top_ranked_pdb
     ch_esmfold_top_ranked_pdb
 
@@ -57,6 +58,11 @@ workflow POST_PROCESSING {
                     .filter { it[0]["model"] == "alphafold2" }
                     .map { [it[0]["id"], it[1]] }, remainder:true
                 )
+            )
+
+            // TODO: Update when msa is provided
+            ch_comparison_report_files = ch_comparison_report_files.mix(
+                ch_alphafold3_top_ranked_pdb
             )
 
             ch_comparison_report_files = ch_comparison_report_files.mix(
@@ -123,6 +129,13 @@ workflow POST_PROCESSING {
         ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml'))
         ch_multiqc_files = ch_multiqc_files.mix(ch_collated_versions)
 
+        ch_multiqc_rep
+            .combine(
+                ch_multiqc_files
+                    .collect()
+                    .map { [it] }
+            )
+
         MULTIQC (
             ch_multiqc_rep
                 .combine(
@@ -130,7 +143,7 @@ workflow POST_PROCESSING {
                         .collect()
                         .map { [it] }
                 )
-            .map { [ it[0], it[1] + it[2] ] },
+                .map { [ it[0], it[1] + it[2] ] },
             ch_multiqc_config,
             ch_multiqc_custom_config
                 .collect()

@@ -66,23 +66,20 @@ workflow ALPHAFOLD3 {
 
         // Convert mmcif to pdbs
         RUN_ALPHAFOLD3
-                .out
-                .cif
-                .groupTuple()
-                .map{
-                    meta, files ->
-                    [ meta, files.flatten() ]
-                }
-                .view { meta, files -> 
-                        "Meta: $meta, Files: ${files.join(', ')}"
-                }
+            .out
+            .cif
+            .groupTuple()
+            .map {
+                meta, files ->
+                [ meta, files.flatten() ]
+            }
 
         MMCIF2PDB_MODELS (
             RUN_ALPHAFOLD3
                 .out
                 .cif
                 .groupTuple()
-                .map{
+                .map {
                     meta, files ->
                     [ meta, files.flatten() ]
                 }

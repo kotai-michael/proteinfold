@@ -97,10 +97,10 @@ process RUN_ALPHAFOLD3 {
     echo "position" > position_col.txt
     seq 1 \$((num_rows - 1)) >> position_col.txt
     paste position_col.txt publish/combined_plddt_mqc.tsv > temp_combined.tsv
-    mv temp_combined.tsv publish/combined_plddt_mqc.tsv
+    mv temp_combined.tsv "publish/${meta.id}_plddt_mqc.tsv"
 
     # Remove temporary files
-    rm -f column_data.txt index_column.txt
+    rm -f column_data.txt index_column.txt publish/combined_plddt_mqc.tsv publish/*_plddt.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
