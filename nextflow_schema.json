@@ -412,6 +412,11 @@
                     "description": "Path to the PDB mmCIF database",
                     "fa_icon": "fas fa-folder-open"
                 },
+                "pdb_obsolete_path": {
+                    "type": "string",
+                    "description": "Path to the PDB obsolete file",
+                    "fa_icon": "fas fa-folder-open"
+                },
                 "uniref30_alphafold2_path": {
                     "type": "string",
                     "description": "Path to the Uniref30 database",
