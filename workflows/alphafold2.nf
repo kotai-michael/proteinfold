@@ -80,7 +80,7 @@ workflow ALPHAFOLD2 {
             ch_pdb_seqres,
             ch_uniprot
         )
-        
+
         RUN_ALPHAFOLD2
             .out
             .multiqc
