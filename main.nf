@@ -152,7 +152,7 @@ workflow NFCORE_PROTEINFOLD {
             params.alphafold3_pdb_mmcif_path,
             params.alphafold3_uniref90_path,
             params.alphafold3_pdb_seqres_path,
-            params.uniprot_path,
+            params.alphafold3_uniprot_path,
             params.alphafold3_small_bfd_link,
             params.alphafold3_mgnify_link,
             params.alphafold3_pdb_mmcif_link,
