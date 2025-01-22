@@ -147,7 +147,7 @@ workflow NFCORE_PROTEINFOLD {
         PREPARE_ALPHAFOLD3_DBS (
             params.alphafold3_db,
             params.alphafold3_params_path,
-            params.alphafold3small_bfd_path,
+            params.alphafold3_small_bfd_path,
             params.alphafold3_mgnify_path,
             params.alphafold3_pdb_mmcif_path,
             params.alphafold3_uniref90_path,
