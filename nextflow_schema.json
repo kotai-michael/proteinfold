@@ -397,7 +397,7 @@
                     "description": "Path to the Alphafold2 parameters",
                     "fa_icon": "fas fa-folder-open"
                 },
-                "mgnify_path": {
+                "mgnify_path_alphafold2": {
                     "type": "string",
                     "description": "Path to the MGnify database",
                     "fa_icon": "fas fa-folder-open"
@@ -451,7 +451,7 @@
                     "description": "Link to the Colabfold database",
                     "fa_icon": "fas fa-link"
                 },
-                "uniref30_colabfold_link": {
+                "colabfold_uniref30_link": {
                     "type": "string",
                     "default": "https://wwwuser.gwdg.de/~compbiol/colabfold/uniref30_2302.tar.gz",
                     "description": "Link to the UniRef30 database",
@@ -475,7 +475,7 @@
                     "description": "Link to the Colabfold database",
                     "fa_icon": "fas fa-folder-open"
                 },
-                "uniref30_colabfold_path": {
+                "colabfold_uniref30_path": {
                     "type": "string",
                     "description": "Link to the UniRef30 database",
                     "fa_icon": "fas fa-folder-open"
