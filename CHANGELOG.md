@@ -20,9 +20,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Parameters
 
-| Old parameter | New parameter         |
-| ------------- | --------------------- |
-|               | `--pdb_obsolete_path` |
+| Old parameter                | New parameter                  |
+| ---------------------------- | ------------------------------ |
+|                              | `--pdb_obsolete_path`          |
+| `--small_bfd_link`           | `--alphafold2_small_bfd_link`  |
+| `--mgnify_link`              | `--alphafold2_mgnify_link`     |
+| `--pdb_mmcif_link`           | `--alphafold2_pdb_mmcif_link`  |
+| `--uniref30_alphafold2_link` | `--alphafold2_uniref30_link`   | 
+| `--uniref90_link`            | `--alphafold2_uniref90_link`   |
+| `--pdb_seqres_link`          | `--alphafold2_pdb_seqres_link` |
+| `--small_bfd_path`           | `--alphafold2_small_bfd_path`  |
+| `--mgnify_path_alphafold2`   | `--alphafold2_mgnify_path`     |
+| `--pdb_mmcif_path`           | `--alphafold2_pdb_mmcif_path`  |
+| `--uniref30_alphafold2_path` | `--alphafold2_uniref30_path`   |
+| `--uniref90_path`            | `--alphafold2_uniref90_path`   |
+| `--pdb_seqres_path`          | `--alphafold2_pdb_seqres_path` |
+| `--uniprot_path`             | `--alphafold2_uniprot_path`    |
+|                              | `--alphafold3_small_bfd_link`  |
+|                              | `--alphafold3_mgnify_link`     |
+|                              | `--alphafold3_uniref90_link`   |
+|                              | `--alphafold3_pdb_seqres_link` |
+|                              | `--uniprot_link`               |
+|                              | `--alphafold3_small_bfd_path`  |
+|                              | `--alphafold3_params_path`     |
+|                              | `--alphafold3_mgnify_path`     |
+|                              | `--alphafold3_pdb_mmcif_path`  |
+|                              | `--alphafold3_uniref90_path`   |
+|                              | `--alphafold3_pdb_seqres_path` |
+|                              | `--alphafold3_uniprot_path`    |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present.
 > **NB:** Parameter has been **added** if just the new parameter information is present.

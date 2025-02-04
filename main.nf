@@ -102,7 +102,7 @@ workflow NFCORE_PROTEINFOLD {
             params.pdb70_link,
             params.alphafold2_pdb_mmcif_link,
             params.pdb_obsolete_link,
-            params.uniref30_alphafold2_link,
+            params.alphafold2_uniref30_link,
             params.alphafold2_uniref90_link,
             params.alphafold2_pdb_seqres_link,
             params.uniprot_sprot_link,
