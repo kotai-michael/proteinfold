@@ -8,6 +8,7 @@ LABEL authors="Ziad Al-Bkhetan <ziad.albkhetan@gmail.com>" \
 RUN  apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
+    procps \
     && rm -rf /var/lib/apt/lists/*
 	
 RUN pip install boltz
