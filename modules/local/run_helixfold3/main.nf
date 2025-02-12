@@ -75,7 +75,8 @@ process RUN_HELIXFOLD3 {
         --init_model "./init_models/HelixFold3-240814.pdparams" \
         --infer_times 4 \
         --logging_level "ERROR" \
-        --precision "bf16"
+        --precision "bf16" \
+        $args
 
     cp "${fasta.baseName}"/"${fasta.baseName}"-rank1/predicted_structure.pdb ./"${meta.id}"_helixfold3.pdb
     cp "${fasta.baseName}"/"${fasta.baseName}"-rank1/predicted_structure.cif ./"${meta.id}"_helixfold3.cif
