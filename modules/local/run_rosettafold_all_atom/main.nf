@@ -36,7 +36,8 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
 
     mamba run --name RFAA python -m rf2aa.run_inference \
     --config-dir /app/RoseTTAFold-All-Atom/rf2aa/config/inference \
-    --config-name "${fasta}"
+    --config-name "${fasta}" \
+    $args
 
     cp "${fasta.baseName}".pdb ./"${meta.id}"_rosettafold_all_atom.pdb
     awk '{printf "%s\\t%.0f\\n", \$6, \$11 * 100}' "${meta.id}"_rosettafold_all_atom.pdb | uniq > plddt.tsv
