@@ -34,12 +34,13 @@ process RUN_HELIXFOLD3 {
     tuple val(meta), path ("${fasta.baseName}/ranked*pdb"), emit: pdb
     tuple val(meta), path ("*_mqc.tsv")                   , emit: multiqc
     tuple val(meta), path ("${meta.id}_helixfold3.cif")   , emit: main_cif
-    path "versions.yml", emit: versions
+    path ("versions.yml")                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    def args = task.ext.args ?: ''
     """
     export MAXIT_SRC="./maxit_src"
     export RCSBROOT="\$MAXIT_SRC"
