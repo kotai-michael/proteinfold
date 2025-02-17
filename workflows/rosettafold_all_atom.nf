@@ -7,7 +7,7 @@
 //
 // MODULE: Loaded from modules/local/
 //
-include { RUN_ROSETTAFOLD_ALL_ATOM      } from '../modules/local/run_rosettafold_all_atom'
+include { RUN_ROSETTAFOLD_ALL_ATOM } from '../modules/local/run_rosettafold_all_atom'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -58,8 +58,8 @@ workflow ROSETTAFOLD_ALL_ATOM {
         .map { [ [ "model": "rosettafold_all_atom" ], it.flatten() ] }
         .set { ch_multiqc_report }
 
-    ch_pdb            = ch_pdb.mix(RUN_ROSETTAFOLD_ALL_ATOM.out.pdb)
-    ch_versions       = ch_versions.mix(RUN_ROSETTAFOLD_ALL_ATOM.out.versions)
+    ch_pdb      = ch_pdb.mix(RUN_ROSETTAFOLD_ALL_ATOM.out.pdb)
+    ch_versions = ch_versions.mix(RUN_ROSETTAFOLD_ALL_ATOM.out.versions)
 
     RUN_ROSETTAFOLD_ALL_ATOM
         .out

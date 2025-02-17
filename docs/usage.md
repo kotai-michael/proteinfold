@@ -428,7 +428,7 @@ If you specify the `--esmfold_db <PATH>` parameter, the directory structure of y
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
 
-AlphaFold2 regular can be run using this command:
+RoseTTAFold All-Atom can be run using this command:
 
 ```bash
 nextflow run nf-core/proteinfold \
