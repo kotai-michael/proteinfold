@@ -3,7 +3,6 @@
  */
 process RUN_ROSETTAFOLD_ALL_ATOM {
     tag "$meta.id"
-    label 'gpu_compute'
     label 'process_medium'
 
     // Exit if running this module with -profile conda / -profile mamba
@@ -22,10 +21,10 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
 
     output:
     path ("${fasta.baseName}*")
-    tuple val(meta), path ("${meta.id}_rosettafold_all_atom.pdb")   , emit: top_ranked_pdb
-    tuple val(meta), path ("*pdb")                                  , emit: pdb
-    tuple val(meta), path ("*_mqc.tsv")                             , emit: multiqc
-    path "versions.yml", emit: versions
+    tuple val(meta), path ("${meta.id}_rosettafold_all_atom.pdb"), emit: top_ranked_pdb
+    tuple val(meta), path ("*pdb")                               , emit: pdb
+    tuple val(meta), path ("*_mqc.tsv")                          , emit: multiqc
+    path "versions.yml"                                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
