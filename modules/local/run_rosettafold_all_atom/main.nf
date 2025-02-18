@@ -20,9 +20,7 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     path ('*')
 
     output:
-    path ("${fasta.baseName}*")
-    tuple val(meta), path ("${meta.id}_rosettafold_all_atom.pdb"), emit: top_ranked_pdb
-    tuple val(meta), path ("*pdb")                               , emit: pdb
+    tuple val(meta), path ("${meta.id}_rosettafold_all_atom.pdb"), emit: pdb
     tuple val(meta), path ("*_mqc.tsv")                          , emit: multiqc
     path "versions.yml"                                          , emit: versions
 
@@ -30,6 +28,9 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     task.ext.when == null || task.ext.when
 
     script:
+    def args = task.ext.args ?: ''
+    def VERSION = '1.2.0dev' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
     """
     ln -s /app/RoseTTAFold-All-Atom/* .
 
@@ -52,7 +53,13 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     stub:
     """
     touch ./"${meta.id}"_rosettafold_all_atom.pdb
-    touch ./"${meta.id}"_mqc.tsv
+    touch ./"${meta.id}"_plddt_mqc.tsv
+    touch ./"${meta.id}"_aux.pt
+    touch ./"${meta.id}".pdb
+    touch ./header.tsv
+    touch ./plddt.tsv
+    mkdir ./outputs
+    mkdir ./"${meta.id}"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
