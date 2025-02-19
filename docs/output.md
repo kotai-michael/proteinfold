@@ -13,6 +13,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and predicts pr
 - [AlphaFold2](https://github.com/deepmind/alphafold)
 - [ColabFold](https://github.com/sokrypton/ColabFold) - MMseqs2 (API server or local search) followed by ColabFold
 - [ESMFold](https://github.com/facebookresearch/esm)
+- [RoseTTAFold-All-Atom](https://github.com/baker-laboratory/RoseTTAFold-All-Atom/)
 
 See main [README.md](https://github.com/nf-core/proteinfold/blob/master/README.md) for a condensed overview of the steps in the pipeline, and the bioinformatics tools used at each step.
 
@@ -175,6 +176,19 @@ Below you can find an indicative example of the TSV file with the pLDDT scores p
 | 48                 | C         | VAL          | 7                       | 57.39 |
 | 49                 | CB        | VAL          | 7                       | 52.74 |
 | 50                 | O         | VAL          | 7                       | 56.46 |
+
+### RoseTTAFold-All-Atom
+
+<details markdown="1">
+<summary>Output files</summary>
+
+- `run/`
+  - `<SEQUENCE NAME>_rosettafold_all_atom.pdb` that is the structure with the highest pLDDT score (ranked first)
+  - `<SEQUENCE NAME>_plddt_mqc.tsv` that presents the pLDDT scores per residue for the predicted model
+  - `<SEQUENCE NAME>_aux.pt` pytorch file with confidence metrics stored (can load with torch.load(file, map_location="cpu"))
+  - `<SEQUENCE NAME>/` that contains the computed MSAs, prediction metadata
+
+</details>
 
 ### MultiQC report
 
