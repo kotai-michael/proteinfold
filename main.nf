@@ -30,6 +30,7 @@ if (params.mode.toLowerCase().split(",").contains("esmfold")) {
 if (params.mode.toLowerCase().split(",").contains("rosettafold_all_atom")) {
     include { PREPARE_ROSETTAFOLD_ALL_ATOM_DBS  } from './subworkflows/local/prepare_rosettafold_all_atom_dbs'
     include { ROSETTAFOLD_ALL_ATOM              } from './workflows/rosettafold_all_atom'
+}
 if (params.mode.toLowerCase().split(",").contains("helixfold3")) {
     include { PREPARE_HELIXFOLD3_DBS    } from './subworkflows/local/prepare_helixfold3_dbs'
     include { HELIXFOLD3                } from './workflows/helixfold3'
@@ -252,7 +253,8 @@ workflow NFCORE_PROTEINFOLD {
         ch_multiqc                              = ch_multiqc.mix(ROSETTAFOLD_ALL_ATOM.out.multiqc_report.collect())
         ch_versions                             = ch_versions.mix(ROSETTAFOLD_ALL_ATOM.out.versions)
         ch_report_input                         = ch_report_input.mix(ROSETTAFOLD_ALL_ATOM.out.pdb_msa)
-
+    }
+    
     //
     // WORKFLOW: Run helixfold3
     //
