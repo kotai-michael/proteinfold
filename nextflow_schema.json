@@ -80,7 +80,6 @@
                 },
                 "full_dbs": {
                     "type": "boolean",
-                    "default": false,
                     "description": "If true uses the full version of the BFD database otherwise, otherwise it uses its reduced version, small bfd",
                     "fa_icon": "fas fa-battery-full"
                 },
@@ -194,7 +193,8 @@
                     "type": "string",
                     "description": "Specifies whether is a 'monomer' or 'multimer' prediction",
                     "enum": ["monomer", "multimer"],
-                    "fa_icon": "fas fa-stream"
+                    "fa_icon": "fas fa-stream",
+                    "default": "monomer"
                 }
             }
         },
@@ -207,7 +207,6 @@
                 "foldseek_search": {
                     "type": "string",
                     "enum": [null, "easysearch"],
-                    "default": null,
                     "description": "Specifies the mode of foldseek search.",
                     "fa_icon": "fas fa-search"
                 },
@@ -385,57 +384,68 @@
                 "bfd_path": {
                     "type": "string",
                     "description": "Path to BFD dababase",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "null/bfd/*"
                 },
                 "small_bfd_path": {
                     "type": "string",
                     "description": "Path to a reduced version of the BFD database",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "null/small_bfd/*"
                 },
                 "alphafold2_params_path": {
                     "type": "string",
                     "description": "Path to the Alphafold2 parameters",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "null/alphafold_params_*/*"
                 },
                 "mgnify_path": {
                     "type": "string",
                     "description": "Path to the MGnify database",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "null/mgnify/*"
                 },
                 "pdb70_path": {
                     "type": "string",
                     "description": "Path to the PDB70 database",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "null/pdb70/**"
                 },
                 "pdb_mmcif_path": {
                     "type": "string",
                     "description": "Path to the PDB mmCIF database",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "null/pdb_mmcif/*"
                 },
                 "pdb_obsolete_path": {
                     "type": "string",
                     "description": "Path to the PDB obsolete file",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "null/pdb_mmcif/obsolete.dat"
                 },
                 "uniref30_alphafold2_path": {
                     "type": "string",
                     "description": "Path to the Uniref30 database",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "null/uniref30/*"
                 },
                 "uniref90_path": {
                     "type": "string",
                     "description": "Path to the UniRef90 database",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "null/uniref90/*"
                 },
                 "pdb_seqres_path": {
                     "type": "string",
                     "description": "Path to the PDB SEQRES database",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "null/pdb_seqres/*"
                 },
                 "uniprot_path": {
                     "type": "string",
                     "description": "Path to UniProt database containing the SwissProt and the TrEMBL databases",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "null/uniprot/*"
                 }
             }
         },
@@ -473,12 +483,14 @@
                 "colabfold_db_path": {
                     "type": "string",
                     "description": "Link to the Colabfold database",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "null/colabfold_envdb_202108"
                 },
                 "uniref30_colabfold_path": {
                     "type": "string",
                     "description": "Link to the UniRef30 database",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "null/uniref30_2302"
                 },
                 "colabfold_alphafold2_params_path": {
                     "type": "string",
@@ -527,7 +539,8 @@
                 "esmfold_params_path": {
                     "type": "string",
                     "description": "Link to the Esmfold parameters",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "null/*"
                 }
             }
         },
@@ -635,6 +648,65 @@
                     "hidden": true
                 }
             }
+        },
+        "rosettafold_all_atom_options": {
+            "title": "RoseTTAFold All Atom options",
+            "type": "object",
+            "description": "RoseTTAFold All Atom options.",
+            "default": "",
+            "properties": {
+                "rosettafold_all_atom_db": {
+                    "type": "string"
+                }
+            }
+        },
+        "rosettafold_all_atom_dbs_and_parameters_links_options": {
+            "title": "RoseTTAFold All Atom DBs and parameters links options",
+            "type": "object",
+            "description": "Parameters used to provide the paths to the DBs and parameters for RoseTTAFold All Atom.",
+            "default": "",
+            "properties": {
+                "uniref30_rosettafold_all_atom_link": {
+                    "type": "string",
+                    "default": "http://wwwuser.gwdg.de/~compbiol/uniclust/2020_06/UniRef30_2020_06_hhsuite.tar.gz"
+                },
+                "bfd_rosettafold_all_atom_link": {
+                    "type": "string",
+                    "default": "https://bfd.mmseqs.com/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt.tar.gz"
+                },
+                "pdb100_rosettafold_all_atom_link": {
+                    "type": "string",
+                    "default": "https://files.ipd.uw.edu/pub/RoseTTAFold/pdb100_2021Mar03.tar.gz"
+                },
+                "rfaa_paper_weights_link": {
+                    "type": "string",
+                    "default": "http://files.ipd.uw.edu/pub/RF-All-Atom/weights/RFAA_paper_weights.pt"
+                }
+            }
+        },
+        "rosettafold_all_atom_dbs_and_parameters_paths_options": {
+            "title": "RoseTTAFold All Atom DBs and parameters paths options",
+            "type": "object",
+            "description": "Parameters used to provide the paths to the DBs and parameters for RoseTTAFold All Atom.",
+            "default": "",
+            "properties": {
+                "uniref30_rosettafold_all_atom_path": {
+                    "type": "string",
+                    "default": "null/uniref30/UniRef30_2020_06/*"
+                },
+                "bfd_rosettafold_all_atom_path": {
+                    "type": "string",
+                    "default": "null/bfd/*"
+                },
+                "pdb100_rosettafold_all_atom_path": {
+                    "type": "string",
+                    "default": "null/pdb100_2021Mar03/*"
+                },
+                "rfaa_paper_weights_path": {
+                    "type": "string",
+                    "default": "null/RFAA_paper_weights.pt"
+                }
+            }
         }
     },
     "allOf": [
@@ -679,6 +751,15 @@
         },
         {
             "$ref": "#/$defs/generic_options"
+        },
+        {
+            "$ref": "#/$defs/rosettafold_all_atom_options"
+        },
+        {
+            "$ref": "#/$defs/rosettafold_all_atom_dbs_and_parameters_links_options"
+        },
+        {
+            "$ref": "#/$defs/rosettafold_all_atom_dbs_and_parameters_paths_options"
         }
     ]
 }
