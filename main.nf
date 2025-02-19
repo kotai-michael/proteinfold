@@ -252,7 +252,7 @@ workflow NFCORE_PROTEINFOLD {
         ch_multiqc                              = ch_multiqc.mix(ROSETTAFOLD_ALL_ATOM.out.multiqc_report.collect())
         ch_versions                             = ch_versions.mix(ROSETTAFOLD_ALL_ATOM.out.versions)
         ch_report_input                         = ch_report_input.mix(ROSETTAFOLD_ALL_ATOM.out.pdb_msa)
-        
+
     //
     // WORKFLOW: Run helixfold3
     //
