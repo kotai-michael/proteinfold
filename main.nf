@@ -27,6 +27,9 @@ if (params.mode.toLowerCase().split(",").contains("esmfold")) {
     include { PREPARE_ESMFOLD_DBS } from './subworkflows/local/prepare_esmfold_dbs'
     include { ESMFOLD             } from './workflows/esmfold'
 }
+if (params.mode.toLowerCase().split(",").contains("rosettafold_all_atom")) {
+    include { PREPARE_ROSETTAFOLD_ALL_ATOM_DBS  } from './subworkflows/local/prepare_rosettafold_all_atom_dbs'
+    include { ROSETTAFOLD_ALL_ATOM              } from './workflows/rosettafold_all_atom'
 if (params.mode.toLowerCase().split(",").contains("helixfold3")) {
     include { PREPARE_HELIXFOLD3_DBS    } from './subworkflows/local/prepare_helixfold3_dbs'
     include { HELIXFOLD3                } from './workflows/helixfold3'
@@ -65,17 +68,18 @@ workflow NFCORE_PROTEINFOLD {
     samplesheet // channel: samplesheet read in from --input
 
     main:
-    ch_samplesheet              = samplesheet
-    ch_alphafold_top_ranked_pdb = Channel.empty()
-    ch_colabfold_top_ranked_pdb = Channel.empty()
-    ch_esmfold_top_ranked_pdb   = Channel.empty()
-    ch_helixfold3_top_ranked_pdb   = Channel.empty()
-    ch_multiqc                  = Channel.empty()
-    ch_versions                 = Channel.empty()
-    ch_report_input             = Channel.empty()
-    ch_foldseek_db              = Channel.empty()
-    requested_modes             = params.mode.toLowerCase().split(",")
-    requested_modes_size        = requested_modes.size()
+    ch_samplesheet                          = samplesheet
+    ch_alphafold_top_ranked_pdb             = Channel.empty()
+    ch_colabfold_top_ranked_pdb             = Channel.empty()
+    ch_esmfold_top_ranked_pdb               = Channel.empty()
+    ch_rosettafold_all_atom_top_ranked_pdb  = Channel.empty()
+    ch_helixfold3_top_ranked_pdb            = Channel.empty()
+    ch_multiqc                              = Channel.empty()
+    ch_versions                             = Channel.empty()
+    ch_report_input                         = Channel.empty()
+    ch_foldseek_db                          = Channel.empty()
+    requested_modes                         = params.mode.toLowerCase().split(",")
+    requested_modes_size                    = requested_modes.size()
 
     //
     // WORKFLOW: Run alphafold2
@@ -213,6 +217,43 @@ workflow NFCORE_PROTEINFOLD {
     }
 
     //
+    // WORKFLOW: Run rosettafold_all_atom
+    //
+    if(requested_modes.contains("rosettafold_all_atom")) {
+        //
+        // SUBWORKFLOW: Prepare Rosettafold-all-atom DBs
+        //
+        PREPARE_ROSETTAFOLD_ALL_ATOM_DBS (
+            params.rosettafold_all_atom_db,
+            params.bfd_rosettafold_all_atom_path,
+            params.uniref30_rosettafold_all_atom_path,
+            params.pdb100_rosettafold_all_atom_path,
+            params.rfaa_paper_weights_path,
+            params.bfd_rosettafold_all_atom_link,
+            params.uniref30_rosettafold_all_atom_link,
+            params.pdb100_rosettafold_all_atom_link,
+            params.rfaa_paper_weights_link
+        )
+        ch_versions = ch_versions.mix(PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.versions)
+
+        //
+        // WORKFLOW: Run nf-core/rosettafold_all_atom workflow
+        //
+        ROSETTAFOLD_ALL_ATOM (
+            ch_samplesheet,
+            ch_versions,
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.bfd,
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.uniref30,
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.pdb100,
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.rfaa_paper_weights,
+            ch_dummy_file
+        )
+        ch_rosettafold_all_atom_top_ranked_pdb  = ROSETTAFOLD_ALL_ATOM.out.top_ranked_pdb
+        ch_multiqc                              = ch_multiqc.mix(ROSETTAFOLD_ALL_ATOM.out.multiqc_report.collect())
+        ch_versions                             = ch_versions.mix(ROSETTAFOLD_ALL_ATOM.out.versions)
+        ch_report_input                         = ch_report_input.mix(ROSETTAFOLD_ALL_ATOM.out.pdb_msa)
+        
+    //
     // WORKFLOW: Run helixfold3
     //
     if(requested_modes.contains("helixfold3")) {
@@ -317,6 +358,7 @@ workflow NFCORE_PROTEINFOLD {
         ch_alphafold_top_ranked_pdb,
         ch_colabfold_top_ranked_pdb,
         ch_esmfold_top_ranked_pdb,
+        ch_rosettafold_all_atom_top_ranked_pdb,
         ch_helixfold3_top_ranked_pdb
     )
 
