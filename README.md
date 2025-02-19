@@ -40,7 +40,7 @@ On release, automated continuous integration tests run the pipeline on a full-si
    v. [ESMFold](https://github.com/facebookresearch/esm) - Regular ESM
 
    vi. [RoseTTAFold-All-Atom](https://github.com/baker-laboratory/RoseTTAFold-All-Atom/) - Regular RFAA
-   
+
    vii. [HelixFold3](https://github.com/PaddlePaddle/PaddleHelix/tree/dev/apps/protein_folding/helixfold3) - Regular HF3
 
 ## Usage
