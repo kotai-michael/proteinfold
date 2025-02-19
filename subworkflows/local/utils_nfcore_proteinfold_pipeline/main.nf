@@ -66,6 +66,25 @@ workflow PIPELINE_INITIALISATION {
     // Create channel from input file provided through params.input
     //
     ch_samplesheet = Channel.fromList(samplesheetToList(params.input, "assets/schema_input.json"))
+    if (params.split_fasta) {
+        // TODO: here we have to validate that the ids are unique and valid as an extra step
+        // since it is not done with the samplesheet schema (they are all in the same file)
+        ch_samplesheet.map { meta, fasta ->
+            validateFasta(fasta)
+        }
+
+        // Split the fasta file into individual files for each sequence
+        ch_samplesheet
+            .map { meta,fasta -> fasta }
+            .splitFasta( record: [header: true, sequence: true] )
+            .collectFile { item ->
+                [ "${cleanHeader(item["header"])}.fa", ">" + cleanHeader(item["header"]) + '\n' +item["sequence"] ]
+            }
+            .map {
+                file -> [[id: file.baseName], file]
+            }
+            .set { ch_samplesheet }
+    }
 
     emit:
     samplesheet = ch_samplesheet
@@ -91,6 +110,7 @@ workflow PIPELINE_COMPLETION {
 
     main:
     summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
+    def multiqc_reports = multiqc_report.toList()
 
     //
     // Completion email and summary
@@ -104,7 +124,7 @@ workflow PIPELINE_COMPLETION {
                 plaintext_email,
                 outdir,
                 monochrome_logs,
-                multiqc_report.toList()
+                multiqc_reports.getVal(),
             )
         }
 
@@ -180,7 +200,7 @@ def toolBibliographyText() {
 }
 
 def methodsDescriptionText(mqc_methods_yaml) {
-    // Convert  to a named map so can be used as with familar NXF ${workflow} variable syntax in the MultiQC YML file
+    // Convert  to a named map so can be used as with familiar NXF ${workflow} variable syntax in the MultiQC YML file
     def meta = [:]
     meta.workflow = workflow.toMap()
     meta["manifest_map"] = workflow.manifest.toMap()
@@ -214,3 +234,22 @@ def methodsDescriptionText(mqc_methods_yaml) {
     return description_html.toString()
 }
 
+def cleanHeader(header) {
+    return header.replaceAll(" ", "_").replaceAll(",", "").replaceAll(";","")
+}
+
+def validateFasta(fasta) {
+    // extract headers
+    def headers = fasta.findAll { it.startsWith('>') }
+    // if headers are not unique, throw an error
+    if (headers.size() != headers.unique().size()) {
+        throw new Exception("Invalid FASTA file. The headers are not unique.")
+    }
+    // check headers that are malformed
+    headers.each { header ->
+        if (header =~ /[ \t;,]/) {
+            // warn user that the header contains special characters
+            log.warn "The header ${header} contains special characters. They have been automatically removed."
+        }
+    }
+}
