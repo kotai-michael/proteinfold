@@ -3,7 +3,6 @@
  */
 process RUN_HELIXFOLD3 {
     tag "$meta.id"
-    label 'gpu_compute'
     label 'process_medium'
 
     // Exit if running this module with -profile conda / -profile mamba
