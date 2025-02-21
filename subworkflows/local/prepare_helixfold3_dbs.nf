@@ -132,17 +132,17 @@ workflow PREPARE_HELIXFOLD3_DBS {
     }
 
     emit:
-    helixfold3_uniclust30        = ch_helixfold3_uniclust30
-    helixfold3_ccd_preprocessed  = ch_helixfold3_ccd_preprocessed
-    helixfold3_rfam              = ch_helixfold3_rfam
-    helixfold3_bfd               = ch_helixfold3_bfd
-    helixfold3_small_bfd         = ch_helixfold3_small_bfd
-    helixfold3_uniprot           = ch_helixfold3_uniprot
-    helixfold3_pdb_seqres        = ch_helixfold3_pdb_seqres
-    helixfold3_uniref90          = ch_helixfold3_uniref90
-    helixfold3_mgnify            = ch_helixfold3_mgnify
-    helixfold3_pdb_mmcif         = ch_helixfold3_pdb_mmcif
-    helixfold3_init_models       = ch_helixfold3_init_models
-    helixfold3_maxit_src         = ch_helixfold3_maxit_src
-    versions                     = ch_versions
+    helixfold3_uniclust30       = ch_helixfold3_uniclust30
+    helixfold3_ccd_preprocessed = ch_helixfold3_ccd_preprocessed
+    helixfold3_rfam             = ch_helixfold3_rfam
+    helixfold3_bfd              = ch_helixfold3_bfd
+    helixfold3_small_bfd        = ch_helixfold3_small_bfd
+    helixfold3_uniprot          = ch_helixfold3_uniprot
+    helixfold3_pdb_seqres       = ch_helixfold3_pdb_seqres
+    helixfold3_uniref90         = ch_helixfold3_uniref90
+    helixfold3_mgnify           = ch_helixfold3_mgnify
+    helixfold3_pdb_mmcif        = ch_helixfold3_pdb_mmcif
+    helixfold3_init_models      = ch_helixfold3_init_models
+    helixfold3_maxit_src        = ch_helixfold3_maxit_src
+    versions                    = ch_versions
 }
