@@ -41,6 +41,8 @@ On release, automated continuous integration tests run the pipeline on a full-si
 
    vi. [RoseTTAFold-All-Atom](https://github.com/baker-laboratory/RoseTTAFold-All-Atom/) - Regular RFAA
 
+   vii. [HelixFold3](https://github.com/PaddlePaddle/PaddleHelix/tree/dev/apps/protein_folding/helixfold3) - Regular HF3
+
 ## Usage
 
 > [!NOTE]
@@ -146,6 +148,18 @@ The pipeline takes care of downloading the databases and parameters required by 
       --outdir <OUTDIR> \
       --mode rosettafold_all_atom \
       --rosettafold_all_atom_db <null (default) | PATH> \
+      --use_gpu <true/false> \
+      -profile <docker/singularity/podman/shifter/charliecloud/conda/institute>
+  ```
+
+- The helixfold3 mode can be run using the command below:
+
+  ```console
+  nextflow run nf-core/proteinfold \
+      --input samplesheet.csv \
+      --outdir <OUTDIR> \
+      --mode helixfold3 \
+      --helixfold3_db <null (default) | PATH> \
       --use_gpu <true/false> \
       -profile <docker/singularity/podman/shifter/charliecloud/conda/institute>
   ```
