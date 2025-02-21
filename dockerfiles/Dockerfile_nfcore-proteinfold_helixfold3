@@ -25,8 +25,8 @@ RUN git clone --single-branch --branch dev --depth 1 --no-checkout https://githu
     mv apps/protein_folding/helixfold3/* . && \
     rm -rf apps
 
-COPY hf3_environment.yaml /app/helixfold3/
-RUN /conda/bin/mamba env create --file=/app/helixfold3/hf3_environment.yaml && \
+COPY environment_nfcore-proteinfold_helixfold3.yaml /app/helixfold3/
+RUN /conda/bin/mamba env create --file=/app/helixfold3/environment_nfcore-proteinfold_helixfold3.yaml && \
     /conda/bin/mamba install -y -c bioconda aria2 hmmer==3.3.2 kalign2==2.04 hhsuite==3.3.0 -n helixfold && \
     /conda/bin/mamba install -y -c conda-forge openbabel -n helixfold && \
     /conda/bin/mamba clean --all --force-pkgs-dirs -y && \

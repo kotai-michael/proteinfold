@@ -32,6 +32,7 @@ process RUN_HELIXFOLD3 {
     path ("${fasta.baseName}*")
     tuple val(meta), path ("${meta.id}_helixfold3.pdb")   , emit: top_ranked_pdb
     tuple val(meta), path ("${fasta.baseName}/ranked*pdb"), emit: pdb
+    tuple val(meta), path ("*_msa.tsv")                   , emit: msa
     tuple val(meta), path ("*_mqc.tsv")                   , emit: multiqc
     tuple val(meta), path ("${meta.id}_helixfold3.cif")   , emit: main_cif
     path ("versions.yml")                                 , emit: versions

@@ -16,7 +16,6 @@ include {
 } from './aria2_uncompress'
 
 include { ARIA2 as ARIA2_PDB_SEQRES } from '../../modules/nf-core/aria2/main'
-
 include { COMBINE_UNIPROT   } from '../../modules/local/combine_uniprot'
 include { DOWNLOAD_PDBMMCIF } from '../../modules/local/download_pdbmmcif'
 
