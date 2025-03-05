@@ -87,7 +87,7 @@ workflow NFCORE_PROTEINFOLD {
     requested_modes_size                    = requested_modes.size()
 
     ch_dummy_file = Channel.fromPath("$projectDir/assets/NO_FILE")
-    
+
     //
     // WORKFLOW: Run alphafold2
     //

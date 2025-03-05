@@ -7,7 +7,7 @@ include { ARIA2_UNCOMPRESS as ARIA2_MGNIFY     } from './aria2_uncompress'
 include { ARIA2_UNCOMPRESS as ARIA2_MMCIF      } from './aria2_uncompress'
 include { ARIA2_UNCOMPRESS as ARIA2_UNIREF90   } from './aria2_uncompress'
 include { ARIA2_UNCOMPRESS as ARIA2_PDB_SEQRES } from './aria2_uncompress'
-include { ARIA2_UNCOMPRESS as ARIA2_UNIPROT    } from './aria2_uncompress'    
+include { ARIA2_UNCOMPRESS as ARIA2_UNIPROT    } from './aria2_uncompress'
 
 include { DOWNLOAD_PDBMMCIF_AF3 } from '../../modules/local/download_pdbmmcif_af3'
 
@@ -33,7 +33,7 @@ workflow PREPARE_ALPHAFOLD3_DBS {
     ch_versions   = Channel.empty()
 
     if (alphafold3_db) {
-        ch_params         = Channel.value(file(alphafold3_params_path, checkIfExists: true))    
+        ch_params         = Channel.value(file(alphafold3_params_path, checkIfExists: true))
         ch_small_bfd      = Channel.value(file(small_bfd_path, checkIfExists: true))
         ch_mgnify         = Channel.value(file(mgnify_path, checkIfExists: true))
         ch_mmcif          = Channel.value(file(pdb_mmcif_path, checkIfExists: true))
@@ -41,7 +41,7 @@ workflow PREPARE_ALPHAFOLD3_DBS {
         ch_pdb_seqres     = Channel.value(file(pdb_seqres_path))
         ch_uniprot        = Channel.value(file(uniprot_path))
     } else {
-    
+
         ARIA2_SMALL_BFD (
             small_bfd_link
         )

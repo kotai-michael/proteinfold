@@ -33,7 +33,7 @@ workflow ALPHAFOLD3 {
     ch_alphafold3_params // channel: path(alphafold2_params)
     ch_small_bfd         // channel: path(small_bfd)
     ch_mgnify            // channel: path(mgnify)
-    ch_mmcif_files       // channel: path(mmcif_files)   
+    ch_mmcif_files       // channel: path(mmcif_files)
     ch_uniref90          // channel: path(uniref90)
     ch_pdb_seqres        // channel: path(pdb_seqres)
     ch_uniprot           // channel: path(uniprot)
