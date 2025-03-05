@@ -564,7 +564,7 @@
                     "type": "string",
                     "description": "Path to the PDB mmCIF database",
                     "fa_icon": "fas fa-folder-open",
-                    "default": "null/pdb_mmcif/*"
+                    "default": "null/pdb_mmcif/mmcif_files/*"
                 },
                 "pdb_obsolete_path": {
                     "type": "string",
@@ -953,6 +953,9 @@
             "$ref": "#/$defs/alphafold2_options"
         },
         {
+            "$ref": "#/$defs/alphafold3_options"
+        },
+        {
             "$ref": "#/$defs/helixfold3_options"
         },
         {
@@ -975,6 +978,12 @@
         },
         {
             "$ref": "#/$defs/alphafold2_dbs_and_parameters_path_options"
+        },
+        {
+            "$ref": "#/$defs/alphafold3_dbs_and_parameters_link_options"
+        },
+        {
+            "$ref": "#/$defs/alphafold3_dbs_and_parameters_path_options"
         },
         {
             "$ref": "#/$defs/colabfold_dbs_and_parameters_link_options"
