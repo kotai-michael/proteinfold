@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | `--small_bfd_link`           | `--alphafold2_small_bfd_link`  |
 | `--mgnify_link`              | `--alphafold2_mgnify_link`     |
 | `--pdb_mmcif_link`           | `--alphafold2_pdb_mmcif_link`  |
-| `--uniref30_alphafold2_link` | `--alphafold2_uniref30_link`   | 
+| `--uniref30_alphafold2_link` | `--alphafold2_uniref30_link`   |
 | `--uniref90_link`            | `--alphafold2_uniref90_link`   |
 | `--pdb_seqres_link`          | `--alphafold2_pdb_seqres_link` |
 | `--small_bfd_path`           | `--alphafold2_small_bfd_path`  |
