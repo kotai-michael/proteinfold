@@ -31,6 +31,10 @@ if (params.mode.toLowerCase().split(",").contains("rosettafold_all_atom")) {
     include { PREPARE_ROSETTAFOLD_ALL_ATOM_DBS  } from './subworkflows/local/prepare_rosettafold_all_atom_dbs'
     include { ROSETTAFOLD_ALL_ATOM              } from './workflows/rosettafold_all_atom'
 }
+if (params.mode.toLowerCase().split(",").contains("helixfold3")) {
+    include { PREPARE_HELIXFOLD3_DBS    } from './subworkflows/local/prepare_helixfold3_dbs'
+    include { HELIXFOLD3                } from './workflows/helixfold3'
+}
 
 include { PIPELINE_INITIALISATION          } from './subworkflows/local/utils_nfcore_proteinfold_pipeline'
 include { PIPELINE_COMPLETION              } from './subworkflows/local/utils_nfcore_proteinfold_pipeline'
@@ -70,6 +74,7 @@ workflow NFCORE_PROTEINFOLD {
     ch_colabfold_top_ranked_pdb             = Channel.empty()
     ch_esmfold_top_ranked_pdb               = Channel.empty()
     ch_rosettafold_all_atom_top_ranked_pdb  = Channel.empty()
+    ch_helixfold3_top_ranked_pdb            = Channel.empty()
     ch_multiqc                              = Channel.empty()
     ch_versions                             = Channel.empty()
     ch_report_input                         = Channel.empty()
@@ -251,6 +256,68 @@ workflow NFCORE_PROTEINFOLD {
     }
 
     //
+    // WORKFLOW: Run helixfold3
+    //
+    if(requested_modes.contains("helixfold3")) {
+        //
+        // SUBWORKFLOW: Prepare helixfold3 DBs
+        //
+        PREPARE_HELIXFOLD3_DBS (
+            params.helixfold3_db,
+            params.helixfold3_uniclust30_link,
+            params.helixfold3_ccd_preprocessed_link,
+            params.helixfold3_rfam_link,
+            params.helixfold3_init_models_link,
+            params.helixfold3_bfd_link,
+            params.helixfold3_small_bfd_link,
+            params.helixfold3_uniprot_sprot_link,
+            params.helixfold3_uniprot_trembl_link,
+            params.helixfold3_pdb_seqres_link,
+            params.helixfold3_uniref90_link,
+            params.helixfold3_mgnify_link,
+            params.helixfold3_pdb_mmcif_link,
+            params.helixfold3_pdb_obsolete_link,
+            params.helixfold3_uniclust30_path,
+            params.helixfold3_ccd_preprocessed_path,
+            params.helixfold3_rfam_path,
+            params.helixfold3_init_models_path,
+            params.helixfold3_bfd_path,
+            params.helixfold3_small_bfd_path,
+            params.helixfold3_uniprot_path,
+            params.helixfold3_pdb_seqres_path,
+            params.helixfold3_uniref90_path,
+            params.helixfold3_mgnify_path,
+            params.helixfold3_pdb_mmcif_path,
+            params.helixfold3_maxit_src_path
+        )
+        ch_versions = ch_versions.mix(PREPARE_HELIXFOLD3_DBS.out.versions)
+
+        //
+        // WORKFLOW: Run nf-core/helixfold3 workflow
+        //
+        HELIXFOLD3 (
+            ch_samplesheet,
+            ch_versions,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_uniclust30,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_ccd_preprocessed,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_rfam,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_bfd,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_small_bfd,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_uniprot,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_pdb_seqres,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_uniref90,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_mgnify,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_pdb_mmcif,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_init_models,
+            PREPARE_HELIXFOLD3_DBS.out.helixfold3_maxit_src
+        )
+        ch_helixfold3_top_ranked_pdb = HELIXFOLD3.out.top_ranked_pdb
+        ch_multiqc                   = ch_multiqc.mix(HELIXFOLD3.out.multiqc_report.collect())
+        ch_versions                  = ch_versions.mix(HELIXFOLD3.out.versions)
+        ch_report_input              = ch_report_input.mix(HELIXFOLD3.out.pdb_msa)
+    }
+
+    //
     // POST PROCESSING: generate visualisation reports
     //
     // TODO: we need to validate the rest of foldseek parameters if foldseek is set to run
@@ -293,7 +360,8 @@ workflow NFCORE_PROTEINFOLD {
         ch_alphafold_top_ranked_pdb,
         ch_colabfold_top_ranked_pdb,
         ch_esmfold_top_ranked_pdb,
-        ch_rosettafold_all_atom_top_ranked_pdb
+        ch_rosettafold_all_atom_top_ranked_pdb,
+        ch_helixfold3_top_ranked_pdb
     )
 
     emit:
