@@ -41,14 +41,9 @@ process RUN_HELIXFOLD3 {
     script:
     def args = task.ext.args ?: ''
     """
-    export MAXIT_SRC="./maxit_src"
-    export RCSBROOT="\$MAXIT_SRC"
-    export PATH="\$MAXIT_SRC/bin:\$ENV_BIN:$PATH"
-    export OBABEL_BIN="\$ENV_BIN"
-
     ln -s /app/helixfold3/* .
 
-    \$ENV_BIN/python3.9 inference.py \
+    mamba run --name helixfold python inference.py \
         --maxit_binary "\$MAXIT_SRC/bin/maxit" \
         --jackhmmer_binary_path "\$ENV_BIN/jackhmmer" \
         --hhblits_binary_path "\$ENV_BIN/hhblits" \

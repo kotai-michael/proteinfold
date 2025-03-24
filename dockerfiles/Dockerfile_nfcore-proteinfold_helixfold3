@@ -9,10 +9,12 @@ LABEL Author="j.caley@unsw.edu.au" \
     Version="1.2.0dev" \
     description="Docker image containing all software requirements to run the RUN_HELIXFOLD3 module using the nf-core/proteinfold pipeline"
 
-ENV PATH="/conda/bin:/app/helixfold3:$PATH" \
+ENV ENV_BIN="/conda/envs/helixfold/bin" \
+    MAXIT_SRC="./maxit_src" \
+    RCSBROOT="$MAXIT_SRC" \
+    PATH="/conda/bin:/app/helixfold3:$MAXIT_SRC/bin:$ENV_BIN:$PATH" \
     PYTHON_BIN="/conda/envs/helixfold/bin/python3.9" \
     LD_LIBRARY_PATH="/conda/lib:/usr/local/cuda-$(cut -f1,2 -d. <<< ${CUDA})/lib64:$LD_LIBRARY_PATH" \
-    ENV_BIN="/conda/envs/helixfold/bin" \
     OBABEL_BIN="/conda/envs/helixfold/bin"
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y wget git && \
