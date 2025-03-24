@@ -13,6 +13,24 @@
             "properties": {
                 "helixfold3_db": {
                     "type": "string"
+                },
+                "model_name": {
+                    "type": "string"
+                },
+                "preset": {
+                    "type": "string"
+                },
+                "init_model": {
+                    "type": "string"
+                },
+                "logging_level": {
+                    "type": "string"
+                },
+                "precision": {
+                    "type": "string"
+                },
+                "infer_times": {
+                    "type": "string"
                 }
             }
         },
@@ -838,13 +856,19 @@
     },
     "allOf": [
         {
+            "$ref": "#/$defs/helixfold3_options"
+        },
+        {
+            "$ref": "#/$defs/helixfold3_dbs_and_parameters_paths_options"
+        },
+        {
+            "$ref": "#/$defs/helixfold3_dbs_and_parameters_link_options"
+        },
+        {
             "$ref": "#/$defs/input_output_options"
         },
         {
             "$ref": "#/$defs/alphafold2_options"
-        },
-        {
-            "$ref": "#/$defs/helixfold3_options"
         },
         {
             "$ref": "#/$defs/colabfold_options"
@@ -878,12 +902,6 @@
         },
         {
             "$ref": "#/$defs/esmfold_parameters_path_options"
-        },
-        {
-            "$ref": "#/$defs/helixfold3_dbs_and_parameters_link_options"
-        },
-        {
-            "$ref": "#/$defs/helixfold3_dbs_and_parameters_paths_options"
         },
         {
             "$ref": "#/$defs/generic_options"

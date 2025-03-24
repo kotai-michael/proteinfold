@@ -56,7 +56,6 @@ process RUN_HELIXFOLD3 {
         --kalign_binary_path "\$ENV_BIN/kalign" \
         --hmmsearch_binary_path "\$ENV_BIN/hmmsearch" \
         --hmmbuild_binary_path "\$ENV_BIN/hmmbuild" \
-        --preset='reduced_dbs' \
         --bfd_database_path="./bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt" \
         --small_bfd_database_path="./small_bfd/bfd-first_non_consensus_sequences.fasta" \
         --uniclust30_database_path="./uniclust30/uniclust30_2018_08" \
@@ -68,14 +67,8 @@ process RUN_HELIXFOLD3 {
         --ccd_preprocessed_path="./ccd_preprocessed_etkdg.pkl.gz" \
         --uniref90_database_path "./uniref90/uniref90.fasta" \
         --mgnify_database_path "./mgnify/mgy_clusters_2018_12.fa" \
-        --max_template_date=2024-08-14 \
         --input_json="${fasta}" \
         --output_dir="\$PWD" \
-        --model_name allatom_demo \
-        --init_model "./init_models/HelixFold3-240814.pdparams" \
-        --infer_times 4 \
-        --logging_level "ERROR" \
-        --precision "bf16" \
         $args
 
     cp "${fasta.baseName}"/"${fasta.baseName}"-rank1/predicted_structure.pdb ./"${fasta.baseName}"_helixfold3.pdb
