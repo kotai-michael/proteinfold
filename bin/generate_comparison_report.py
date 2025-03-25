@@ -253,7 +253,7 @@ print("generating html report...")
 
 # Preprocess "esmfold" PDB files, to reset residues on additional chains
 processed_pdbs = [
-    (pdb_file.replace(".pdb", "_align_residues.pdb") if "esmfold" in pdb_file else pdb_file) 
+    (pdb_file.replace(".pdb", "_align_residues.pdb") if "esmfold" in pdb_file else pdb_file)
     for pdb_file in args.pdb
 ]
 
