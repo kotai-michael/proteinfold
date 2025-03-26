@@ -10,7 +10,7 @@ process RUN_HELIXFOLD3 {
         error("Local RUN_HELIXFOLD3 module does not support Conda. Please use Docker / Singularity / Podman / Apptainer instead.")
     }
 
-    container "nf-core/proteinfold_helixfold3:dev"
+    container "jscrh/helixfold3:dev"
 
     input:
     tuple val(meta), path(fasta)
@@ -43,14 +43,14 @@ process RUN_HELIXFOLD3 {
     """
     ln -s /app/helixfold3/* .
 
-    mamba run --name helixfold python inference.py \
-        --maxit_binary "\$MAXIT_SRC/bin/maxit" \
-        --jackhmmer_binary_path "\$ENV_BIN/jackhmmer" \
-        --hhblits_binary_path "\$ENV_BIN/hhblits" \
-        --hhsearch_binary_path "\$ENV_BIN/hhsearch" \
-        --kalign_binary_path "\$ENV_BIN/kalign" \
-        --hmmsearch_binary_path "\$ENV_BIN/hmmsearch" \
-        --hmmbuild_binary_path "\$ENV_BIN/hmmbuild" \
+    mamba run --name helixfold python3.9 inference.py \
+        --maxit_binary "./maxit_src/bin/maxit" \
+        --jackhmmer_binary_path "jackhmmer" \
+        --hhblits_binary_path "hhblits" \
+        --hhsearch_binary_path "hhsearch" \
+        --kalign_binary_path "kalign" \
+        --hmmsearch_binary_path "hmmsearch" \
+        --hmmbuild_binary_path "hmmbuild" \
         --bfd_database_path="./bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt" \
         --small_bfd_database_path="./small_bfd/bfd-first_non_consensus_sequences.fasta" \
         --uniclust30_database_path="./uniclust30/uniclust30_2018_08" \
