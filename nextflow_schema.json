@@ -189,7 +189,7 @@
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
                     "fa_icon": "fas fa-file-signature",
                     "maxLength": 100,
-                    "errorMessage": "MultiQC title must be less than 100 characters"
+                    "errorMessage": "MultiQC title must be less than or equal to 100 characters"
                 }
             }
         },
@@ -278,7 +278,7 @@
                     "fa_icon": "fas fa-recycle",
                     "minimum": 1,
                     "maximum": 20,
-                    "errorMessage": "Number of recycles must be between 1 and 20"
+                    "errorMessage": "Number of recycles must be a whole number between 1 and 20"
                 },
                 "use_amber": {
                     "type": "boolean",
@@ -335,7 +335,7 @@
                     "fa_icon": "fas fa-server",
                     "minimum": 1,
                     "maximum": 20,
-                    "errorMessage": "Number of recycles must be between 1 and 20"
+                    "errorMessage": "Number of recycles must be a whole number between 1 and 20"
                 },
                 "esmfold_model_preset": {
                     "type": "string",
