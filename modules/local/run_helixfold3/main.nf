@@ -10,7 +10,7 @@ process RUN_HELIXFOLD3 {
         error("Local RUN_HELIXFOLD3 module does not support Conda. Please use Docker / Singularity / Podman / Apptainer instead.")
     }
 
-    container "jscrh/helixfold3:dev"
+    container "jscrh/helixfold3:slim"
 
     input:
     tuple val(meta), path(fasta)
