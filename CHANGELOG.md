@@ -10,19 +10,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[#177](https://github.com/nf-core/proteinfold/issues/177)] - Fix typo in some instances of model preset `alphafold2_ptm`.
 - [[PR #178](https://github.com/nf-core/proteinfold/pull/178)] - Enable running multiple modes in parallel.
 - [[#179](https://github.com/nf-core/proteinfold/issues/179)] - Produce an interactive html report for the predicted structures.
-- [[#180](https://github.com/nf-core/proteinfold/issues/180)] - Implement Fooldseek.
+- [[#180](https://github.com/nf-core/proteinfold/issues/180)] - Implement Foldseek.
 - [[#188](https://github.com/nf-core/proteinfold/issues/188)] - Fix colabfold image to run in gpus.
 - [[PR ##205](https://github.com/nf-core/proteinfold/pull/205)] - Change input schema from `sequence,fasta` to `id,fasta`.
 - [[PR #210](https://github.com/nf-core/proteinfold/pull/210)] - Moving post-processing logic to a subworkflow, change wave images pointing to oras to point to https and refactor module to match nf-core folder structure.
 - [[#214](https://github.com/nf-core/proteinfold/issues/214)] - Fix colabfold image to run in cpus after [#188](https://github.com/nf-core/proteinfold/issues/188) fix.
+- [[PR ##220](https://github.com/nf-core/proteinfold/pull/220)] - Add RoseTTAFold-All-Atom module.
+- [[PR ##223](https://github.com/nf-core/proteinfold/pull/223)] - Add HelixFold3 module.
 - [[#235](https://github.com/nf-core/proteinfold/issues/235)] - Update samplesheet to new version (switch from `sequence` column to `id`).
+- [[#239](https://github.com/nf-core/proteinfold/issues/239)] - Update alphafold2 standard mode Dockerfile.
 - [[#240](https://github.com/nf-core/proteinfold/issues/240)] - Separate download and input of pdb `mmcif` files and `obsolete` database.
+- [[PR #249](https://github.com/nf-core/proteinfold/pull/249)] - Update pipeline template to [nf-core/tools 3.2.0](https://github.com/nf-core/tools/releases/tag/3.2.0).
 
 ### Parameters
 
-| Old parameter | New parameter         |
-| ------------- | --------------------- |
-|               | `--pdb_obsolete_path` |
+| Old parameter                | New parameter                  |
+| ---------------------------- | ------------------------------ |
+|                              | `--pdb_obsolete_path`          |
+| `--small_bfd_link`           | `--alphafold2_small_bfd_link`  |
+| `--mgnify_link`              | `--alphafold2_mgnify_link`     |
+| `--pdb_mmcif_link`           | `--alphafold2_pdb_mmcif_link`  |
+| `--uniref30_alphafold2_link` | `--alphafold2_uniref30_link`   |
+| `--uniref90_link`            | `--alphafold2_uniref90_link`   |
+| `--pdb_seqres_link`          | `--alphafold2_pdb_seqres_link` |
+| `--small_bfd_path`           | `--alphafold2_small_bfd_path`  |
+| `--mgnify_path_alphafold2`   | `--alphafold2_mgnify_path`     |
+| `--pdb_mmcif_path`           | `--alphafold2_pdb_mmcif_path`  |
+| `--uniref30_alphafold2_path` | `--alphafold2_uniref30_path`   |
+| `--uniref90_path`            | `--alphafold2_uniref90_path`   |
+| `--pdb_seqres_path`          | `--alphafold2_pdb_seqres_path` |
+| `--uniprot_path`             | `--alphafold2_uniprot_path`    |
+|                              | `--alphafold3_small_bfd_link`  |
+|                              | `--alphafold3_mgnify_link`     |
+|                              | `--alphafold3_uniref90_link`   |
+|                              | `--alphafold3_pdb_seqres_link` |
+|                              | `--uniprot_link`               |
+|                              | `--alphafold3_small_bfd_path`  |
+|                              | `--alphafold3_params_path`     |
+|                              | `--alphafold3_mgnify_path`     |
+|                              | `--alphafold3_pdb_mmcif_path`  |
+|                              | `--alphafold3_uniref90_path`   |
+|                              | `--alphafold3_pdb_seqres_path` |
+|                              | `--alphafold3_uniprot_path`    |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present.
 > **NB:** Parameter has been **added** if just the new parameter information is present.
@@ -117,6 +146,8 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 |                       | `--esm2_t36_3B_UR50D_contact_regression` |
 |                       | `--esmfold_params_path`                  |
 |                       | `--skip_multiqc`                         |
+|                       | `--rosettafold_all_atom_db`              |
+|                       | `--helixfold3_db`                        |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present.
 > **NB:** Parameter has been **added** if just the new parameter information is present.

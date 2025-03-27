@@ -10,22 +10,22 @@ def parse_args(args=None):
     Epilog = "Example usage: python fasta_to_alphafold3_json.py <FILE_IN> <ID>"
 
     parser = argparse.ArgumentParser(description=Description, epilog=Epilog)
-    
+
     ## REQUIRED PARAMETERS
     parser.add_argument(
-        "FILE_IN", 
+        "FILE_IN",
         help="Input fasta file."
     )
     parser.add_argument(
-        "ID", 
+        "ID",
         help="ID for file name and for json id tag."
     )
-    
+
     ## OPTIONAL PARAMETERS
     parser.add_argument(
         "-ms",
         "--model_seed",
-        type=int, 
+        type=int,
         nargs='+',
         dest="MODEL_SEED",
         default=[11],
@@ -66,15 +66,15 @@ def fasta_to_alphafold3_json(file_in, id):
         for l in fin:
             l = l.strip()
             if l.startswith(">"):
-                
-                if n_seq > 1: 
+
+                if n_seq > 1:
                     raise RuntimeError("Multifasta files are not allowed")
-                
+
                 n_seq += 1
                 if sequence:
                     sequence_list.append(sequence)
                 # id = l[1:6]
-                
+
                 sequence = {"id": id, "sequence": ""}
             else:
                 sequence["sequence"] += l
@@ -113,7 +113,7 @@ def create_json_dict(sequence, model_seed):
     # for sequence in sequence_list:
     item = {
         "name": f"{sequence['id']}",
-        
+
         "sequences": [
             {
                 "protein": {
@@ -134,7 +134,7 @@ def create_json_dict(sequence, model_seed):
 def main(args=None):
     args = parse_args(args)
     id = args.ID
-    
+
     if id.endswith(".json"):
         id = id[:-5]
         reformatted_id = sanitised_name(id)
@@ -142,7 +142,7 @@ def main(args=None):
         reformatted_id = sanitised_name(id)
 
     out_json = f"{reformatted_id}.json"
-     
+
     sequence = fasta_to_alphafold3_json(args.FILE_IN, reformatted_id)
     json_dict = create_json_dict(sequence, args.MODEL_SEED)
 
@@ -154,7 +154,7 @@ def main(args=None):
 
     with open(out_json, 'r') as f:
         json_str = f.read()
-        
+
 
 if __name__ == "__main__":
     sys.exit(main())

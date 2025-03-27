@@ -16,7 +16,7 @@ def parse_args(args=None):
 
     parser = argparse.ArgumentParser(description=Description, epilog=Epilog)
     parser.add_argument(
-        "MMCIF_IN", 
+        "MMCIF_IN",
         help="Input mmcif file."
     )
     parser.add_argument(
