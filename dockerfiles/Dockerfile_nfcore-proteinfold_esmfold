@@ -1,18 +1,23 @@
-FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
+ARG CUDA=11.7.1
+FROM nvidia/cuda:${CUDA}-cudnn8-devel-ubuntu22.04 AS builder
+# FROM directive resets ARGS, so we specify again (the value is retained if
+# previously set).
+ARG CUDA
+
 LABEL authors="Athanasios Baltzis, Jose Espinosa-Carrasco" \
     title="nfcore/proteinfold_esmfold" \
     Version="1.2.0dev" \
     description="Docker image containing all software requirements to run ESMFold using the nf-core/proteinfold pipeline"
 
 # Add env variables
-ENV LD_LIBRARY_PATH="/conda/lib:/usr/local/cuda-11.7/lib64:/conda/lib/python3.9/site-packages/nvidia/cusparse/lib:$LD_LIBRARY_PATH"
-ENV PATH="/conda/bin:$PATH"
+ENV LD_LIBRARY_PATH="/conda/lib:/usr/local/cuda-11.7/lib64:/conda/lib/python3.9/site-packages/nvidia/cusparse/lib:$LD_LIBRARY_PATH" \
+    PATH="/conda/bin:$PATH"
 
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     build-essential \
-    nvidia-cuda-dev \
-    cuda-command-line-tools-11-8 \
+    # nvidia-cuda-dev \
+    # cuda-command-line-tools-11-8 \
     wget \
     git \
     && rm -rf /var/lib/apt/lists/*
@@ -27,9 +32,9 @@ RUN wget -q -P /tmp "https://github.com/conda-forge/miniforge/releases/latest/do
 RUN conda install --quiet --yes conda==24.11.1 pip python=3.9 \
     && conda clean --all --force-pkgs-dirs --yes
 
-RUN wget https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda_11.8.0_520.61.05_linux.run && \
-    sh cuda_11.8.0_520.61.05_linux.run --silent --toolkit --toolkitpath=/usr/local/cuda-11.8 --override && \
-    rm cuda_11.8.0_520.61.05_linux.run
+# RUN wget https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda_11.8.0_520.61.05_linux.run && \
+#     sh cuda_11.8.0_520.61.05_linux.run --silent --toolkit --toolkitpath=/usr/local/cuda-11.8 --override && \
+#     rm cuda_11.8.0_520.61.05_linux.run
 
 RUN	/conda/bin/pip install --no-cache-dir git+https://github.com/facebookresearch/esm.git
 RUN	/conda/bin/pip install --no-cache-dir "fair-esm[esmfold]"
@@ -58,7 +63,17 @@ RUN git clone https://github.com/aqlaboratory/openfold.git && \
     cd openfold && \
     git checkout 4b41059694619831a7db195b7e0988fc4ff3a307 && \
     sed -i 's|deepspeed.utils.is_initialized|deepspeed.comm.comm.is_initialized|g' openfold/model/primitives.py && \
-    pip install .
+    /conda/bin/pip install .
 
 ## TODO if we want to use a new version of torch we need a newer version of gcc that supports C++17 (gcc-12)
 #RUN apt-get install gcc-12
+
+FROM nvidia/cuda:${CUDA}-cudnn8-devel-ubuntu22.04
+# FROM directive resets ARGS, so we specify again (the value is retained if
+# previously set).
+ARG CUDA
+
+COPY --from=builder /conda /conda
+
+ENV ENV LD_LIBRARY_PATH="/conda/lib:/usr/local/cuda-$(cut -f1,2 -d. <<< ${CUDA})/lib64:/conda/lib/python3.9/site-packages/nvidia/cusparse/lib:$LD_LIBRARY_PATH" \
+    PATH="/conda/bin:$PATH"
