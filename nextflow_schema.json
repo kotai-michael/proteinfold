@@ -245,6 +245,9 @@
                     "description": "Model preset for 'AlphaFold2' mode",
                     "enum": ["monomer", "monomer_casp14", "monomer_ptm", "multimer"],
                     "fa_icon": "fas fa-stream"
+                },
+                "random_seed": {
+                    "type": "string"
                 }
             }
         },
