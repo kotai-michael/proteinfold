@@ -31,6 +31,10 @@
                 },
                 "infer_times": {
                     "type": "string"
+                },
+                "helixfold3_max_template_date": {
+                    "type": "string",
+                    "default": "2024-08-14"
                 }
             }
         },

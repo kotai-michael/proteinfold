@@ -69,6 +69,7 @@ nextflow run nf-core/proteinfold \
       --full_dbs <true/false> \
       --alphafold2_model_preset monomer \
       --use_gpu <true/false> \
+      --random_seed 53343 \
       -profile <docker/singularity/.../institute>
 ```
 
@@ -440,7 +441,7 @@ nextflow run nf-core/proteinfold \
 
 ```console
 ## Optional parameters with default values:
-    --max_template_date=2024-08-14
+    --helixfold3_max_template_date=2024-08-14
     --model_name allatom_demo
     --preset 'reduced_dbs'
     --init_model './init_models/HelixFold3-240814.pdparams'
