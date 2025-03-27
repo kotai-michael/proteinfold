@@ -123,6 +123,7 @@ workflow ALPHAFOLD3 {
     top_ranked_pdb = ch_top_ranked_pdb           // channel: [ id, /path/to/*.pdb ]
     pdb_msa        = ch_pdb_msa                  // channel: [ meta, /path/to/*.pdb, /path/to/*_coverage.png ]
     multiqc_report = ch_multiqc_report           // channel: /path/to/multiqc_report.html
+    // TODO fix needs to be mix with ch_versions
     versions       = RUN_ALPHAFOLD3.out.versions // channel: [ path(versions.yml) ]
 }
 
