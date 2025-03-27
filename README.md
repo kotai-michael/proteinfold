@@ -3,7 +3,9 @@
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/nf-core-proteinfold_logo_dark.png">
     <img alt="nf-core/proteinfold" src="docs/images/nf-core-proteinfold_logo_light.png">
   </picture>
-</h1>[![GitHub Actions CI Status](https://github.com/nf-core/proteinfold/actions/workflows/ci.yml/badge.svg)](https://github.com/nf-core/proteinfold/actions/workflows/ci.yml)
+</h1>
+
+[![GitHub Actions CI Status](https://github.com/nf-core/proteinfold/actions/workflows/ci.yml/badge.svg)](https://github.com/nf-core/proteinfold/actions/workflows/ci.yml)
 [![GitHub Actions Linting Status](https://github.com/nf-core/proteinfold/actions/workflows/linting.yml/badge.svg)](https://github.com/nf-core/proteinfold/actions/workflows/linting.yml)[![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/proteinfold/results)[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.13135393-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.13135393)
 [![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)
 
@@ -39,6 +41,10 @@ On release, automated continuous integration tests run the pipeline on a full-si
 
    v. [ESMFold](https://github.com/facebookresearch/esm) - Regular ESM
 
+   vi. [RoseTTAFold-All-Atom](https://github.com/baker-laboratory/RoseTTAFold-All-Atom/) - Regular RFAA
+
+   vii. [HelixFold3](https://github.com/PaddlePaddle/PaddleHelix/tree/dev/apps/protein_folding/helixfold3) - Regular HF3
+
 ## Usage
 
 > [!NOTE]
@@ -53,7 +59,7 @@ nextflow run nf-core/proteinfold \
    --outdir <OUTDIR>
 ```
 
-The pipeline takes care of downloading the databases and parameters required by AlphaFold2, Colabfold or ESMFold. In case you have already downloaded the required files, you can skip this step by providing the path to the databases using the corresponding parameter [`--alphafold2_db`], [`--colabfold_db`] or [`--esmfold_db`]. Please refer to the [usage documentation](https://nf-co.re/proteinfold/usage) to check the directory structure you need to provide for each of the databases.
+The pipeline takes care of downloading the databases and parameters required by AlphaFold2, Colabfold, ESMFold or RoseTTAFold-All-Atom. In case you have already downloaded the required files, you can skip this step by providing the path to the databases using the corresponding parameter [`--alphafold2_db`], [`--colabfold_db`], [`--esmfold_db`] or ['--rosettafold_all_atom_db']. Please refer to the [usage documentation](https://nf-co.re/proteinfold/usage) to check the directory structure you must provide for each database.
 
 - The typical command to run AlphaFold2 mode is shown below:
 
@@ -132,6 +138,30 @@ The pipeline takes care of downloading the databases and parameters required by 
       --esmfold_model_preset <monomer/multimer> \
       --esmfold_db <null (default) | PATH> \
       --num_recycles_esmfold 4 \
+      --use_gpu <true/false> \
+      -profile <docker/singularity/podman/shifter/charliecloud/conda/institute>
+  ```
+
+- The rosettafold_all_atom mode can be run using the command below:
+
+  ```console
+  nextflow run nf-core/proteinfold \
+      --input samplesheet.csv \
+      --outdir <OUTDIR> \
+      --mode rosettafold_all_atom \
+      --rosettafold_all_atom_db <null (default) | PATH> \
+      --use_gpu <true/false> \
+      -profile <docker/singularity/podman/shifter/charliecloud/conda/institute>
+  ```
+
+- The helixfold3 mode can be run using the command below:
+
+  ```console
+  nextflow run nf-core/proteinfold \
+      --input samplesheet.csv \
+      --outdir <OUTDIR> \
+      --mode helixfold3 \
+      --helixfold3_db <null (default) | PATH> \
       --use_gpu <true/false> \
       -profile <docker/singularity/podman/shifter/charliecloud/conda/institute>
   ```
