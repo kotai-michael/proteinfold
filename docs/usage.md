@@ -438,7 +438,7 @@ nextflow run nf-core/proteinfold \
       -profile <docker>
 ```
 
-```bash
+```console
 ## Optional parameters with default values:
     --max_template_date=2024-08-14
     --model_name allatom_demo
