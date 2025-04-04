@@ -9,7 +9,6 @@ process RUN_ALPHAFOLD2_PRED {
 
     input:
     tuple val(meta), path(fasta)
-    val   db_preset // TODO db_preset is not used, get rid of it
     val   alphafold2_model_preset
     path ('params/*')
     path ('bfd/*')
