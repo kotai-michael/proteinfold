@@ -9,6 +9,7 @@ process RUN_ALPHAFOLD2_PRED {
 
     input:
     tuple val(meta), path(fasta)
+    val   db_preset
     val   alphafold2_model_preset
     path ('params/*')
     path ('bfd/*')
