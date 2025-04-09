@@ -16,7 +16,7 @@ process RUN_ALPHAFOLD2 {
     path ('small_bfd/*')
     path ('mgnify/*')
     path ('pdb70/*')
-    path ('mmcif_files/*')
+    path ('mmcif_files')
     path ('obsolete_pdb/*')
     path ('uniref30/*')
     path ('uniref90/*')
