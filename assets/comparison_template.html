@@ -227,7 +227,7 @@
           class="hidden absolute top-0 right-0 m-6 py-6 px-10 shadow-md bg-gray-700 bg-opacity-40 text-white text-sm rounded leading-loose"
         ></div>
         <!-- Canvas buttons -->
-        <div id="canvas_button_container" class="flex-1 p-6 flex justify-center items-end bg-black gap-6 z-30"></div>
+        <div id="canvas_button_container" class="flex-1 p-6 flex justify-center items-end bg-white gap-6 z-30"></div>
         <!-- <div class="text-white mx-auto font-semibold pb-4">The top-ranked structures predicted by Alphafold</div> -->
       </div>
       <!-- Right panel -->
@@ -262,7 +262,7 @@
           <div class="text-2xl font-bold tracking-tight text-gray-900">Display</div>
           <div class="mt-2 flex flex-wrap gap-3">
             <button
-              class="btn selected w-28 rounded-md bg-white border border-gray-300 py-3 text-sm font-semibold text-gray-800 shadow-md hover:border-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-800"
+              class="btn w-28 rounded-md bg-white border border-gray-300 py-3 text-sm font-semibold text-gray-800 shadow-md hover:border-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-800"
               id="btn-toggle-spin"
               onclick="toggleSpin()"
             >
@@ -270,7 +270,7 @@
               Spin
             </button>
             <button
-              class="btn w-28 rounded-md bg-white border border-gray-300 py-3 text-sm font-semibold text-gray-800 shadow-md hover:border-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-800"
+              class="btn selected w-28 rounded-md bg-white border border-gray-300 py-3 text-sm font-semibold text-gray-800 shadow-md hover:border-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-800"
               id="btn-toggle-dark"
               onclick="toggleDark()"
             >
@@ -473,8 +473,8 @@
     let state = {
       models: [],
       colorScheme: "bfactor",
-      darkMode: true,
-      spin: true,
+      darkMode: false,
+      spin: false,
       loading: 1,
       selectedTab: 0,
     };
@@ -488,7 +488,7 @@
       // NGL.setDebug(true)
 
       // Create NGL Stage object
-      stage = new NGL.Stage("ngl-root", { backgroundColor: "black" });
+      stage = new NGL.Stage("ngl-root", { backgroundColor: "white" });
 
       // Handle window resizing
       window.addEventListener("resize", () => stage.handleResize());
