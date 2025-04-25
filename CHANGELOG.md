@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[#281](https://github.com/nf-core/proteinfold/issues/281)] - Fix how argument `--nv` is passed to apptainer and singularity in the config.
 - [[PR #283](https://github.com/nf-core/proteinfold/pull/283)] - Fixes to meet language server requirements and update link of the helixfold3 image.
 - [[PR #287](https://github.com/nf-core/proteinfold/pull/287)] - Fixes symlinking of every mmcif file causing excess I/O.
-- [[PR #294](https://github.com/nf-core/proteinfold/pull/294)] - Temporary fix for passing CI tests with Nextflow edge version.
+- [[PR #294](https://github.com/nf-core/proteinfold/pull/294)] - Temporary downgrade of schema for passing CI tests with Nextflow edge version.
 
 ### Parameters
 
