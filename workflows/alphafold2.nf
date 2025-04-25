@@ -118,7 +118,7 @@ workflow ALPHAFOLD2 {
 
         RUN_ALPHAFOLD2_PRED (
             ch_samplesheet,
-			alphafold2_model_preset,
+            alphafold2_model_preset,
             ch_alphafold2_params,
             ch_bfd,
             ch_small_bfd,
