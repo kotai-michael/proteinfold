@@ -276,13 +276,12 @@ def pdb_to_lddt(struct_files, generate_tsv):
             suffix = ".cif"
         else:
             raise NotImplementedError("Reporting only supported for .pdb and .cif filetypes")
-        
         structure = parser.get_structure("", struct_file)
 
         for residue in structure.get_residues():
             res_pLDDT_tot = 0
             res_atom_count = 0
-            
+
             for atom in residue.get_atoms():
                 res_atom_count +=1
                 res_pLDDT_tot += atom.get_bfactor()
