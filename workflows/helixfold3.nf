@@ -77,25 +77,21 @@ workflow HELIXFOLD3 {
     ch_top_ranked_pdb = ch_top_ranked_pdb.mix(RUN_HELIXFOLD3.out.top_ranked_pdb)
     ch_versions       = ch_versions.mix(RUN_HELIXFOLD3.out.versions)
 
-    ch_top_ranked_pdb
-        .map { [ it[0]["id"], it[0], it[1] ] }
-        .set { ch_top_ranked_pdb }
-
     ch_pdb
-        .join(ch_msa)
-        .map {
-            it[0]["model"] = "helixfold3"
-            it
-        }
-        .set { ch_pdb_msa }
+    .map{ 
+        meta = it[0].clone(); 
+        meta.model = "helixfold3";
+        [meta, it[1]]
+    }.set { ch_pdb_final }
 
-    ch_pdb_msa
-        .map { [ it[0]["id"], it[0], it[1], it[2] ] }
-        .set { ch_top_ranked_pdb }
+    ch_pdb_final
+        .combine(ch_dummy_file)
+        .map { [ it[0], it[2] ] }
+        .set { ch_msa_final }    
 
     emit:
-    top_ranked_pdb = ch_top_ranked_pdb // channel: [ id, /path/to/*.pdb ]
-    pdb_msa        = ch_pdb_msa        // channel: [ meta, /path/to/*.pdb, /path/to/*_coverage.png ]
+    pdb            = ch_pdb_final // channel: [ id, /path/to/*.pdb ]
+    msa            = ch_msa_final        // channel: [ meta, /path/to/*.pdb, /path/to/*_coverage.png ]
     multiqc_report = ch_multiqc_report // channel: /path/to/multiqc_report.html
     versions       = ch_versions       // channel: [ path(versions.yml) ]
 }

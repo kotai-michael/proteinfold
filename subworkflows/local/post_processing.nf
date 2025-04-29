@@ -35,12 +35,7 @@ workflow POST_PROCESSING {
     ch_multiqc_custom_config
     ch_multiqc_logo
     ch_multiqc_methods_description
-    ch_alphafold2_top_ranked_pdb
-    ch_colabfold_top_ranked_pdb
-    ch_esmfold_top_ranked_pdb
-    ch_rosettafold_all_atom_top_ranked_pdb
-    ch_helixfold3_top_ranked_pdb
-
+    
     main:
     ch_comparison_report_files = Channel.empty()
 
@@ -54,43 +49,48 @@ workflow POST_PROCESSING {
         ch_versions = ch_versions.mix(GENERATE_REPORT.out.versions)
 
         if (requested_modes_size > 1){
-            ch_comparison_report_files = ch_comparison_report_files.mix(ch_alphafold2_top_ranked_pdb
+            
+            ch_comparison_report_files = ch_comparison_report_files.mix(
+                ch_report_input
+                .filter{it[0]["model"] == "alphafold2"}
+                .map{[it[0], it[1]]}
                 .join(GENERATE_REPORT.out.sequence_coverage
                     .filter { it[0]["model"] == "alphafold2" }
-                    .map { [it[0]["id"], it[1]] }, remainder:true
+                    , remainder:true
                 )
             )
 
             ch_comparison_report_files = ch_comparison_report_files.mix(
-                ch_colabfold_top_ranked_pdb
+                ch_report_input
+                .filter{it[0]["model"] != "alphafold2"}
             )
-
-            ch_comparison_report_files = ch_comparison_report_files.mix(
-                ch_esmfold_top_ranked_pdb
-            )
-
-            ch_comparison_report_files = ch_comparison_report_files.mix(
-                ch_rosettafold_all_atom_top_ranked_pdb
-            )
-
-            ch_comparison_report_files = ch_comparison_report_files.mix(
-                ch_helixfold3_top_ranked_pdb
-            )
-
+            
             ch_comparison_report_files
+                .map{
+                    if (["alphafold2", "helixfold3", "colabfold"].contains(it[0].model)){
+                        [["id": it[0].id], it[0], it[1][0], it[2]]
+                    }else{
+                        [["id": it[0].id], it[0], it[1], it[2]]
+                    }
+                }
                 .groupTuple(by: [0], size: requested_modes_size)
-                .set { ch_comparison_report_input }
+                .map{
+                    it[0].models=it[1].join(',');
 
+                    [it[0], it[2], it[3]]
+                }
+                .set { ch_comparison_report_input }
+            
+            ch_comparison_report_input.view()
+            
             COMPARE_STRUCTURES(
                 ch_comparison_report_input
                     .map {
-                        it[1][0]["models"] = requested_modes.toLowerCase();
-                        [ it[1][0], it[2] ]
+                        [it[0], it[1] ]
                     },
                 ch_comparison_report_input
                     .map{
-                        it[1][0]["models"] = requested_modes.toLowerCase();
-                        [ it[1][0], it[3] ]
+                        [ it[0], it[2] ]
                     },
                 ch_comparison_template
             )
