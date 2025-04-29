@@ -72,7 +72,7 @@ workflow BOLTZ {
     }
     .set{ch_input}
     
-    if (msa_server == "local"){
+    if (!msa_server){
         MULTIFASTA_TO_CSV(
             ch_input.multimer
         )
