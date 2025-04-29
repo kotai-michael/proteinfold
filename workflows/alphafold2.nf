@@ -164,6 +164,7 @@ workflow ALPHAFOLD2 {
     .set{ch_msa_final}
     
     emit:
+    top_ranked_pdb  = ch_top_ranked_pdb
     pdb            = ch_pdb_final
     msa            = ch_msa_final        // channel: [ meta, /path/to/*.pdb, /path/to/*_coverage.png ]
     multiqc_report = ch_multiqc_report // channel: /path/to/multiqc_report.html

@@ -35,6 +35,7 @@ workflow POST_PROCESSING {
     ch_multiqc_custom_config
     ch_multiqc_logo
     ch_multiqc_methods_description
+    ch_top_ranked_model
     
     main:
     ch_comparison_report_files = Channel.empty()
@@ -51,7 +52,7 @@ workflow POST_PROCESSING {
         if (requested_modes_size > 1){
             
             ch_comparison_report_files = ch_comparison_report_files.mix(
-                ch_report_input
+                ch_top_ranked_model
                 .filter{it[0]["model"] == "alphafold2"}
                 .map{[it[0], it[1]]}
                 .join(GENERATE_REPORT.out.sequence_coverage
@@ -61,17 +62,16 @@ workflow POST_PROCESSING {
             )
 
             ch_comparison_report_files = ch_comparison_report_files.mix(
-                ch_report_input
+                ch_top_ranked_model
                 .filter{it[0]["model"] != "alphafold2"}
+                .join(
+                    ch_report_input.map{[it[0], it[2]]}
+                )
             )
             
             ch_comparison_report_files
                 .map{
-                    if (["alphafold2", "helixfold3", "colabfold"].contains(it[0].model)){
-                        [["id": it[0].id], it[0], it[1][0], it[2]]
-                    }else{
-                        [["id": it[0].id], it[0], it[1], it[2]]
-                    }
+                    [["id": it[0].id], it[0], it[1], it[2]]
                 }
                 .groupTuple(by: [0], size: requested_modes_size)
                 .map{
@@ -86,12 +86,13 @@ workflow POST_PROCESSING {
             COMPARE_STRUCTURES(
                 ch_comparison_report_input
                     .map {
-                        [it[0], it[1] ]
+                        [it[0], it[1].collect { it.name} ]
                     },
                 ch_comparison_report_input
                     .map{
-                        [ it[0], it[2] ]
+                        [ it[0], it[2].collect { it.name} ]
                     },
+                ch_comparison_report_input.map{(it[1] + it[2]).unique()},
                 ch_comparison_template
             )
             ch_versions = ch_versions.mix(COMPARE_STRUCTURES.out.versions)
@@ -100,13 +101,7 @@ workflow POST_PROCESSING {
 
     if (foldseek_search == "easysearch"){
         FOLDSEEK_EASYSEARCH(
-            ch_report_input
-                .map{
-                    if (it[0].model == "esmfold")
-                        [ it[0], it[1] ]
-                    else
-                        [ it[0], it[1][0] ]
-                    },
+            ch_top_ranked_model,
             ch_foldseek_db
         )
     }

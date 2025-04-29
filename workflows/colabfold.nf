@@ -110,14 +110,11 @@ workflow COLABFOLD {
     COLABFOLD_BATCH
         .out
         .top_ranked_pdb
-        .map { [ it[0]["id"], it[0], it[1] ] }
-        .join(
-            COLABFOLD_BATCH
-                .out
-                .msa
-                .map { [ it[0]["id"], it[1] ] },
-            remainder:true
-        )
+        .map{ 
+            meta = it[0].clone(); 
+            meta.model = "colabfold";
+            [meta, it[1]]
+        }
         .set { ch_top_ranked_pdb }
     
     COLABFOLD_BATCH
@@ -146,16 +143,9 @@ workflow COLABFOLD {
         .map { [ [ "model":"colabfold"], it.flatten() ] }
         .set { ch_multiqc_report  }
 
-    COLABFOLD_BATCH
-        .out
-        .multiqc
-
-    COLABFOLD_BATCH
-        .out
-        .multiqc
-        .collect()
-
+    
     emit:
+    top_ranked_pdb = ch_top_ranked_pdb
     pdb            = ch_pdb_final // channel: [ id, /path/to/*.pdb ]
     msa            = ch_msa_final       // channel: [ meta, /path/to/*.pdb, /path/to/*_coverage.png ]
     multiqc_report = ch_multiqc_report // channel: /path/to/multiqc_report.html
