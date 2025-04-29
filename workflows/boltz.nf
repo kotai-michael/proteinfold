@@ -42,7 +42,7 @@ include { RUN_BOLTZ } from '../modules/local/run_boltz'
 */
 
 workflow BOLTZ {
-    
+
     take:
     ch_samplesheet  // channel: samplesheet read from --input
     ch_versions     // channel: [ path(versions.yml) ]
@@ -57,13 +57,13 @@ workflow BOLTZ {
     main:
     ch_multiqc_files = Channel.empty()
     ch_boltz_in = Channel.empty()
-    
+
     ch_samplesheet.join(
         ch_samplesheet.map{[it[0], it[1].text.findAll {letter -> letter == ">" }.size()]}
     )
     .map{
         meta = it[0].clone();
-        meta.cnt = it[2]; 
+        meta.cnt = it[2];
         [meta, it[1]]
     }
     .branch{
@@ -71,13 +71,13 @@ workflow BOLTZ {
         monomer: it[0].cnt == 1
     }
     .set{ch_input}
-    
+
     if (!msa_server){
         MULTIFASTA_TO_CSV(
             ch_input.multimer
         )
         ch_versions = ch_versions.mix(MULTIFASTA_TO_CSV.out.versions)
-        
+
         MMSEQS_COLABFOLDSEARCH (
                 ch_input.monomer.mix(MULTIFASTA_TO_CSV.out.input_csv),
                 ch_colabfold_params,
@@ -85,12 +85,12 @@ workflow BOLTZ {
                 ch_uniref30
         )
         ch_versions = ch_versions.mix(MMSEQS_COLABFOLDSEARCH.out.versions)
-        
+
         SPLIT_MSA(
             MMSEQS_COLABFOLDSEARCH.out.a3m.filter{it[0].cnt > 1}
         )
         ch_versions = ch_versions.mix(SPLIT_MSA.out.versions)
-        
+
         BOLTZ_FASTA(
             ch_input.monomer
             .join(MMSEQS_COLABFOLDSEARCH.out.a3m.filter{it[0].cnt == 1})
@@ -110,7 +110,7 @@ workflow BOLTZ {
         ).map{[it[0], it[1], []]}
         .set{ch_boltz_in}
     }
-    
+
     RUN_BOLTZ(
         ch_boltz_in.map{[it[0], it[1]]},
         ch_boltz_in.map{it[2]},
@@ -123,13 +123,13 @@ workflow BOLTZ {
         .pdb
         .map{it[0].model = "boltz"; it}
         .set {ch_pdb}
-    
+
     RUN_BOLTZ
         .out
         .msa
     .map{it[0].model = "boltz"; it}
     .set {ch_msa}
-    
+
     RUN_BOLTZ
         .out
         .multiqc
@@ -137,7 +137,7 @@ workflow BOLTZ {
         .collect(sort: true)
         .map { [ [ "model": "boltz"], it.flatten() ] }
         .set { ch_multiqc_report  }
-    
+
     emit:
     versions        = ch_versions
     msa             = ch_msa
@@ -145,4 +145,4 @@ workflow BOLTZ {
     confidence      = RUN_BOLTZ.out.confidence
     multiqc_report  = ch_multiqc_report
     pdb             = ch_pdb
-} 
+}

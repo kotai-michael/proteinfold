@@ -148,21 +148,21 @@ workflow ALPHAFOLD2 {
     }
 
     ch_pdb
-    .map{ 
-        meta = it[0].clone(); 
+    .map{
+        meta = it[0].clone();
         meta.model = "alphafold2";
         [meta, it[1]]
     }
     .set{ch_pdb_final}
-    
+
     ch_msa
-    .map{ 
-        meta = it[0].clone(); 
+    .map{
+        meta = it[0].clone();
         meta.model = "alphafold2";
         [meta, it[1]]
     }
     .set{ch_msa_final}
-    
+
     emit:
     top_ranked_pdb  = ch_top_ranked_pdb
     pdb            = ch_pdb_final

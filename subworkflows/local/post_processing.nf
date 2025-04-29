@@ -36,7 +36,7 @@ workflow POST_PROCESSING {
     ch_multiqc_logo
     ch_multiqc_methods_description
     ch_top_ranked_model
-    
+
     main:
     ch_comparison_report_files = Channel.empty()
 
@@ -50,7 +50,6 @@ workflow POST_PROCESSING {
         ch_versions = ch_versions.mix(GENERATE_REPORT.out.versions)
 
         if (requested_modes_size > 1){
-            
             ch_comparison_report_files = ch_comparison_report_files.mix(
                 ch_top_ranked_model
                 .filter{it[0]["model"] == "alphafold2"}
@@ -68,7 +67,6 @@ workflow POST_PROCESSING {
                     ch_report_input.map{[it[0], it[2]]}
                 )
             )
-            
             ch_comparison_report_files
                 .map{
                     [["id": it[0].id], it[0], it[1], it[2]]
@@ -76,13 +74,10 @@ workflow POST_PROCESSING {
                 .groupTuple(by: [0], size: requested_modes_size)
                 .map{
                     it[0].models=it[1].join(',');
-
                     [it[0], it[2], it[3]]
                 }
                 .set { ch_comparison_report_input }
-            
-            ch_comparison_report_input.view()
-            
+
             COMPARE_STRUCTURES(
                 ch_comparison_report_input
                     .map {

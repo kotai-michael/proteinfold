@@ -149,7 +149,7 @@ workflow NFCORE_PROTEINFOLD {
         ch_multiqc                  = ch_multiqc.mix(ALPHAFOLD2.out.multiqc_report.collect())
         ch_versions                 = ch_versions.mix(ALPHAFOLD2.out.versions)
         ch_report_input             = ch_report_input.mix(ALPHAFOLD2.out.pdb.map{
-                                                    [it[0], 
+                                                    [it[0],
                                                     it[1].sort { path ->
                                                                 def filename = path.name
                                                                 def matcher = filename =~ /ranked_(\d+)\.pdb/
@@ -200,7 +200,7 @@ workflow NFCORE_PROTEINFOLD {
         ch_multiqc                  = ch_multiqc.mix(COLABFOLD.out.multiqc_report)
         ch_versions                 = ch_versions.mix(COLABFOLD.out.versions)
         ch_report_input             = ch_report_input.mix(COLABFOLD.out.pdb.map{
-                                            [it[0], 
+                                            [it[0],
                                             it[1].sort { path ->
                                                         def filename = path.name
                                                         def matcher = filename =~ /_relaxed_rank_(\d+)\.pdb/
@@ -345,7 +345,7 @@ workflow NFCORE_PROTEINFOLD {
         ch_multiqc                   = ch_multiqc.mix(HELIXFOLD3.out.multiqc_report.collect())
         ch_versions                  = ch_versions.mix(HELIXFOLD3.out.versions)
         ch_report_input              = ch_report_input.mix(HELIXFOLD3.out.pdb.map{
-                                                    [it[0], 
+                                                    [it[0],
                                                     it[1].sort { path ->
                                                                 def filename = path.name
                                                                 def matcher = filename =~ /ranked_(\d+)\.pdb/

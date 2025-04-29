@@ -75,18 +75,18 @@ workflow HELIXFOLD3 {
 
     ch_pdb            = ch_pdb.mix(RUN_HELIXFOLD3.out.pdb)
     ch_versions       = ch_versions.mix(RUN_HELIXFOLD3.out.versions)
-    
+
     RUN_HELIXFOLD3.out.top_ranked_pdb
-    .map{ 
-        meta = it[0].clone(); 
+    .map{
+        meta = it[0].clone();
         meta.model = "helixfold3";
         [meta, it[1]]
     }
     .set { ch_top_ranked_pdb }
 
     ch_pdb
-    .map{ 
-        meta = it[0].clone(); 
+    .map{
+        meta = it[0].clone();
         meta.model = "helixfold3";
         [meta, it[1]]
     }
@@ -95,7 +95,7 @@ workflow HELIXFOLD3 {
     ch_pdb_final
         .combine(ch_dummy_file)
         .map { [ it[0], it[2] ] }
-        .set { ch_msa_final }    
+        .set { ch_msa_final }
 
     emit:
     top_ranked_pdb = ch_top_ranked_pdb

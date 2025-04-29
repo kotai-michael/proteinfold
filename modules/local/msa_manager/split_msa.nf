@@ -21,7 +21,7 @@ process SPLIT_MSA {
 
     """
     msa_manager.py ${msa} -o output_msa
-        
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python3 --version | sed 's/Python //g')

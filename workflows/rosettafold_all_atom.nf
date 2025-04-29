@@ -57,8 +57,8 @@ workflow ROSETTAFOLD_ALL_ATOM {
     RUN_ROSETTAFOLD_ALL_ATOM
         .out
         .pdb
-        .map{ 
-            meta = it[0].clone(); 
+        .map{
+            meta = it[0].clone();
             meta.model = "rosettafold_all_atom";
             [meta, it[1]]
         }.set { ch_pdb_final }
@@ -66,7 +66,7 @@ workflow ROSETTAFOLD_ALL_ATOM {
     ch_pdb_final
         .combine(ch_dummy_file)
         .map { [ it[0], it[2] ] }
-        .set { ch_msa_final }    
+        .set { ch_msa_final }
 
     emit:
     msa            = ch_msa_final        // channel: [ meta, /path/to/*.pdb, dummy_file ]

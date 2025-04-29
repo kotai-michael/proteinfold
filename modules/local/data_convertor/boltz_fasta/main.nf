@@ -43,18 +43,18 @@ process BOLTZ_FASTA {
                 if msa[1:] not in msa_files:
                     print(f"Can not find msa file {os.path.basename(msa_files[counter])}")
                     exit(1)
-            
+
             fasta_data += f">{all_combinations[counter]}|{seq_type}{msa}\\n"
             counter += 1
         else:
             fasta_data += f"{line}\\n"
-    
+
     if len(fasta_data) > 0:
         with open(f"output_fasta/${meta.id}.fasta", "w") as outfile:
             outfile.write(fasta_data)
 
     with open ("versions.yml", "w") as version_file:
-	    version_file.write("\\"${task.process}\\":\\n    python: {}\\n".format(sys.version.split()[0].strip()))
+		version_file.write("\\"${task.process}\\":\\n    python: {}\\n".format(sys.version.split()[0].strip()))
     """
 
     stub:
