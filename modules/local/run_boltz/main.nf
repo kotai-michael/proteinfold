@@ -53,6 +53,7 @@ process RUN_BOLTZ {
     mkdir -p boltz_results_${meta.id}/processed/structures/
     mkdir -p boltz_results_${meta.id}/predictions/${meta.id}/
 
+    touch ${meta.id}_boltz.pdb
     touch boltz_results_${meta.id}/processed/msa/${meta.id}.npz
     touch boltz_results_${meta.id}/processed/structures/${meta.id}.npz
     touch boltz_results_${meta.id}/predictions/${meta.id}/confidence_${meta.id}.json
