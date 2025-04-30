@@ -51,7 +51,6 @@ workflow BOLTZ {
     ch_colabfold_params // channel: [ path(colabfold_params) ]
     ch_colabfold_db // channel: [ path(colabfold_db) ]
     ch_uniref30     // channel: [ path(uniref30) ]
-    ch_dummy_file   // channel: [ path(NO_FILE) ]
     msa_server
 
     main:
@@ -90,30 +89,28 @@ workflow BOLTZ {
             MMSEQS_COLABFOLDSEARCH.out.a3m.filter{it[0].cnt > 1}
         )
         ch_versions = ch_versions.mix(SPLIT_MSA.out.versions)
-
-        BOLTZ_FASTA(
-            ch_input.monomer
+        ch_input.monomer
             .join(MMSEQS_COLABFOLDSEARCH.out.a3m.filter{it[0].cnt == 1})
             .mix(
                 ch_input.multimer.join(SPLIT_MSA.out.msa_csv)
-            )
-        )
+            ).set{ch_prepare_fasta}
 
-        ch_boltz_in
-            .mix(BOLTZ_FASTA.out.formatted_fasta)
-            .set{ch_boltz_in}
     }else{
         ch_input
         .multimer
         .mix(ch_input
         .monomer
         ).map{[it[0], it[1], []]}
-        .set{ch_boltz_in}
+        .set{ch_prepare_fasta}
     }
 
+    BOLTZ_FASTA(
+            ch_prepare_fasta
+        )
+
     RUN_BOLTZ(
-        ch_boltz_in.map{[it[0], it[1]]},
-        ch_boltz_in.map{it[2]},
+        BOLTZ_FASTA.out.formatted_fasta.map{[it[0], it[1]]},
+        BOLTZ_FASTA.out.formatted_fasta.map{it[2]},
         ch_boltz_model,
         ch_boltz_ccd
     )

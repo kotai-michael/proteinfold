@@ -29,7 +29,6 @@ workflow ESMFOLD {
     ch_versions       // channel: [ path(versions.yml) ]
     ch_esmfold_params // directory: /path/to/esmfold/params/
     ch_num_recycles   // int: Number of recycles for esmfold
-    ch_dummy_file     // channel: [ path(NO_FILE) ]
 
     main:
     ch_multiqc_files = Channel.empty()
@@ -75,13 +74,7 @@ workflow ESMFOLD {
         .map { [ [ "model": "esmfold"], it.flatten() ] }
         .set { ch_multiqc_report  }
 
-    ch_pdb_final
-        .combine(ch_dummy_file)
-        .map { [ it[0], it[2] ] }
-        .set { ch_msa_final }
-
     emit:
-    msa            = ch_msa_final          // channel: [ meta, /path/to/*.pdb, dummy_file ]
     pdb            = ch_pdb_final   // channel: [ id, /path/to/*.pdb ]
     multiqc_report = ch_multiqc_report   // channel: /path/to/multiqc_report.html
     versions       = ch_versions         // channel: [ path(versions.yml) ]

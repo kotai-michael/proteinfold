@@ -20,7 +20,6 @@ if (params.mode.toLowerCase().split(",").contains("alphafold2")) {
     include { ALPHAFOLD2             } from './workflows/alphafold2'
 }
 if (params.mode.toLowerCase().split(",").contains("colabfold")) {
-    include { PREPARE_COLABFOLD_DBS } from './subworkflows/local/prepare_colabfold_dbs'
     include { COLABFOLD             } from './workflows/colabfold'
 }
 if (params.mode.toLowerCase().split(",").contains("esmfold")) {
@@ -36,11 +35,12 @@ if (params.mode.toLowerCase().split(",").contains("helixfold3")) {
     include { HELIXFOLD3                } from './workflows/helixfold3'
 }
 if (params.mode.toLowerCase().split(",").contains("boltz")) {
-    include { PREPARE_COLABFOLD_DBS } from './subworkflows/local/prepare_colabfold_dbs'
     include { PREPARE_BOLTZ_DBS } from './subworkflows/local/prepare_boltz_dbs'
     include { BOLTZ } from './workflows/boltz'
 }
-
+if (params.mode.toLowerCase().split(",").contains("colabfold") || params.mode.toLowerCase().split(",").contains("boltz")) {
+    include { PREPARE_COLABFOLD_DBS } from './subworkflows/local/prepare_colabfold_dbs'
+}
 include { PIPELINE_INITIALISATION          } from './subworkflows/local/utils_nfcore_proteinfold_pipeline'
 include { PIPELINE_COMPLETION              } from './subworkflows/local/utils_nfcore_proteinfold_pipeline'
 include { getColabfoldAlphafold2Params     } from './subworkflows/local/utils_nfcore_proteinfold_pipeline'
@@ -238,13 +238,12 @@ workflow NFCORE_PROTEINFOLD {
             ch_samplesheet,
             ch_versions,
             PREPARE_ESMFOLD_DBS.out.params,
-            params.num_recycles_esmfold,
-            ch_dummy_file
+            params.num_recycles_esmfold
         )
 
         ch_multiqc                = ch_multiqc.mix(ESMFOLD.out.multiqc_report.collect())
         ch_versions               = ch_versions.mix(ESMFOLD.out.versions)
-        ch_report_input           = ch_report_input.mix(ESMFOLD.out.pdb.join(ESMFOLD.out.msa))
+        ch_report_input           = ch_report_input.mix(ESMFOLD.out.pdb.combine(ch_dummy_file))
         ch_top_ranked_model       = ch_top_ranked_model.mix(ESMFOLD.out.pdb)
     }
 
@@ -277,12 +276,11 @@ workflow NFCORE_PROTEINFOLD {
             PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.bfd,
             PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.uniref30,
             PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.pdb100,
-            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.rfaa_paper_weights,
-            ch_dummy_file
+            PREPARE_ROSETTAFOLD_ALL_ATOM_DBS.out.rfaa_paper_weights
         )
         ch_multiqc                              = ch_multiqc.mix(ROSETTAFOLD_ALL_ATOM.out.multiqc_report.collect())
         ch_versions                             = ch_versions.mix(ROSETTAFOLD_ALL_ATOM.out.versions)
-        ch_report_input                         = ch_report_input.mix(ROSETTAFOLD_ALL_ATOM.out.pdb.join(ROSETTAFOLD_ALL_ATOM.out.msa))
+        ch_report_input                         = ch_report_input.mix(ROSETTAFOLD_ALL_ATOM.out.pdb.combine(ch_dummy_file))
         ch_top_ranked_model                     = ch_top_ranked_model.mix(ROSETTAFOLD_ALL_ATOM.out.pdb)
     }
 
@@ -355,7 +353,7 @@ workflow NFCORE_PROTEINFOLD {
                                                                     return 0  // fallback if no match
                                                                 }
                                                             }.subList(0, Math.min(5, it[1].size()))
-                                                    ]}.join(HELIXFOLD3.out.msa))
+                                                    ]}.combine(ch_dummy_file))
         ch_top_ranked_model          = ch_top_ranked_model.mix(HELIXFOLD3.out.top_ranked_pdb)
     }
 
@@ -392,7 +390,6 @@ workflow NFCORE_PROTEINFOLD {
             PREPARE_COLABFOLD_DBS.out.params,
             PREPARE_COLABFOLD_DBS.out.colabfold_db,
             PREPARE_COLABFOLD_DBS.out.uniref30,
-            ch_dummy_file,
             params.boltz_use_msa_server
         )
         ch_multiqc                  = ch_multiqc.mix(BOLTZ.out.multiqc_report)

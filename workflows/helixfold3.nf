@@ -43,7 +43,6 @@ workflow HELIXFOLD3 {
     ch_multiqc_files  = Channel.empty()
     ch_pdb            = Channel.empty()
     ch_top_ranked_pdb = Channel.empty()
-    ch_msa            = Channel.empty()
     ch_multiqc_report = Channel.empty()
 
     //
@@ -92,15 +91,9 @@ workflow HELIXFOLD3 {
     }
     .set { ch_pdb_final }
 
-    ch_pdb_final
-        .combine(ch_dummy_file)
-        .map { [ it[0], it[2] ] }
-        .set { ch_msa_final }
-
     emit:
     top_ranked_pdb = ch_top_ranked_pdb
     pdb            = ch_pdb_final // channel: [ id, /path/to/*.pdb ]
-    msa            = ch_msa_final        // channel: [ meta, /path/to/*.pdb, /path/to/*_coverage.png ]
     multiqc_report = ch_multiqc_report // channel: /path/to/multiqc_report.html
     versions       = ch_versions       // channel: [ path(versions.yml) ]
 }

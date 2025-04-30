@@ -34,7 +34,7 @@ process BOLTZ_FASTA {
     with open("${fasta}", "r") as f:
         lines = f.readlines()
     msa = ""
-    fasta_data = "key,sequence\\n"
+    fasta_data = ""
     for line in lines:
         line = line.strip()
         if line.startswith(">"):
