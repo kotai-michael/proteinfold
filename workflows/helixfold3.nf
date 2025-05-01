@@ -8,6 +8,7 @@
 // MODULE: Loaded from modules/local/
 //
 include { RUN_HELIXFOLD3 } from '../modules/local/run_helixfold3'
+include { FASTA2JSON } from '../modules/local/data_convertor/fasta2json'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,8 +49,17 @@ workflow HELIXFOLD3 {
     //
     // SUBWORKFLOW: Run helixfold3
     //
+    ch_samplesheet.branch {
+        fasta: it[1].extension == "fasta" || it[1].extension == "fa"
+        json: it[1].extension == "json"
+    }.set{ch_input}
+
+    FASTA2JSON(
+        ch_input.fasta
+    )
+
     RUN_HELIXFOLD3 (
-        ch_samplesheet,
+        ch_input.json.mix(FASTA2JSON.out.json),
         ch_helixfold3_uniclust30,
         ch_helixfold3_ccd_preprocessed,
         ch_helixfold3_rfam,
