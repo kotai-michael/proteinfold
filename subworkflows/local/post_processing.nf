@@ -78,6 +78,8 @@ workflow POST_PROCESSING {
                 }
                 .set { ch_comparison_report_input }
 
+            ch_comparison_report_input.view()
+
             COMPARE_STRUCTURES(
                 ch_comparison_report_input
                     .map {

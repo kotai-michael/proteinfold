@@ -50,8 +50,8 @@ process FASTA2JSON {
         else:
             fasta_data += f"{line}\\n"
 
-    with open(f"${meta.id}.json", "w") as json_file:
-        json.dump(data, json_file, indent=4, sort_keys=True)
+    with open("${meta.id}.json", "w") as json_file:
+        json.dump(final_res, json_file, indent=4, sort_keys=True)
 
     with open ("versions.yml", "w") as version_file:
         version_file.write("\\"${task.process}\\":\\n    python: {}\\n".format(sys.version.split()[0].strip()))
