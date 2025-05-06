@@ -13,6 +13,7 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     path ('UniRef30_2020_06/*')
     path ('pdb100_2021Mar03/*')
     path ('*')
+    path (files)
 
     output:
     tuple val(meta), path ("${meta.id}_rosettafold_all_atom.pdb"), emit: pdb
@@ -38,10 +39,10 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     --config-name "${fasta}" \
     $args
 
-    cp "${fasta.baseName}".pdb ./"${meta.id}"_rosettafold_all_atom.pdb
-    awk '{printf "%s\\t%.0f\\n", \$6, \$11 * 100}' "${meta.id}"_rosettafold_all_atom.pdb | uniq > plddt.tsv
-    echo -e Positions"\\t""${meta.id}"_rosettafold_all_atom.pdb > header.tsv
-    cat header.tsv plddt.tsv > "${meta.id}"_plddt_mqc.tsv
+    cp "${fasta.baseName}.pdb" "${meta.id}_rosettafold_all_atom.pdb"
+    awk '{printf "%s\\t%.0f\\n", \$6, \$11 * 100}' ${meta.id}_rosettafold_all_atom.pdb | uniq > plddt.tsv
+    echo -e Positions"\\t"${meta.id}_rosettafold_all_atom.pdb > header.tsv
+    cat header.tsv plddt.tsv > "${meta.id}_plddt_mqc.tsv"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -51,14 +52,14 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
 
     stub:
     """
-    touch ./"${meta.id}"_rosettafold_all_atom.pdb
-    touch ./"${meta.id}"_plddt_mqc.tsv
-    touch ./"${meta.id}"_aux.pt
-    touch ./"${meta.id}".pdb
+    touch ./${meta.id}_rosettafold_all_atom.pdb
+    touch ./${meta.id}_plddt_mqc.tsv
+    touch ./${meta.id}_aux.pt
+    touch ./${meta.id}.pdb
     touch ./header.tsv
     touch ./plddt.tsv
     mkdir ./outputs
-    mkdir ./"${meta.id}"
+    mkdir ./${meta.id}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

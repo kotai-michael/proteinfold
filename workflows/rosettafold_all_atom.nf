@@ -8,7 +8,7 @@
 // MODULE: Loaded from modules/local/
 //
 include { RUN_ROSETTAFOLD_ALL_ATOM } from '../modules/local/run_rosettafold_all_atom'
-
+include { FASTA2YAML } from '../modules/local/data_convertor/fasta2yaml'
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT NF-CORE MODULES/SUBWORKFLOWS
@@ -36,12 +36,26 @@ workflow ROSETTAFOLD_ALL_ATOM {
     ch_top_ranked_pdb = Channel.empty()
     ch_multiqc_report = Channel.empty()
 
+    ch_samplesheet.branch {
+        fasta: it[1].extension == "fasta" || it[1].extension == "fa"
+        yaml: it[1].extension == "yaml"
+    }.set{ch_input}
+
+    FASTA2YAML(
+        ch_input.fasta
+    )
+
+    ch_input.yaml.map{[it[0], it[1], []]}
+    .mix(FASTA2YAML.out.yaml.join(FASTA2YAML.out.fasta))
+    .set{ch_rosetta_all_atom_in}
+
     RUN_ROSETTAFOLD_ALL_ATOM (
-        ch_samplesheet,
+        ch_rosetta_all_atom_in.map{[it[0], it[1]]},
         ch_bfd,
         ch_uniref30,
         ch_pdb100,
-        ch_rfaa_paper_weights
+        ch_rfaa_paper_weights,
+        ch_rosetta_all_atom_in.map{it[2]}
     )
     ch_versions = ch_versions.mix(RUN_ROSETTAFOLD_ALL_ATOM.out.versions)
 
