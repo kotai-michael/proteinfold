@@ -18,7 +18,7 @@ process BOLTZ_FASTA {
 
     script:
     def args = task.ext.args ?: ''
-
+    def msa_files = msa ? "\"" + msa.join('", "') + "\"" : ""
     """
     #!/usr/bin/env python3
     import os, sys
@@ -27,7 +27,7 @@ process BOLTZ_FASTA {
     #    return "".join([c if c.isalnum() or c in ["_", ".", "-"] else "_" for c in file]) + ".a3m"
 
     all_combinations = list(string.ascii_uppercase) + list(string.ascii_lowercase) + [str(x) for x in range(0, 10)]
-    msa_files = ["${msa.join('", "')}"]
+    msa_files = [${msa_files}]
     seq_type = "protein"
     os.makedirs("output_fasta", exist_ok=True)
     counter = 0
