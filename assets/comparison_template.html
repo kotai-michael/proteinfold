@@ -40,20 +40,16 @@
         color: rgb(99 102 241 / var(--tw-bg-opacity));
       }
       .color_orange {
-        background-color: 
-          rgba(255, 165, 0, 1);
+        background-color: rgba(255, 165, 0, 1);
       }
       .color_yellow {
-        background-color: 
-          rgba(255, 255, 0, 1);
+        background-color: rgba(255, 255, 0, 1);
       }
       .color_cyan {
-        background-color: 
-          rgba(0, 255, 255, 1);
+        background-color: rgba(0, 255, 255, 1);
       }
       .color_blue {
-        background-color: 
-          rgba(0, 0, 255, 1);
+        background-color: rgba(0, 0, 255, 1);
       }
       .column {
         float: left;
@@ -179,48 +175,48 @@
           id="confidence-panel"
           class="hidden absolute w-56 top-0 right-0 m-6 p-6 shadow-md bg-gray-700 bg-opacity-40 rounded z-40"
         >
-        <div class="flex justify-center">
-          <div class="w-44">
-            <div class="w-44 h-7">
-              <div class="color_blue w-16 h-6 column"></div>
-              <div class="column text-white span ml-2">
-                <div>Very High</div>
+          <div class="flex justify-center">
+            <div class="w-44">
+              <div class="w-44 h-7">
+                <div class="color_blue w-16 h-6 column"></div>
+                <div class="column text-white span ml-2">
+                  <div>Very High</div>
+                </div>
               </div>
-            </div>
-            <div class="w-44 h-7">
-              <div class="color_cyan w-16 h-6 column"></div>
-              <div class="column text-white span ml-2">
-                <div>High</div>
+              <div class="w-44 h-7">
+                <div class="color_cyan w-16 h-6 column"></div>
+                <div class="column text-white span ml-2">
+                  <div>High</div>
+                </div>
               </div>
-            </div>
-            <div class="w-44 h-7">
-              <div class="color_yellow w-16 h-6 column"></div>
-              <div class="column text-white span ml-2">
-                <div>Low</div>
+              <div class="w-44 h-7">
+                <div class="color_yellow w-16 h-6 column"></div>
+                <div class="column text-white span ml-2">
+                  <div>Low</div>
+                </div>
               </div>
-            </div>
-            <div class="w-44 h-7">
-              <div class="color_orange w-16 h-6 column"></div>
-              <div class="column text-white span ml-2">
-                <div>Very Low</div>
+              <div class="w-44 h-7">
+                <div class="color_orange w-16 h-6 column"></div>
+                <div class="column text-white span ml-2">
+                  <div>Very Low</div>
+                </div>
               </div>
             </div>
           </div>
+          <div class="mt-2">
+            <p class="text-sm text-white">
+              Alphafold produces a
+              <a
+                class="text-indigo-400 hover:text-indigo-300 hover:underline hover:decoration-dotted"
+                href="https://alphafold.ebi.ac.uk/faq#faq-5"
+                target="_blank"
+              >
+                per-residue confidence score (pLDDT)
+              </a>
+              between 0 and 100. Some regions below 50 pLDDT may be unstructured in isolation.
+            </p>
+          </div>
         </div>
-        <div class="mt-2">
-          <p class="text-sm text-white">
-            Alphafold produces a
-            <a
-              class="text-indigo-400 hover:text-indigo-300 hover:underline hover:decoration-dotted"
-              href="https://alphafold.ebi.ac.uk/faq#faq-5"
-              target="_blank"
-            >
-              per-residue confidence score (pLDDT)
-            </a>
-            between 0 and 100. Some regions below 50 pLDDT may be unstructured in isolation.
-          </p>
-        </div>
-      </div>
         <!-- Legend -->
         <div
           id="legend"
@@ -431,11 +427,11 @@
         if (c < BREAK_ORANGE) {
           return 0xffa500;
         } else if (c < BREAK_YELLOW) {
-          return 0xffff00
+          return 0xffff00;
         } else if (c < BREAK_CYAN) {
-          return 0x00ffff
+          return 0x00ffff;
         } else {
-          return 0x0000ff
+          return 0x0000ff;
         }
       };
     });
@@ -445,6 +441,7 @@
 
     const LDDT_AVERAGES = [];
     const SEQ_COV_IMGS = [];
+    const SEQ_COV_METHODS = [];
     const MODELS = [];
 
     const MODELS_DATA = [
@@ -804,13 +801,7 @@
 
         const label = document.createElement("div");
         label.className = "font-semibold mb-2";
-
-        if (MODELS[index].includes("colabfold")) {
-          if (!MODELS[index + 1]) return;
-          label.textContent = MODELS[index + 1].replace(".pdb", "");
-        } else {
-          label.textContent = MODELS[index].replace(".pdb", "");
-        }
+        label.textContent = SEQ_COV_METHODS[index];
 
         const imgContainer = document.createElement("div");
         imgContainer.className = "w-[660px] h-auto p-6 bg-white shadow-md rounded items-center";
