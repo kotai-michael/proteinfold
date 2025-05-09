@@ -41,9 +41,7 @@ process RUN_HELIXFOLD3 {
     }
     def args = task.ext.args ?: ''
     """
-    ln -s /app/helixfold3/* .
-
-    mamba run --name helixfold python3.9 inference.py \
+    mamba run --name helixfold python3.9 /app/helixfold3/inference.py \
         --maxit_binary "./maxit_src/bin/maxit" \
         --jackhmmer_binary_path "jackhmmer" \
         --hhblits_binary_path "hhblits" \
