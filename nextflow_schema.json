@@ -170,19 +170,23 @@
                     "pattern": "^\\S+\\.csv$",
                     "description": "Path to comma-separated file containing information about the samples in the experiment.",
                     "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row. See [usage docs](https://nf-co.re/proteinfold/usage#samplesheet-input).",
-                    "fa_icon": "fas fa-file-csv"
+                    "fa_icon": "fas fa-file-csv",
+                    "errorMessage": "Input samplesheet must be a CSV file that exists. Please check the file path and format."
                 },
                 "outdir": {
                     "type": "string",
                     "format": "directory-path",
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "errorMessage": "Output directory path must be specified"
                 },
                 "mode": {
                     "type": "string",
                     "default": "alphafold2",
                     "description": "Specifies the mode in which the pipeline will be run. mode can be any combination of ['alphafold2', 'colabfold', 'esmfold'] separated by a comma (',') with no spaces.",
-                    "fa_icon": "fas fa-cogs"
+                    "fa_icon": "fas fa-cogs",
+                    "pattern": "^(alphafold2|colabfold|esmfold|rosettafold_all_atom|helixfold3|)(,(alphafold2|colabfold|esmfold|rosettafold_all_atom|helixfold3)?,?)*(?<!,)$",
+                    "errorMessage": "Mode must be a comma-separated list containing any combination of 'alphafold2', 'colabfold', 'esmfold', 'rosettafold_all_atom', or 'helixfold3'"
                 },
                 "use_gpu": {
                     "type": "boolean",
@@ -199,12 +203,15 @@
                     "description": "Email address for completion summary.",
                     "fa_icon": "fas fa-envelope",
                     "help_text": "Set this parameter to your e-mail address to get a summary e-mail with details of the run sent to you when the workflow exits. If set in your user config file (`~/.nextflow/config`) then you don't need to specify this on the command line for every run.",
-                    "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
+                    "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$",
+                    "errorMessage": "Please provide a valid email address"
                 },
                 "multiqc_title": {
                     "type": "string",
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
-                    "fa_icon": "fas fa-file-signature"
+                    "fa_icon": "fas fa-file-signature",
+                    "maxLength": 100,
+                    "errorMessage": "MultiQC title must be less than or equal to 100 characters"
                 }
             }
         },
@@ -218,14 +225,17 @@
                     "type": "string",
                     "default": "2020-05-14",
                     "description": "Maximum date of the PDB templates used by 'AlphaFold2' mode",
-                    "fa_icon": "fas fa-calendar-check"
+                    "fa_icon": "fas fa-calendar-check",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                    "errorMessage": "Date must be in YYYY-MM-DD format"
                 },
                 "alphafold2_db": {
                     "type": "string",
                     "format": "path",
                     "exists": true,
                     "description": "Specifies the DB and PARAMS path used by 'AlphaFold2' mode",
-                    "fa_icon": "fas fa-database"
+                    "fa_icon": "fas fa-database",
+                    "errorMessage": "Please provide a valid path to AlphaFold2 database"
                 },
                 "full_dbs": {
                     "type": "boolean",
@@ -262,7 +272,8 @@
                     "format": "path",
                     "exists": true,
                     "description": "Specifies the PARAMS and DB path used by 'colabfold'  mode",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "errorMessage": "Please provide a valid path to ColabFold database"
                 },
                 "colabfold_server": {
                     "type": "string",
@@ -289,7 +300,10 @@
                     "type": "integer",
                     "default": 3,
                     "description": "Number of recycles for Colabfold",
-                    "fa_icon": "fas fa-recycle"
+                    "fa_icon": "fas fa-recycle",
+                    "minimum": 1,
+                    "maximum": 20,
+                    "errorMessage": "Number of recycles must be a whole number between 1 and 20"
                 },
                 "use_amber": {
                     "type": "boolean",
@@ -302,12 +316,15 @@
                     "default": 0,
                     "description": "Specify the way that MMSeqs2 will load the required databases in memory",
                     "fa_icon": "fas fa-download",
-                    "enum": [0, 1, 2, 3]
+                    "enum": [0, 1, 2, 3],
+                    "errorMessage": "DB load mode must be 0, 1, 2, or 3"
                 },
                 "host_url": {
                     "type": "string",
                     "description": "Specify your custom MMSeqs2 API server url",
-                    "fa_icon": "fas fa-link"
+                    "fa_icon": "fas fa-link",
+                    "format": "uri",
+                    "errorMessage": "Please provide a valid URL for the MMSeqs2 API server"
                 },
                 "use_templates": {
                     "type": "boolean",
@@ -333,13 +350,17 @@
                     "format": "path",
                     "exists": true,
                     "description": "Specifies the PARAMS path used by 'esmfold' mode",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "errorMessage": "Please provide a valid path to ESMFold database"
                 },
                 "num_recycles_esmfold": {
                     "type": "integer",
                     "default": 4,
                     "description": "Specifies the number of recycles used by Esmfold",
-                    "fa_icon": "fas fa-server"
+                    "fa_icon": "fas fa-server",
+                    "minimum": 1,
+                    "maximum": 20,
+                    "errorMessage": "Number of recycles must be a whole number between 1 and 20"
                 },
                 "esmfold_model_preset": {
                     "type": "string",
@@ -738,7 +759,8 @@
                     "pattern": "^\\d+(\\.\\d+)?\\.?\\s*(K|M|G|T)?B$",
                     "default": "25.MB",
                     "fa_icon": "fas fa-file-upload",
-                    "hidden": true
+                    "hidden": true,
+                    "errorMessage": "File size must be specified with units (KB, MB, GB, TB)"
                 },
                 "monochrome_logs": {
                     "type": "boolean",
@@ -751,7 +773,9 @@
                     "description": "Incoming hook URL for messaging service",
                     "fa_icon": "fas fa-people-group",
                     "help_text": "Incoming hook URL for messaging service. Currently, MS Teams and Slack are supported.",
-                    "hidden": true
+                    "hidden": true,
+                    "format": "uri",
+                    "errorMessage": "Please provide a valid webhook URL"
                 },
                 "multiqc_config": {
                     "type": "string",
