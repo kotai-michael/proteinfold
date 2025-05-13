@@ -18,7 +18,8 @@ process RUN_HELIXFOLD3 {
     path ('pdb_seqres/*')
     path ('uniref90/*')
     path ('mgnify/*')
-    path ('pdb_mmcif/*')
+    path ('*')
+    path ('*')
     path ('init_models/*')
     path ('maxit_src')
 
@@ -40,29 +41,27 @@ process RUN_HELIXFOLD3 {
     }
     def args = task.ext.args ?: ''
     """
-    ln -s /app/helixfold3/* .
-
-    mamba run --name helixfold python3.9 inference.py \\
-        --maxit_binary "./maxit_src/bin/maxit" \\
-        --jackhmmer_binary_path "jackhmmer" \\
-        --hhblits_binary_path "hhblits" \\
-        --hhsearch_binary_path "hhsearch" \\
-        --kalign_binary_path "kalign" \\
-        --hmmsearch_binary_path "hmmsearch" \\
-        --hmmbuild_binary_path "hmmbuild" \\
-        --bfd_database_path="./bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt" \\
-        --small_bfd_database_path="./small_bfd/bfd-first_non_consensus_sequences.fasta" \\
-        --uniclust30_database_path="./uniclust30/uniclust30_2018_08" \\
-        --uniprot_database_path="./uniprot/uniprot.fasta" \\
-        --pdb_seqres_database_path="./pdb_seqres/pdb_seqres.txt" \\
-        --rfam_database_path="./Rfam-14.9_rep_seq.fasta" \\
-        --template_mmcif_dir="./pdb_mmcif/mmcif_files" \\
-        --obsolete_pdbs_path="./pdb_mmcif/obsolete.dat" \\
-        --ccd_preprocessed_path="./ccd_preprocessed_etkdg.pkl.gz" \\
-        --uniref90_database_path "./uniref90/uniref90.fasta" \\
-        --mgnify_database_path "./mgnify/mgy_clusters_2018_12.fa" \\
-        --input_json="${fasta}" \\
-        --output_dir="\$PWD" \\
+    mamba run --name helixfold python3.9 /app/helixfold3/inference.py \
+        --maxit_binary "./maxit_src/bin/maxit" \
+        --jackhmmer_binary_path "jackhmmer" \
+        --hhblits_binary_path "hhblits" \
+        --hhsearch_binary_path "hhsearch" \
+        --kalign_binary_path "kalign" \
+        --hmmsearch_binary_path "hmmsearch" \
+        --hmmbuild_binary_path "hmmbuild" \
+        --bfd_database_path="./bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt" \
+        --small_bfd_database_path="./small_bfd/bfd-first_non_consensus_sequences.fasta" \
+        --uniclust30_database_path="./uniclust30/uniclust30_2018_08" \
+        --uniprot_database_path="./uniprot/uniprot.fasta" \
+        --pdb_seqres_database_path="./pdb_seqres/pdb_seqres.txt" \
+        --rfam_database_path="./Rfam-14.9_rep_seq.fasta" \
+        --template_mmcif_dir="./mmcif_files" \
+        --obsolete_pdbs_path="./obsolete.dat" \
+        --ccd_preprocessed_path="./ccd_preprocessed_etkdg.pkl.gz" \
+        --uniref90_database_path "./uniref90/uniref90.fasta" \
+        --mgnify_database_path "./mgnify/mgy_clusters_2018_12.fa" \
+        --input_json="${fasta}" \
+        --output_dir="\$PWD" \
         $args
 
     cp ${fasta.baseName}/*-rank1/predicted_structure.pdb ./${meta.id}_helixfold3.pdb
