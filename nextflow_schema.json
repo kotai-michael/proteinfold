@@ -36,8 +36,8 @@
                     "default": "alphafold2",
                     "description": "Specifies the mode in which the pipeline will be run. mode can be any combination of ['alphafold2', 'colabfold', 'esmfold'] separated by a comma (',') with no spaces.",
                     "fa_icon": "fas fa-cogs",
-                    "pattern": "^(alphafold2|colabfold|esmfold|rosettafold_all_atom|helixfold3|)(,(alphafold2|colabfold|esmfold|rosettafold_all_atom|helixfold3)?,?)*(?<!,)$",
-                    "errorMessage": "Mode must be a comma-separated list containing any combination of 'alphafold2', 'colabfold', 'esmfold', 'rosettafold_all_atom', or 'helixfold3'"
+                    "pattern": "^(alphafold2|colabfold|esmfold|rosettafold_all_atom|helixfold3|boltz|)(,(alphafold2|colabfold|esmfold|rosettafold_all_atom|helixfold3|boltz)?,?)*(?<!,)$",
+                    "errorMessage": "Mode must be a comma-separated list containing any combination of 'alphafold2', 'colabfold', 'esmfold', 'rosettafold_all_atom', boltz, or 'helixfold3'"
                 },
                 "use_gpu": {
                     "type": "boolean",
