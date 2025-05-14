@@ -8,12 +8,12 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     container "nf-core/proteinfold_rosettafold_all_atom:dev"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(yaml)
     path ('bfd/*')
     path ('UniRef30_2020_06/*')
     path ('pdb100_2021Mar03/*')
     path ('*')
-    path (files)
+    path (fasta_files)
 
     output:
     tuple val(meta), path ("${meta.id}_rosettafold_all_atom.pdb"), emit: pdb
@@ -34,10 +34,10 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     """
     mamba run --name RFAA python /app/RoseTTAFold-All-Atom/rf2aa/run_inference.py \
     --config-dir /app/RoseTTAFold-All-Atom/rf2aa/config/inference \
-    --config-name "${fasta}" \
+    --config-name "${yaml}" \
     $args
 
-    cp "${fasta.baseName}.pdb" "${meta.id}_rosettafold_all_atom.pdb"
+    cp "${yaml.baseName}.pdb" "${meta.id}_rosettafold_all_atom.pdb"
     awk '{printf "%s\\t%.0f\\n", \$6, \$11 * 100}' ${meta.id}_rosettafold_all_atom.pdb | uniq > plddt.tsv
     echo -e Positions"\\t"${meta.id}_rosettafold_all_atom.pdb > header.tsv
     cat header.tsv plddt.tsv > "${meta.id}_plddt_mqc.tsv"

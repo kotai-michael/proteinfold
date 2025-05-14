@@ -178,6 +178,7 @@ def align_structures_v1(structures):
 
     return aligned_structures
 
+
 def align_structures(structures):
 
     if not structures:
@@ -200,18 +201,19 @@ def align_structures(structures):
     # TODO: do we want to raise and error if the structures are not identical atomically, or keep the ability to sub-align?
     # Update the atoms shared between structures with progressive intersections
     common_atoms = get_atom_ids(ref_structure)
+    print("commons: ", len(common_atoms))
     for structure in parsed_structures[1:]:
         common_atoms.intersection_update(get_atom_ids(structure))
+        print("commons: ", len(common_atoms))
 
     if not common_atoms:
         raise ValueError("No common atoms found between structures.")
-
+    #print(common_atoms)
     def extract_atoms(structure, atom_ids):
         # Note: this comprehension returns an atom *object* for each atom in the structure
         return [atom for atom in structure.get_atoms() if (atom.get_parent().get_id(), atom.name) in atom_ids]
 
     ref_atoms = extract_atoms(ref_structure, common_atoms)
-
     # The aligned structures will be the parsed structures aligned to the common atoms of the reference structure
     super_imposer = PDB.Superimposer()
     aligned_structures = []
@@ -220,14 +222,15 @@ def align_structures(structures):
         if idx == 0:
             aligned_structures.append(structure)
             continue
-
         target_atoms = extract_atoms(structure, common_atoms)
+        print(len(ref_atoms), len(target_atoms), len(common_atoms))
         super_imposer.set_atoms(ref_atoms, target_atoms)
         super_imposer.apply(structure.get_atoms())
 
         io = PDB.PDBIO()
         io.set_structure(structure)
-        aligned_structures.append(structure)
+        io.save(f"aligned_structure_{idx}.pdb")
+        aligned_structures.append(f"aligned_structure_{idx}.pdb")
 
     # Technically, parsed_structures now also points to the same aligned structures, but I've kept for readability
     return aligned_structures
@@ -307,15 +310,16 @@ print("generating html report...")
 
 # Preprocess "esmfold" PDB files, to reset residues on additional chains
 processed_pdbs = [
-    (pdb_file.replace(".pdb", "_align_residues.pdb") if "esmfold" in pdb_file else pdb_file)
-    for pdb_file in args.pdb
+    pdb_file.replace(".pdb", "_aligned.pdb") for pdb_file in args.pdb
 ]
 
-for pdb_file, output_pdb in zip(args.pdb, processed_pdbs):
-    if "esmfold" in pdb_file:
-        reset_residue_numbers(pdb_file, output_pdb)
+for pdb_file in args.pdb:
+    print("Reseting", pdb_file, " into ", pdb_file.replace(".pdb", "_aligned.pdb"))
+    reset_residue_numbers(pdb_file, pdb_file.replace(".pdb", "_aligned.pdb"))
 
 structures = processed_pdbs  # Use the final processed list
+print("reference structure:", processed_pdbs[0])
+print("target structures:", ",".join(processed_pdbs[1:]))
 aligned_structures = align_structures(structures)
 
 io = PDB.PDBIO()
@@ -324,14 +328,14 @@ io.set_structure(aligned_structures[0])
 io.save(ref_structure_path)
 aligned_structures[0] = ref_structure_path
 
-alphafold_template = open(args.html_template, "r").read()
-alphafold_template = alphafold_template.replace("*sample_name*", args.name)
-alphafold_template = alphafold_template.replace("*prog_name*", args.in_type)
+comparision_template = open(args.html_template, "r").read()
+comparision_template = comparision_template.replace("*sample_name*", args.name)
+comparision_template = comparision_template.replace("*prog_name*", args.in_type)
 
 args_pdb_array_js = (
     "const MODELS = [" + ",\n".join([f'"{model}"' for model in structures]) + "];"
 )
-alphafold_template = alphafold_template.replace("const MODELS = [];", args_pdb_array_js)
+comparision_template = comparision_template.replace("const MODELS = [];", args_pdb_array_js)
 
 seq_cov_imgs = []
 seq_cov_methods = []
@@ -348,25 +352,25 @@ for msa, pdb in zip(args.msa, args.pdb):
 args_msa_array_js = (
     f"""const SEQ_COV_IMGS = [{", ".join([f'"{img}"' for img in seq_cov_imgs])}];"""
 )
-alphafold_template = alphafold_template.replace(
+comparision_template = comparision_template.replace(
     "const SEQ_COV_IMGS = [];", args_msa_array_js
 )
 #MSA IMAGE LABELS
 args_msa_method_array_js = (
     f"""const SEQ_COV_METHODS = [{", ".join([f'"{method}"' for method in seq_cov_methods])}];"""
 )
-alphafold_template = alphafold_template.replace(
+comparision_template = comparision_template.replace(
     "const SEQ_COV_METHODS = [];", args_msa_method_array_js
 )
 
 averages_js_array = f"const LDDT_AVERAGES = {lddt_averages};"
-alphafold_template = alphafold_template.replace(
+comparision_template = comparision_template.replace(
     "const LDDT_AVERAGES = [];", averages_js_array
 )
 
 i = 0
 for structure in aligned_structures:
-    alphafold_template = alphafold_template.replace(
+    comparision_template = comparision_template.replace(
         f"*_data_ranked_{i}.pdb*", open(structure, "r").read().replace("\n", "\\n")
     )
     i += 1
@@ -376,11 +380,11 @@ with open(
     "r",
 ) as in_file:
     lddt_html = in_file.read()
-    alphafold_template = alphafold_template.replace(
+    comparision_template = comparision_template.replace(
         '<div id="lddt_placeholder"></div>', lddt_html
     )
 
 with open(
     f"{args.output_dir}/{args.name}_{args.in_type.lower()}_report.html", "w"
 ) as out_file:
-    out_file.write(alphafold_template)
+    out_file.write(comparision_template)
