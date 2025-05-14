@@ -45,7 +45,7 @@ On release, automated continuous integration tests run the pipeline on a full-si
 
    vii. [HelixFold3](https://github.com/PaddlePaddle/PaddleHelix/tree/dev/apps/protein_folding/helixfold3) - Regular HF3
 
-   viii. [Boltz](https://github.com/jwohlwend/boltz/) - Regular Boltz1
+   viii. [Boltz](https://github.com/jwohlwend/boltz/) - Regular Boltz-1
 
 ## Usage
 
