@@ -422,7 +422,6 @@ workflow NFCORE_PROTEINFOLD {
     ch_report_template     = Channel.value(file("$projectDir/assets/report_template.html", checkIfExists: true))
     ch_comparison_template = Channel.value(file("$projectDir/assets/comparison_template.html", checkIfExists: true))
 
-    ch_report_input.view()
     POST_PROCESSING(
         params.skip_visualisation,
         params.mode,

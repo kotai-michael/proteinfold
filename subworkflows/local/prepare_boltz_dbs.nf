@@ -7,7 +7,6 @@ include {
         ARIA2 as ARIA2_BOLTZ_MODEL } from '../../modules/nf-core/aria2/main'
 
 workflow PREPARE_BOLTZ_DBS {
-    // TODO: Implement
     take:
     boltz_ccd
     boltz_model

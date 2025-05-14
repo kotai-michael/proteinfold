@@ -9,6 +9,7 @@ process FASTA2YAML {
 
     input:
     tuple val(meta), path(fasta)
+
     output:
     tuple val(meta), path ("*.yaml"), emit: yaml
     tuple val(meta), path ("out_fasta/*.fasta"), emit: fasta
