@@ -9,9 +9,10 @@ process BOLTZ_FASTA {
 
     input:
     tuple val(meta), path(fasta), path(msa)
+
     output:
     tuple val(meta), path ("output_fasta/*.fasta"), path(msa), emit: formatted_fasta
-    path "versions.yml"        , emit: versions
+    path "versions.yml"                                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

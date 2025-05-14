@@ -75,12 +75,6 @@ workflow NFCORE_PROTEINFOLD {
 
     main:
     ch_samplesheet                          = samplesheet
-    ch_alphafold_top_ranked_pdb             = Channel.empty()
-    ch_colabfold_top_ranked_pdb             = Channel.empty()
-    ch_esmfold_top_ranked_pdb               = Channel.empty()
-    ch_rosettafold_all_atom_top_ranked_pdb  = Channel.empty()
-    ch_helixfold3_top_ranked_pdb            = Channel.empty()
-    ch_boltz_pdb_msa                        = Channel.empty()
     ch_multiqc                              = Channel.empty()
     ch_versions                             = Channel.empty()
     ch_report_input                         = Channel.empty()
@@ -422,7 +416,6 @@ workflow NFCORE_PROTEINFOLD {
     ch_report_template     = Channel.value(file("$projectDir/assets/report_template.html", checkIfExists: true))
     ch_comparison_template = Channel.value(file("$projectDir/assets/comparison_template.html", checkIfExists: true))
 
-    ch_report_input.view()
     POST_PROCESSING(
         params.skip_visualisation,
         params.mode,

@@ -45,7 +45,7 @@ On release, automated continuous integration tests run the pipeline on a full-si
 
    vii. [HelixFold3](https://github.com/PaddlePaddle/PaddleHelix/tree/dev/apps/protein_folding/helixfold3) - Regular HF3
 
-   viii. [Boltz](https://github.com/jwohlwend/boltz/) - Regular Boltz1
+   viii. [Boltz](https://github.com/jwohlwend/boltz/) - Regular Boltz-1
 
 ## Usage
 
@@ -180,7 +180,6 @@ The pipeline takes care of downloading the databases and parameters required by 
       --use_gpu <true/false> \
       -profile <docker/singularity/podman/shifter/charliecloud/conda/institute>
   ```
-
 
 > [!WARNING]
 > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/usage/getting_started/configuration#custom-configuration-files).
