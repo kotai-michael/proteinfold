@@ -648,16 +648,20 @@
             "type": "object",
             "fa_icon": "fas fa-database",
             "description": "Paths used to provide model paths and weight paths to Boltz",
-
             "properties": {
+                "boltz_db": {
+                    "type": "string",
+                    "description": "Path to boltz databases",
+                    "icon": "fas folder-open"
+                },
                 "boltz_ccd_path": {
                     "type": "string",
-                    "description": "Path to CCD path",
+                    "description": "Path to CCD file",
                     "icon": "fas folder-open"
                 },
                 "boltz_model_path": {
                     "type": "string",
-                    "description": "Path to Model path",
+                    "description": "Path to boltz Model file",
                     "icon": "fas folder-open"
                 }
             }
