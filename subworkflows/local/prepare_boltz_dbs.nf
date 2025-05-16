@@ -44,5 +44,3 @@ workflow PREPARE_BOLTZ_DBS {
     boltz_model  = ch_boltz_model
     versions     = ch_versions
 }
-
-
