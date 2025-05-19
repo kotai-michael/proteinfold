@@ -87,13 +87,21 @@ def read_pkl(id, pkl_files):
     # AlphaFold2.3 non-summary, for each pkl. TODO: Need to either read in ranking_debug.json to get the ranking order, or do it later in the workflow.
         else:
             model_id = os.path.basename(pkl_file).replace("result_model_", "").replace(".pkl", "")
-            write_tsv(f"{id}_{model_id}_lddt.tsv", format_msa_rows(data["plddt"]))
+            #write_tsv(f"{id}_{model_id}_lddt.tsv", format_msa_rows(data["plddt"]))
 
             if 'predicted_aligned_error' not in data.keys():
                 print(f"No PAE output in {pkl_file}, it was likely a monomer calculation")
-                write_tsv(f"{id}_{model_id}_pae.tsv", None)
             else:
                 write_tsv(f"{id}_{model_id}_pae.tsv", format_pae_rows(data["predicted_aligned_error"]))
+
+            if 'ptm' not in data.keys():
+                print(f"No pTM/iPTM output in {pkl_file}, it was likely a monomer calculation")
+            else:
+                with open(f"{id}_{model_id}_ptm.tsv", 'w') as f:
+                    f.write(str(np.round(data['ptm'],3)))
+                with open(f"{id}_{model_id}_iptm.tsv", 'w') as f:
+                    f.write(str(np.round(data['iptm'],3)))
+
 
 def read_a3m(id, a3m_files):
     # ColabFold, RosettaFold-All-Atom, Boltz-1
@@ -139,7 +147,6 @@ def main():
     parser.add_argument("--pts", dest="pts", required=False, nargs="+") # For read RFAA pytorch model to get PAE data
     parser.add_argument("--structs", dest="structs", required=False, nargs="+")
     parser.add_argument("--name", default="untitled", dest="name") # might need a --name $meta.id
-    parser.add_argument("--output_dir", default=".", dest="output_dir")
     args = parser.parse_args()
 
     if args.pkls:
