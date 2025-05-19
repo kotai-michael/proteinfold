@@ -129,12 +129,13 @@ def read_json(id, json_files):
             #AF3 output with PAE info, or HF3 PAE data. TODO: Need to make sure the workflow points to [protein]/[protein]_rank1/all_results.json
         
         # TODO: I think I need to capture model_id and inference_id 
-            if 'alphafold2_multimer_v3' or '_alphafold2_ptm_model_' in json_file: # ColabFold, multimer or monomer
+            if '_alphafold2_ptm_model_' in json_file: # ColabFold, multimer or monomer
             # Might want to cut more if I just want ${meta.id}_[metric].tsv
                 model_id = os.path.basename(json_file)
                 print(model_id) 
-            if 'all_results' in json_file: # Individual predictions in HF3 
-                model_id = os.path.dirname(json_file).split('-')[3] 
+            if 'all_results' in json_file: # Individual predictions in HF3
+                # TODO: iPTM is 0 in some HF3 files. Check that's just no the one case 
+                model_id = os.path.dirname(json_file).split('-rank')[1] #Use re-ranked output 
             
             if "pae" not in data.keys():
                 print(f"No PAE output in {json_file}, it was likely a monomer calculation")
