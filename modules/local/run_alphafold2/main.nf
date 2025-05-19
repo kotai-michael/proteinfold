@@ -27,7 +27,7 @@ process RUN_ALPHAFOLD2 {
     path ("${fasta.baseName}*")
     tuple val(meta), path ("${meta.id}_alphafold2.pdb")    , emit: top_ranked_pdb
     tuple val(meta), path ("${fasta.baseName}/ranked*.pdb"), emit: pdb
-    // TODO: re-label multiqc -> plddt so multiqc channel can take in all metrics 
+    // TODO: re-label multiqc -> plddt so multiqc channel can take in all metrics
     tuple val(meta), path ("${meta.id}_plddt.tsv")         , emit: multiqc
     tuple val(meta), path ("${meta.id}_msa.tsv")           , emit: msa
     // TODO: alphafold2_model_preset == "monomer" the pae file won't exist.
