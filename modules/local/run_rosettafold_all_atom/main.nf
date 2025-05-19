@@ -41,9 +41,9 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     $args
 
     mamba run --name RFAA extract_metrics.py --name ${meta.id} \\
-      --structs "${yaml.baseName}_rosettafold_all_atom.pdb" \\
-      --a3ms "${yaml.baseName}/A/t000_.msa0.a3m" \\
-      --pts ${yaml.baseName}_aux.pt
+        --structs "${yaml.baseName}_rosettafold_all_atom.pdb" \\
+        --a3ms "${yaml.baseName}/A/t000_.msa0.a3m" \\
+        --pts ${yaml.baseName}_aux.pt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
