@@ -58,8 +58,8 @@ process RUN_ALPHAFOLD2_PRED {
     cp "${fasta.baseName}"/ranked_0.pdb ./"${meta.id}"_alphafold2.pdb
 
     extract_metrics.py --name ${meta.id} \\
-      --pkls ${features} \\
-      --structs ${fasta.baseName}/ranked*.pdb
+        --pkls ${features} \\
+        --structs ${fasta.baseName}/ranked*.pdb
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
