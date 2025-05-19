@@ -34,15 +34,13 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
         error("Local RUN_ROSETTAFOLD_ALL_ATOM module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
-    def VERSION = '1.2.0dev' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     mamba run --name RFAA python /app/RoseTTAFold-All-Atom/rf2aa/run_inference.py \
     --config-dir /app/RoseTTAFold-All-Atom/rf2aa/config/inference \
     --config-name "${yaml}" \
     $args
 
-    extract_metrics.py --name ${meta.id} \\
+    mamba run --name RFAA extract_metrics.py --name ${meta.id} \\
       --structs "${yaml.baseName}_rosettafold_all_atom.pdb" \\
       --a3ms "${yaml.baseName}/A/t000_.msa0.a3m" \\
       --pts ${yaml.baseName}_aux.pt
