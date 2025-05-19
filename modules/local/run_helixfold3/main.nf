@@ -73,7 +73,7 @@ process RUN_HELIXFOLD3 {
     extract_output.py --name ${meta.id} \\
         --structs "${fasta.baseName}/${fasta.baseName}-rank*/predicted_structure.pdb" \\
         --pkls "${fasta.baseName}/final_features.pkl" \\
-        --jsons "${fasta.baseName}-rank*/all_results.json" 
+        --jsons "${fasta.baseName}-rank*/all_results.json"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
