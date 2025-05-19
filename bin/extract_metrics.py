@@ -127,8 +127,28 @@ def read_json(id, json_files):
                 msa_rows = [[str(AA_to_int.get(residue, 20)) for residue in line] for line in msa_lines]
                 write_tsv(f"{id}_msa.tsv", msa_rows)
             #AF3 output with PAE info, or HF3 PAE data. TODO: Need to make sure the workflow points to [protein]/[protein]_rank1/all_results.json
-            elif "pae" in data:
+        
+        # TODO: I think I need to capture model_id and inference_id 
+            if 'alphafold2_multimer_v3' or '_alphafold2_ptm_model_' in json_file: # ColabFold, multimer or monomer
+            # Might want to cut more if I just want ${meta.id}_[metric].tsv
+                model_id = os.path.basename(json_file)
+                print(model_id) 
+            if 'all_results' in json_file: # Individual predictions in HF3 
+                model_id = os.path.dirname(json_file).split('-')[3] 
+            
+            if "pae" not in data.keys():
+                print(f"No PAE output in {json_file}, it was likely a monomer calculation")
+            else:
                 write_tsv(f"{id}_{idx}_pae.tsv", format_pae_rows(data["pae"]))
+
+            if "ptm" not in data.keys():
+                print(f"No pTM/ipTM output in {json_file}, it was likely a monomer calculation")
+            else:
+                with open(f"{id}_{model_id}_ptm.tsv", 'w') as f:
+                    f.write(str(np.round(data['ptm'],3)))
+                with open(f"{id}_{model_id}_iptm.tsv", 'w') as f:
+                    f.write(str(np.round(data['iptm'],3)))
+
 
 def read_pt(id, pt_files):
     for pt_file in pt_files:
