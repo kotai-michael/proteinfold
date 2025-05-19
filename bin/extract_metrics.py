@@ -136,6 +136,9 @@ def read_json(id, json_files):
             if 'all_results' in json_file: # Individual predictions in HF3
                 # TODO: iPTM is 0 in some HF3 files. Check that's just no the one case 
                 model_id = os.path.dirname(json_file).split('-rank')[1] #Use re-ranked output 
+            if 'predictions' in json_file: # Boltz-1 confidences in predictions/[protein]/confidence_[protein]_model_*.json 
+            # TODO: haven't tested this for multiple models with --diffusion_samples
+                model_id = os.path.basename(json_file).split('_model_')[1]
             
             if "pae" not in data.keys():
                 print(f"No PAE output in {json_file}, it was likely a monomer calculation")
