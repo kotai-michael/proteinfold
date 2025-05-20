@@ -35,8 +35,6 @@ workflow POST_PROCESSING {
     ch_multiqc_custom_config
     ch_multiqc_logo
     ch_multiqc_methods_description
-    // TODO remove after fixing
-    ch_alphafold3_top_ranked_pdb
     ch_top_ranked_model
 
     main:

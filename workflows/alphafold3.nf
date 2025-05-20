@@ -103,7 +103,11 @@ workflow ALPHAFOLD3 {
         MMCIF2PDB_TOP_RANKED
             .out
             .pdb
-            .map { [ it[0]["id"], it[0], it[1] ] }
+            .map{
+                meta = it[0].clone();
+                meta.model = "alphafold3";
+                [ meta, it[1] ]
+            }   
             .set { ch_top_ranked_pdb }
 
         // TODO: Update once msa are obtained from alphafold3 either in a separate process or

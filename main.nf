@@ -78,14 +78,6 @@ workflow NFCORE_PROTEINFOLD {
 
     main:
     ch_samplesheet                          = samplesheet
-    // TODO get rid of it after fixing
-    ch_alphafold2_top_ranked_pdb            = Channel.empty()
-    ch_alphafold3_top_ranked_pdb            = Channel.empty()
-    ch_colabfold_top_ranked_pdb             = Channel.empty()
-    ch_esmfold_top_ranked_pdb               = Channel.empty()
-    ch_rosettafold_all_atom_top_ranked_pdb  = Channel.empty()
-    ch_helixfold3_top_ranked_pdb            = Channel.empty()
-    // TODO get rid of it after fixing
     ch_multiqc                              = Channel.empty()
     ch_versions                             = Channel.empty()
     ch_report_input                         = Channel.empty()
@@ -168,6 +160,7 @@ workflow NFCORE_PROTEINFOLD {
                                                             }.subList(0, Math.min(5, it[1].size()))
                                                     ]}
                                                     .join(ALPHAFOLD2.out.msa))
+
         ch_top_ranked_model         = ch_top_ranked_model.mix(ALPHAFOLD2.out.top_ranked_pdb)
     }
 
@@ -212,10 +205,11 @@ workflow NFCORE_PROTEINFOLD {
             PREPARE_ALPHAFOLD3_DBS.out.uniprot,
             ch_dummy_file
         )
-        ch_alphafold3_top_ranked_pdb = ALPHAFOLD3.out.top_ranked_pdb
-        ch_multiqc                   = ch_multiqc.mix(ALPHAFOLD3.out.multiqc_report.collect())
-        ch_versions                  = ch_versions.mix(ALPHAFOLD3.out.versions)
-        ch_report_input              = ch_report_input.mix(ALPHAFOLD3.out.pdb_msa)
+
+        ch_multiqc          = ch_multiqc.mix(ALPHAFOLD3.out.multiqc_report.collect())
+        ch_versions         = ch_versions.mix(ALPHAFOLD3.out.versions)    
+        ch_report_input     = ch_report_input.mix(ALPHAFOLD3.out.pdb_msa)
+        ch_top_ranked_model = ch_top_ranked_model.mix(ALPHAFOLD3.out.top_ranked_pdb)
     }
 
     //
@@ -266,6 +260,7 @@ workflow NFCORE_PROTEINFOLD {
                                                     }.subList(0, Math.min(5, it[1].size()))
                                             ]}
                                             .join(COLABFOLD.out.msa))
+
         ch_top_ranked_model         = ch_top_ranked_model.mix(COLABFOLD.out.top_ranked_pdb)
     }
 
@@ -493,8 +488,6 @@ workflow NFCORE_PROTEINFOLD {
         ch_multiqc_custom_config,
         ch_multiqc_logo,
         ch_multiqc_methods_description,
-        // TODO remove after fixing
-        ch_alphafold3_top_ranked_pdb,
         ch_top_ranked_model
     )
 
