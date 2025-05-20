@@ -36,8 +36,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[#273](https://github.com/nf-core/proteinfold/issues/273)] - Fixes comparison report to correctly label msa coverage plots with corresponding method label.
 - [[#290](https://github.com/nf-core/proteinfold/issues/290)] - Update Alphafold2 split images to make them compatible Hopper gpus.
 - [[PR #302](https://github.com/nf-core/proteinfold/pull/302)] - Fix HF3 dbs and max_template_date.
-- [[#305](https://github.com/nf-core/proteinfold/pull/305)] - Stop RFAA and HF3 symlinking scripts into workdir.
-- [[#307](https://github.com/nf-core/proteinfold/pull/307)] - Update Boltz-1 boilerplate and formatting.
+- [[PR #305](https://github.com/nf-core/proteinfold/pull/305)] - Stop RFAA and HF3 symlinking scripts into workdir.
+- [[PR #306](https://github.com/nf-core/proteinfold/pull/306)] - extract_output.py -> extract_metrics.py so pLDDT, MSA, PAE emitted as raw data .tsv files
+- [[PR #307](https://github.com/nf-core/proteinfold/pull/307)] - Update Boltz-1 boilerplate and formatting.
 
 ### Parameters
 
