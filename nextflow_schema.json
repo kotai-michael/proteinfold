@@ -223,10 +223,10 @@
             }
         },
         "boltz_options": {
-            "title": "Boltz DBs and model paths options",
+            "title": "Boltz options",
             "type": "object",
             "fa_icon": "fas fa-database",
-            "description": "Paths used to provide model paths and weight paths to Boltz",
+            "description": "Boltz options.",
             "properties": {
                 "boltz_use_msa_server": {
                     "type": "boolean",
@@ -625,21 +625,23 @@
                 }
             }
         },
-        "boltz_dbs_and_parameters_links_options": {
-            "title": "Boltz DBs and model paths options",
+        "boltz_dbs_and_model_links_options": {
+            "title": "Boltz DBs and model links options",
             "type": "object",
             "fa_icon": "fas fa-database",
-            "description": "Paths used to provide model paths and weight paths to Boltz",
+            "description": "Links used to provide model links and weight links to Boltz",
             "properties": {
                 "boltz_ccd_link": {
                     "type": "string",
                     "description": "Link to download CCD file",
-                    "icon": "fas fa-link"
+                    "icon": "fas fa-link",
+                    "default": "https://huggingface.co/boltz-community/boltz-1/resolve/main/ccd.pkl"
                 },
                 "boltz_model_link": {
                     "type": "string",
                     "description": "Link to download model file",
-                    "icon": "fas fa-link"
+                    "icon": "fas fa-link",
+                    "default": "https://huggingface.co/boltz-community/boltz-1/resolve/main/boltz1_conf.ckpt"
                 }
             }
         },
@@ -657,12 +659,14 @@
                 "boltz_ccd_path": {
                     "type": "string",
                     "description": "Path to CCD file",
-                    "icon": "fas folder-open"
+                    "icon": "fas folder-open",
+                    "default": "null/ccd.pkl"
                 },
                 "boltz_model_path": {
                     "type": "string",
                     "description": "Path to boltz Model file",
-                    "icon": "fas folder-open"
+                    "icon": "fas folder-open",
+                    "default": "null/boltz1_conf.ckpt"
                 }
             }
         },
@@ -960,6 +964,9 @@
             "$ref": "#/$defs/esmfold_options"
         },
         {
+            "$ref": "#/$defs/boltz_options"
+        },
+        {
             "$ref": "#/$defs/foldseek_options"
         },
         {
@@ -993,6 +1000,12 @@
             "$ref": "#/$defs/esmfold_parameters_paths_options"
         },
         {
+            "$ref": "#/$defs/boltz_dbs_and_model_links_options"
+        },
+        {
+            "$ref": "#/$defs/boltz_dbs_and_parameters_paths_options"
+        },
+        {
             "$ref": "#/$defs/generic_options"
         },
         {
@@ -1000,15 +1013,6 @@
         },
         {
             "$ref": "#/$defs/rosettafold_all_atom_dbs_and_parameters_paths_options"
-        },
-        {
-            "$ref": "#/$defs/boltz_options"
-        },
-        {
-            "$ref": "#/$defs/boltz_dbs_and_parameters_paths_options"
-        },
-        {
-            "$ref": "#/$defs/boltz_dbs_and_parameters_links_options"
         },
         {
             "$ref": "#/$defs/helixfold3_dbs_and_parameters_paths_options"
