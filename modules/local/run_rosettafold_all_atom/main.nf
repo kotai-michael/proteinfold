@@ -58,7 +58,7 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     touch "${meta.id}_aux.pt"
     touch "${meta.id}_plddt.tsv"
     touch "${meta.id}_msa.tsv"
-    touch "${meta.id}_0_pae.tsv"  
+    touch "${meta.id}_0_pae.tsv"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
