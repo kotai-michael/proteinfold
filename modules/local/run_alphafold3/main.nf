@@ -78,30 +78,8 @@ process RUN_ALPHAFOLD3 {
     # Generate files with rank tag
     echo "\$sorted_csv" | tail -n +2 | while IFS=',' read -r seed sample ranking_score; do
     cp -n "\${name}/seed-\${seed}_sample-\${sample}/model.cif" "publish/seed_\${seed}_sample_\${sample}_rank_\${rank}.cif"
-
-    // # Get per atom pldtts
-    // echo -e "seed_\${seed}_sample_\${sample}_rank_\${rank}" > "publish/seed_\${seed}_sample_\${sample}_rank_\${rank}_plddt.tsv"
-    // jq -r '.atom_plddts[]' "\${name}/seed-\${seed}_sample-\${sample}/confidences.json" >> "publish/seed_\${seed}_sample_\${sample}_rank_\${rank}_plddt.tsv"
-
-    // if [[ -s publish/combined_plddt_mqc.tsv ]]; then
-    //     paste publish/combined_plddt_mqc.tsv "publish/seed_\${seed}_sample_\${sample}_rank_\${rank}_plddt.tsv" > temp_combined.tsv
-    //     mv temp_combined.tsv publish/combined_plddt_mqc.tsv
-    // else
-    //     mv "publish/seed_\${seed}_sample_\${sample}_rank_\${rank}_plddt.tsv" publish/combined_plddt_mqc.tsv
-    // fi
-
     rank=\$((rank + 1))
     done
-
-    // # Add position column
-    // num_rows=\$(wc -l < publish/combined_plddt_mqc.tsv)
-    // echo "position" > position_col.txt
-    // seq 1 \$((num_rows - 1)) >> position_col.txt
-    // paste position_col.txt publish/combined_plddt_mqc.tsv > temp_combined.tsv
-    // mv temp_combined.tsv "publish/${prefix}_plddt_mqc.tsv"
-
-    # Remove temporary files
-    // rm -f column_data.txt index_column.txt publish/combined_plddt_mqc.tsv publish/*_plddt.tsv
 
     extract_metrics.py --name ${prefix} \\
         --jsons ${prefix}/${prefix}_data.json \\
