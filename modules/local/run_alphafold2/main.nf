@@ -43,7 +43,7 @@ process RUN_ALPHAFOLD2 {
 
     script:
     // Exit if running this module with -profile conda / -profile mamba
-    // Note: --pkls ${fasta.baseName}/*.pkl redundantly processes the features.pkl file. Just providing conceptual reminder of file types for refactor
+    // Note: --pkls ${fasta.baseName}/*.pkl redundantly processes the features.pkl file. Just providing conceptual reminder of file types for future refactor
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error("Local RUN_ALPHAFOLD2 module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
