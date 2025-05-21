@@ -60,10 +60,10 @@ workflow POST_PROCESSING {
                 )
             )
 
-            // TODO: Update when msa is provided
-            ch_comparison_report_files = ch_comparison_report_files.mix(
-                ch_alphafold3_top_ranked_pdb
-            )
+            // // TODO: Update when msa is provided
+            // ch_comparison_report_files = ch_comparison_report_files.mix(
+            //    ch_alphafold3_top_ranked_pdb
+            // )
 
             ch_comparison_report_files = ch_comparison_report_files.mix(
                 ch_top_ranked_model
