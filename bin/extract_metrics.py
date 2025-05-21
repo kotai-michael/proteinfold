@@ -10,7 +10,7 @@ from utils import plddt_from_struct_b_factor
 
 # TODO: add extraction of other values, iPTM, etc
 # TODO: look into have a --prog argument that could set filenames etc, logically seperate it?
-# {id}_{prog}_{metric}.tsv might be easier for MultiQC to parse a complex workdir, than without the .prog
+# {name}_{prog}_{metric}.tsv might be easier for MultiQC to parse a complex workdir, than without the .prog
 
 # Mapping of characters to integers for MSA parsing.
 # 20 is for unknown characters, and 21 is for gaps.
@@ -52,7 +52,7 @@ def write_tsv(file_path, rows):
         writer = csv.writer(out_f, delimiter='\t')
         writer.writerows(rows)
 
-def extract_structs_plddt_to_tsv(id, structures):
+def extract_structs_plddt_to_tsv(name, structures):
     """
     Write out a tsv file contain pLDDTs for reading by MultiQC in nf-core/proteinfold
     Uses utils function with BioPython PDB package to extract residue pLDDT values from the b-factor column.
@@ -68,9 +68,9 @@ def extract_structs_plddt_to_tsv(id, structures):
     plddt_rows =  [["Positions"] + rank_names]
     res_id_col = list(range(len(plddt_cols[0])))
     plddt_rows.extend(zip(res_id_col, *plddt_cols))  # Combine lists column-wise to make rows
-    write_tsv(f"{id}_plddt.tsv", plddt_rows)
+    write_tsv(f"{name}_plddt.tsv", plddt_rows)
 
-def read_pkl(id, pkl_files):
+def read_pkl(name, pkl_files):
     """
     Adapted from the Galaxy AlphaFold tool (https://github.com/usegalaxy-au/tools-au/blob/de94df520c8dc7b8652aedb92e90f6ebb312f95f/tools/alphafold/scripts/outputs.py), originally authored by @neoformit and @graceahall and funded by Australian Biocommons and QCIF Australia.
     """
@@ -81,42 +81,42 @@ def read_pkl(id, pkl_files):
         # Process MSA data
         if pkl_file.endswith("features.pkl"): # AlphaFold2.3
             # TODO: AlphaFold2.3 fills end rows with 0s in AlpahFold muliter for an alanine  nf-core/proteinfold Issue #300
-            write_tsv(f"{id}_msa.tsv", format_msa_rows(data["msa"]))
+            write_tsv(f"{name}_msa.tsv", format_msa_rows(data["msa"]))
         elif pkl_file.endswith("final_features.pkl"): # HelixFold3
-            write_tsv(f"{id}_msa.tsv", format_msa_rows(data["feat"]["msa"]))
+            write_tsv(f"{name}_msa.tsv", format_msa_rows(data["feat"]["msa"]))
     # AlphaFold2.3 non-summary, for each pkl. TODO: Need to either read in ranking_debug.json to get the ranking order, or do it later in the workflow.
         else:
-            model_id = os.path.basename(pkl_file).replace("result_model_", "").replace(".pkl", "")
-            #write_tsv(f"{id}_{model_id}_lddt.tsv", format_msa_rows(data["plddt"]))
+            model_name = os.path.basename(pkl_file).replace("result_model_", "").replace(".pkl", "")
+            #write_tsv(f"{name}_{model_name}_lddt.tsv", format_msa_rows(data["plddt"]))
 
             if 'predicted_aligned_error' not in data.keys():
                 print(f"No PAE output in {pkl_file}, it was likely a monomer calculation")
             else:
-                write_tsv(f"{id}_{model_id}_pae.tsv", format_pae_rows(data["predicted_aligned_error"]))
+                write_tsv(f"{name}_{model_name}_pae.tsv", format_pae_rows(data["predicted_aligned_error"]))
 
             if 'ptm' not in data.keys():
                 print(f"No pTM/iPTM output in {pkl_file}, it was likely a monomer calculation")
             else:
-                with open(f"{id}_{model_id}_ptm.tsv", 'w') as f:
+                with open(f"{name}_{model_name}_ptm.tsv", 'w') as f:
                     f.write(str(np.round(data['ptm'],3)))
-                with open(f"{id}_{model_id}_iptm.tsv", 'w') as f:
+                with open(f"{name}_{model_name}_iptm.tsv", 'w') as f:
                     f.write(str(np.round(data['iptm'],3)))
 
 
-def read_a3m(id, a3m_files):
+def read_a3m(name, a3m_files):
     # ColabFold, RosettaFold-All-Atom, Boltz-1
     for a3m_file in a3m_files:
         int_seqs = a3m_to_int(a3m_file)
-        write_tsv(f"{id}_msa.tsv", format_msa_rows(int_seqs))
+        write_tsv(f"{name}_msa.tsv", format_msa_rows(int_seqs))
 
-def read_npz(id, npz_files):
-   for idx, npz_file in enumerate(npz_files):
+def read_npz(name, npz_files):
+   for namex, npz_file in enumerate(npz_files):
         data = np.load(npz_file)
        #Boltz PAE files if --write_full_pae is used
         if npz_file.split('/')[-1].startswith('pae') and npz_file.endswith('.npz'):
-            write_tsv(f"{id}_{idx}_pae.tsv", format_pae_rows(data["pae"]))
+            write_tsv(f"{name}_{idx}_pae.tsv", format_pae_rows(data["pae"]))
 
-def read_json(id, json_files):
+def read_json(name, json_files):
     for idx, json_file in enumerate(json_files):
         with open(json_file, 'r') as f:
             data = json.load(f)
@@ -125,42 +125,42 @@ def read_json(id, json_files):
                 unpaired_MSAs = data['sequences'][0]['protein']['unpairedMsa']
                 msa_lines = [line for line in unpaired_MSAs.split("\n") if not line.startswith(">") and line.strip()]
                 msa_rows = [[str(AA_to_int.get(residue, 20)) for residue in line] for line in msa_lines]
-                write_tsv(f"{id}_msa.tsv", msa_rows)
+                write_tsv(f"{name}_msa.tsv", msa_rows)
             #AF3 output with PAE info, or HF3 PAE data. TODO: Need to make sure the workflow points to [protein]/[protein]_rank1/all_results.json
-        
-        # TODO: I think I need to capture model_id and inference_id 
+
+        # TODO: I think I need to capture model_id and inference_id
             if '_alphafold2_ptm_model_' in json_file: # ColabFold, multimer or monomer
             # Might want to cut more if I just want ${meta.id}_[metric].tsv
-                model_id = os.path.basename(json_file)
-                print(model_id) 
+                model_name = os.path.basename(json_file)
+                print(model_name)
             if 'all_results' in json_file: # Individual predictions in HF3
-                # TODO: iPTM is 0 in some HF3 files. Check that's just no the one case 
-                model_id = os.path.dirname(json_file).split('-rank')[1] #Use re-ranked output 
-            if 'predictions' in json_file: # Boltz-1 confidences in predictions/[protein]/confidence_[protein]_model_*.json 
+                # TODO: iPTM is 0 in some HF3 files. Check that's just no the one case
+                model_name = os.path.dirname(json_file).split('-rank')[1] #Use re-ranked output
+            if 'predictions' in json_file: # Boltz-1 confnameences in predictions/[protein]/confidence_[protein]_model_*.json
             # TODO: haven't tested this for multiple models with --diffusion_samples
-                model_id = os.path.basename(json_file).split('_model_')[1]
-            
+                model_name = os.path.basename(json_file).split('_model_')[1]
+
             if "pae" not in data.keys():
                 print(f"No PAE output in {json_file}, it was likely a monomer calculation")
             else:
-                write_tsv(f"{id}_{idx}_pae.tsv", format_pae_rows(data["pae"]))
+                write_tsv(f"{name}_{idx}_pae.tsv", format_pae_rows(data["pae"]))
 
             if "ptm" not in data.keys():
                 print(f"No pTM/ipTM output in {json_file}, it was likely a monomer calculation")
             else:
-                with open(f"{id}_{model_id}_ptm.tsv", 'w') as f:
+                with open(f"{name}_{model_name}_ptm.tsv", 'w') as f:
                     f.write(str(np.round(data['ptm'],3)))
-                with open(f"{id}_{model_id}_iptm.tsv", 'w') as f:
+                with open(f"{name}_{model_name}_iptm.tsv", 'w') as f:
                     f.write(str(np.round(data['iptm'],3)))
 
 
-def read_pt(id, pt_files):
+def read_pt(name, pt_files):
     for pt_file in pt_files:
         with open(pt_file, 'rb') as f:   # TODO: point to [protein]_aux.pt
             data = torch.load(f, map_location="cpu")
             if 'pae' in data:
                 # The pt file has the pae data as a tensor that needs to be cast to a list
-                write_tsv(f"{id}_pae.tsv", format_pae_rows(data["pae"].tolist()))
+                write_tsv(f"{name}_pae.tsv", format_pae_rows(data["pae"].tolist()))
 
 def main():
     parser = argparse.ArgumentParser()
