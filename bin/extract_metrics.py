@@ -86,20 +86,20 @@ def read_pkl(name, pkl_files):
             write_tsv(f"{name}_msa.tsv", format_msa_rows(data["feat"]["msa"]))
     # AlphaFold2.3 non-summary, for each pkl. TODO: Need to either read in ranking_debug.json to get the ranking order, or do it later in the workflow.
         else:
-            model_name = os.path.basename(pkl_file).replace("result_model_", "").replace(".pkl", "")
-            #write_tsv(f"{name}_{model_name}_lddt.tsv", format_msa_rows(data["plddt"]))
+            model_id = os.path.basename(pkl_file).replace("result_model_", "").replace(".pkl", "")
+            #write_tsv(f"{name}_{model_id}_lddt.tsv", format_msa_rows(data["plddt"]))
 
             if 'predicted_aligned_error' not in data.keys():
                 print(f"No PAE output in {pkl_file}, it was likely a monomer calculation")
             else:
-                write_tsv(f"{name}_{model_name}_pae.tsv", format_pae_rows(data["predicted_aligned_error"]))
+                write_tsv(f"{name}_{model_id}_pae.tsv", format_pae_rows(data["predicted_aligned_error"]))
 
             if 'ptm' not in data.keys():
                 print(f"No pTM/iPTM output in {pkl_file}, it was likely a monomer calculation")
             else:
-                with open(f"{name}_{model_name}_ptm.tsv", 'w') as f:
+                with open(f"{name}_{model_id}_ptm.tsv", 'w') as f:
                     f.write(str(np.round(data['ptm'],3)))
-                with open(f"{name}_{model_name}_iptm.tsv", 'w') as f:
+                with open(f"{name}_{model_id}_iptm.tsv", 'w') as f:
                     f.write(str(np.round(data['iptm'],3)))
 
 
@@ -110,7 +110,7 @@ def read_a3m(name, a3m_files):
         write_tsv(f"{name}_msa.tsv", format_msa_rows(int_seqs))
 
 def read_npz(name, npz_files):
-   for namex, npz_file in enumerate(npz_files):
+   for idx, npz_file in enumerate(npz_files):
         data = np.load(npz_file)
        #Boltz PAE files if --write_full_pae is used
         if npz_file.split('/')[-1].startswith('pae') and npz_file.endswith('.npz'):
@@ -131,14 +131,14 @@ def read_json(name, json_files):
         # TODO: I think I need to capture model_id and inference_id
             if '_alphafold2_ptm_model_' in json_file: # ColabFold, multimer or monomer
             # Might want to cut more if I just want ${meta.id}_[metric].tsv
-                model_name = os.path.basename(json_file)
-                print(model_name)
+                model_id = os.path.basename(json_file)
+                print(model_id)
             if 'all_results' in json_file: # Individual predictions in HF3
                 # TODO: iPTM is 0 in some HF3 files. Check that's just no the one case
-                model_name = os.path.dirname(json_file).split('-rank')[1] #Use re-ranked output
+                model_id = os.path.dirname(json_file).split('-rank')[1] #Use re-ranked output
             if 'predictions' in json_file: # Boltz-1 confnameences in predictions/[protein]/confidence_[protein]_model_*.json
             # TODO: haven't tested this for multiple models with --diffusion_samples
-                model_name = os.path.basename(json_file).split('_model_')[1]
+                model_id = os.path.basename(json_file).split('_model_')[1]
 
             if "pae" not in data.keys():
                 print(f"No PAE output in {json_file}, it was likely a monomer calculation")
@@ -148,9 +148,9 @@ def read_json(name, json_files):
             if "ptm" not in data.keys():
                 print(f"No pTM/ipTM output in {json_file}, it was likely a monomer calculation")
             else:
-                with open(f"{name}_{model_name}_ptm.tsv", 'w') as f:
+                with open(f"{name}_{model_id}_ptm.tsv", 'w') as f:
                     f.write(str(np.round(data['ptm'],3)))
-                with open(f"{name}_{model_name}_iptm.tsv", 'w') as f:
+                with open(f"{name}_{model_id}_iptm.tsv", 'w') as f:
                     f.write(str(np.round(data['iptm'],3)))
 
 
