@@ -19,7 +19,7 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     tuple val(meta), path ("${meta.id}_rosettafold_all_atom.pdb"), emit: pdb
     tuple val(meta), path ("${meta.id}_plddt.tsv")               , emit: multiqc
     tuple val(meta), path ("${meta.id}_msa.tsv")                 , emit: msa
-    // I think there should always be PAE from the .pt PyTorch model. extract_metrics.py has condition import torch to handle this 
+    // I think there should always be PAE from the .pt PyTorch model. extract_metrics.py has condition import torch to handle this
     tuple val(meta), path ("${meta.id}_*_pae.tsv")               , emit: paes
     path "versions.yml"                                          , emit: versions
 
@@ -41,9 +41,9 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     $args
 
     mamba run --name RFAA extract_metrics.py --name ${meta.id} \\
-      --structs "${yaml.baseName}_rosettafold_all_atom.pdb" \\
-      --a3ms "${yaml.baseName}/A/t000_.msa0.a3m" \\
-      --pts ${yaml.baseName}_aux.pt
+        --structs "${yaml.baseName}_rosettafold_all_atom.pdb" \\
+        --a3ms "${yaml.baseName}/A/t000_.msa0.a3m" \\
+        --pts ${yaml.baseName}_aux.pt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -58,7 +58,7 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     touch "${meta.id}_aux.pt"
     touch "${meta.id}_plddt.tsv"
     touch "${meta.id}_msa.tsv"
-    touch "${meta.id}_0_pae.tsv"  
+    touch "${meta.id}_0_pae.tsv"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

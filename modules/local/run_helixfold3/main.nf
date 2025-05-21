@@ -68,12 +68,12 @@ process RUN_HELIXFOLD3 {
 
     cp "${fasta.baseName}/${fasta.baseName}-rank1/predicted_structure.pdb" "./${meta.id}_helixfold3.pdb"
     cp "${fasta.baseName}/${fasta.baseName}-rank1/predicted_structure.cif" "./${meta.id}_helixfold3.cif"
-   
-    
+
+
     extract_output.py --name ${meta.id} \\
         --structs "${fasta.baseName}/${fasta.baseName}-rank*/predicted_structure.pdb" \\
         --pkls "${fasta.baseName}/final_features.pkl" \\
-        --jsons "${fasta.baseName}-rank*/all_results.json" 
+        --jsons "${fasta.baseName}-rank*/all_results.json"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

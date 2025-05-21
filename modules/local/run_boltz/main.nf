@@ -4,10 +4,9 @@
 process RUN_BOLTZ {
     tag "$meta.id"
     label 'process_medium'
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("Local RUN_BOLTZ module does not support Conda. Please use Docker / Singularity / Podman instead.")
-    }
-    container "quay.io/nf-core/proteinfold_boltz:dev"
+    label 'process_gpu'
+
+    container "nf-core/proteinfold_boltz:dev"
 
     input:
     tuple val(meta), path(fasta)
@@ -30,6 +29,10 @@ process RUN_BOLTZ {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error("Local RUN_BOLTZ module does not support Conda. Please use Docker / Singularity / Podman instead.")
+    }
     def version = "0.4.1"
     def args = task.ext.args ?: ''
 

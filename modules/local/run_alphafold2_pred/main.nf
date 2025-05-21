@@ -28,7 +28,7 @@ process RUN_ALPHAFOLD2_PRED {
     tuple val(meta), path ("${meta.id}_alphafold2.pdb")     , emit: top_ranked_pdb
     tuple val(meta), path ("${fasta.baseName}/ranked*.pdb") , emit: pdb
     tuple val(meta), path ("${meta.id}_msa.tsv")            , emit: msa
-    // TODO: re-label multiqc -> plddt so multiqc channel can take in all metrics 
+    // TODO: re-label multiqc -> plddt so multiqc channel can take in all metrics
     tuple val(meta), path ("${meta.id}_plddt.tsv")          , emit: multiqc
     // TODO: alphafold2_model_preset == "monomer" the pae file won't exist.
     // Default is monomer_ptm which does calculate metrics. Good default, metrics worth it for minor performance loss
@@ -58,8 +58,8 @@ process RUN_ALPHAFOLD2_PRED {
     cp "${fasta.baseName}"/ranked_0.pdb ./"${meta.id}"_alphafold2.pdb
 
     extract_metrics.py --name ${meta.id} \\
-      --pkls ${features} \\
-      --structs ${fasta.baseName}/ranked*.pdb
+        --pkls ${features} \\
+        --structs ${fasta.baseName}/ranked*.pdb
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
