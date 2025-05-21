@@ -34,6 +34,8 @@ process RUN_ALPHAFOLD2 {
     // Default is monomer_ptm which does calculate metrics. Good default, metrics worth it for minor performance loss
     // Nevertheless PAE has to be optional since not all alphafold2 NN models are handled to generate PAE
     tuple val(meta), path ("${meta.id}_*_pae.tsv")          , optional: true, emit: paes
+    tuple val(meta), path ("${meta.id}_*_ptm.tsv")          , optional: true, emit: ptms
+    tuple val(meta), path ("${meta.id}_*_iptm.tsv")         , optional: true, emit: iptms
     path "versions.yml", emit: versions
 
     when:
@@ -41,6 +43,7 @@ process RUN_ALPHAFOLD2 {
 
     script:
     // Exit if running this module with -profile conda / -profile mamba
+    // Note: --pkls ${fasta.baseName}/*.pkl redundantly processes the features.pkl file. Just providing conceptual reminder of file types for refactor
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error("Local RUN_ALPHAFOLD2 module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
@@ -73,7 +76,7 @@ process RUN_ALPHAFOLD2 {
     cp "${fasta.baseName}"/ranked_0.pdb ./"${meta.id}"_alphafold2.pdb
 
     extract_metrics.py --name ${meta.id} \\
-        --pkls ${fasta.baseName}/features.pkl \\
+        --pkls ${fasta.baseName}/features.pkl ${fasta.baseName}/*.pkl \\
         --structs ${fasta.baseName}/ranked*.pdb
 
     cat <<-END_VERSIONS > versions.yml
@@ -88,6 +91,8 @@ process RUN_ALPHAFOLD2 {
     touch "${meta.id}_plddt.tsv"
     touch "${meta.id}_msa.tsv"
     touch "${meta.id}_0_pae.tsv"
+    touch "${meta.id}_0_ptm.tsv"
+    touch "${meta.id}_0_iptm.tsv"
     mkdir "${fasta.baseName}"
     touch "${fasta.baseName}/ranked_0.pdb"
     touch "${fasta.baseName}/ranked_1.pdb"
