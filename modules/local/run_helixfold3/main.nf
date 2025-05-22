@@ -4,6 +4,7 @@
 process RUN_HELIXFOLD3 {
     tag "$meta.id"
     label 'process_medium'
+    label 'process_gpu'
 
     container "nf-core/proteinfold_helixfold3:dev"
 
@@ -72,7 +73,7 @@ process RUN_HELIXFOLD3 {
     cp "${fasta.baseName}/${fasta.baseName}-rank1/predicted_structure.cif" "./${meta.id}_helixfold3.cif"
 
 
-    extract_output.py --name ${meta.id} \\
+    extract_metrics.py --name ${meta.id} \\
         --structs "${fasta.baseName}/${fasta.baseName}-rank*/predicted_structure.pdb" \\
         --pkls "${fasta.baseName}/final_features.pkl" \\
         --jsons "${fasta.baseName}-rank*/all_results.json"
