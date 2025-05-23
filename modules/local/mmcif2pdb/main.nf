@@ -32,7 +32,11 @@ process MMCIF2PDB {
 
     stub:
     """
-    touch test.pdb
+    for mmcif in *.cif
+    do
+        pdb_out=\$(basename "\$mmcif")
+        touch \${pdb_out}.pdb
+    done
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

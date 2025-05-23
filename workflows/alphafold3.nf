@@ -63,17 +63,19 @@ workflow ALPHAFOLD3 {
             ch_pdb_seqres,
             ch_uniprot
         )
-
+        ch_versions = ch_versions.mix(RUN_ALPHAFOLD3.out.versions)
+        
         // Convert mmcif to pdbs
         RUN_ALPHAFOLD3
-            .out
-            .cif
-            .groupTuple()
-            .map {
-                meta, files ->
-                [ meta, files.flatten() ]
-            }
+                .out
+                .cif
+                .groupTuple()
+                .map {
+                    meta, files ->
+                    [ meta, files.flatten() ]
+                }.view()
 
+        // Convert models mmcifs to pdbs
         MMCIF2PDB_MODELS (
             RUN_ALPHAFOLD3
                 .out
@@ -84,13 +86,47 @@ workflow ALPHAFOLD3 {
                     [ meta, files.flatten() ]
                 }
         )
+        ch_versions = ch_versions.mix(MMCIF2PDB_MODELS.out.versions)
 
+        MMCIF2PDB_MODELS
+            .out
+            .pdb
+            .map {
+                def meta   = it[0].clone();
+                meta.model = "alphafold3";
+                [ meta, it[1] ]
+            }
+            .set { ch_pdb_final }
+
+        // Convert top ranked mmcif to pdb
         MMCIF2PDB_TOP_RANKED (
             RUN_ALPHAFOLD3
                 .out
                 .top_ranked_cif
         )
+        ch_versions = ch_versions.mix(MMCIF2PDB_TOP_RANKED.out.versions)
 
+        MMCIF2PDB_TOP_RANKED
+            .out
+            .pdb
+            .map {
+                def meta = it[0].clone();
+                meta.model = "alphafold3";
+                [ meta, it[1] ]
+            }
+            .set { ch_top_ranked_pdb }
+
+        // Prepare msa input
+        RUN_ALPHAFOLD3
+            .out
+            .msa
+            .map {
+                def meta = it[0].clone();
+                meta.model = "alphafold3";
+                [ meta, it[1] ]
+            }
+            .set { ch_msa_final }
+        
         // Prepare report input
         RUN_ALPHAFOLD3
             .out
@@ -100,35 +136,14 @@ workflow ALPHAFOLD3 {
             .map { [ [ "model": "alphafold3" ], it.flatten() ] }
             .set { ch_multiqc_report }
 
-        MMCIF2PDB_TOP_RANKED
-            .out
-            .pdb
-            .map{
-                meta = it[0].clone();
-                meta.model = "alphafold3";
-                [ meta, it[1] ]
-            }   
-            .set { ch_top_ranked_pdb }
-
-        // TODO: Update once msa are obtained from alphafold3 either in a separate process or
-        // in the RUN_ALPHAFOLD3 process directly
-        MMCIF2PDB_MODELS
-            .out
-            .pdb
-            .combine(ch_dummy_file)
-            .map {
-                it[0]["model"] = "alphafold3"
-                it
-            }
-            .set { ch_pdb_msa }
     }
 
     emit:
-    top_ranked_pdb = ch_top_ranked_pdb           // channel: [ id, /path/to/*.pdb ]
-    pdb_msa        = ch_pdb_msa                  // channel: [ meta, /path/to/*.pdb, /path/to/*_coverage.png ]
-    multiqc_report = ch_multiqc_report           // channel: /path/to/multiqc_report.html
-    // TODO fix needs to be mix with ch_versions
-    versions       = RUN_ALPHAFOLD3.out.versions // channel: [ path(versions.yml) ]
+    top_ranked_pdb = ch_top_ranked_pdb // channel: [ id, /path/to/*.pdb ]
+    pdb            = ch_pdb_final      // channel: [ meta, /path/to/*.pdb, ...,/path/to/*.pdb ]
+    msa            = ch_msa_final      // channel: [ meta, /path/to/*.pdb, /path/to/*_coverage.png ]
+    multiqc_report = ch_multiqc_report // channel: /path/to/multiqc_report.html
+    versions       = ch_versions       // channel: [ path(versions.yml) ]
 }
 
 /*

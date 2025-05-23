@@ -19,7 +19,7 @@ process RUN_ALPHAFOLD3 {
 
     output:
     tuple val(meta), path ("publish/*top_ranked.cif"), emit: top_ranked_cif
-    tuple val(meta), path ("publish/*rank_*.cif")    , emit: cif
+    tuple val(meta), path ("publish/*ranked_*.cif")  , emit: cif
     tuple val(meta), path ("${meta.id}_plddt.tsv")   , emit: multiqc
     tuple val(meta), path ("${meta.id}_msa.tsv")     , emit: msa
     path "versions.yml"                              , emit: versions
@@ -77,13 +77,13 @@ process RUN_ALPHAFOLD3 {
 
     # Generate files with rank tag
     echo "\$sorted_csv" | tail -n +2 | while IFS=',' read -r seed sample ranking_score; do
-    cp -n "\${name}/seed-\${seed}_sample-\${sample}/model.cif" "publish/seed_\${seed}_sample_\${sample}_rank_\${rank}.cif"
+    cp -n "\${name}/seed-\${seed}_sample-\${sample}/model.cif" "publish/seed_\${seed}_sample_\${sample}_ranked_\${rank}.cif"
     rank=\$((rank + 1))
     done
 
     extract_metrics.py --name ${prefix} \\
         --jsons ${prefix}/${prefix}_data.json \\
-        --structs publish/*rank_*.cif
+        --structs publish/*ranked_*.cif
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -96,9 +96,13 @@ process RUN_ALPHAFOLD3 {
     """
     mkdir publish
     touch publish/${prefix}_top_ranked.cif
-    touch publish/${prefix}_rank_1.cif
-    touch publish/${prefix}_rank_2.cif
-    touch publish/${prefix}_plddt_mqc.tsv
+    touch publish/${prefix}_ranked_1.cif
+    touch publish/${prefix}_ranked_2.cif
+    touch publish/${prefix}_ranked_3.cif
+    touch publish/${prefix}_ranked_4.cif
+    touch publish/${prefix}_ranked_5.cif
+    touch ${prefix}_plddt.tsv
+    touch ${prefix}_msa.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
