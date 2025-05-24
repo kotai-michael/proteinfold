@@ -128,8 +128,6 @@
                     "default": "alphafold2_ptm",
                     "description": "Model preset for 'colabfold' mode",
                     "enum": [
-                        "auto",
-                        "alphafold2",
                         "alphafold2_ptm",
                         "alphafold2_multimer_v1",
                         "alphafold2_multimer_v2",
