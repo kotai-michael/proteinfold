@@ -45,37 +45,42 @@ process RUN_HELIXFOLD3 {
     }
     def args = task.ext.args ?: ''
     """
-    mamba run --name helixfold python3.9 /app/helixfold3/inference.py \
-        --maxit_binary "./maxit_src/bin/maxit" \
-        --jackhmmer_binary_path "jackhmmer" \
-        --hhblits_binary_path "hhblits" \
-        --hhsearch_binary_path "hhsearch" \
-        --kalign_binary_path "kalign" \
-        --hmmsearch_binary_path "hmmsearch" \
-        --hmmbuild_binary_path "hmmbuild" \
-        --bfd_database_path="./bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt" \
-        --small_bfd_database_path="./small_bfd/bfd-first_non_consensus_sequences.fasta" \
-        --uniclust30_database_path="./uniclust30/uniclust30_2018_08" \
-        --uniprot_database_path="./uniprot/uniprot.fasta" \
-        --pdb_seqres_database_path="./pdb_seqres/pdb_seqres.txt" \
-        --rfam_database_path="./Rfam-14.9_rep_seq.fasta" \
-        --template_mmcif_dir="./mmcif_files" \
-        --obsolete_pdbs_path="./obsolete.dat" \
-        --ccd_preprocessed_path="./ccd_preprocessed_etkdg.pkl.gz" \
-        --uniref90_database_path "./uniref90/uniref90.fasta" \
-        --mgnify_database_path "./mgnify/mgy_clusters_2018_12.fa" \
-        --input_json="${fasta}" \
-        --output_dir="\$PWD" \
-        $args
+    mamba run --name helixfold python3.9 /app/helixfold3/inference.py \\
+        --maxit_binary "./maxit_src/bin/maxit" \\
+        --jackhmmer_binary_path "jackhmmer" \\
+        --hhblits_binary_path "hhblits" \\
+        --hhsearch_binary_path "hhsearch" \\
+        --kalign_binary_path "kalign" \\
+        --hmmsearch_binary_path "hmmsearch" \\
+        --hmmbuild_binary_path "hmmbuild" \\
+        --nhmmer_binary_path "nhmmer" \\
+        --bfd_database_path="./bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt" \\
+        --small_bfd_database_path="./small_bfd/bfd-first_non_consensus_sequences.fasta" \\
+        --uniclust30_database_path="./uniclust30/uniclust30_2018_08" \\
+        --uniprot_database_path="./uniprot/uniprot.fasta" \\
+        --pdb_seqres_database_path="./pdb_seqres/pdb_seqres.txt" \\
+        --rfam_database_path="./Rfam-14.9_rep_seq.fasta" \\
+        --template_mmcif_dir="./mmcif_files" \\
+        --obsolete_pdbs_path="./obsolete.dat" \\
+        --ccd_preprocessed_path="./ccd_preprocessed_etkdg.pkl.gz" \\
+        --uniref90_database_path "./uniref90/uniref90.fasta" \\
+        --mgnify_database_path "./mgnify/mgy_clusters_2018_12.fa" \\
+        --input_json="${fasta}" \\
+        --output_dir="\$PWD" $args
 
     cp "${fasta.baseName}/${fasta.baseName}-rank1/predicted_structure.pdb" "./${meta.id}_helixfold3.pdb"
     cp "${fasta.baseName}/${fasta.baseName}-rank1/predicted_structure.cif" "./${meta.id}_helixfold3.cif"
 
 
-    extract_output.py --name ${meta.id} \\
-        --structs "${fasta.baseName}/${fasta.baseName}-rank*/predicted_structure.pdb" \\
+    mamba run --name helixfold extract_metrics.py --name ${meta.id} \\
+        --structs ${fasta.baseName}/${fasta.baseName}-rank*/predicted_structure.pdb \\
         --pkls "${fasta.baseName}/final_features.pkl" \\
-        --jsons "${fasta.baseName}-rank*/all_results.json"
+        --jsons ${fasta.baseName}/${fasta.baseName}-rank*/all_results.json
+
+    [ ! -d ${meta.id} ] && mkdir ${meta.id}
+    for i in 1 2 3 4 5
+        do cp "${fasta.baseName}/${fasta.baseName}-rank\$i/predicted_structure.pdb" "${meta.id}/ranked_\$i.pdb"
+    done
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -95,6 +100,7 @@ process RUN_HELIXFOLD3 {
     touch "${meta.id}/ranked_2.pdb"
     touch "${meta.id}/ranked_3.pdb"
     touch "${meta.id}/ranked_4.pdb"
+    touch "${meta.id}/ranked_5.pdb"
 
 
     cat <<-END_VERSIONS > versions.yml

@@ -79,11 +79,11 @@ def read_pkl(name, pkl_files):
         data = pickle.load(open(pkl_file, "rb"))
 
         # Process MSA data
-        if pkl_file.endswith("features.pkl"): # AlphaFold2.3
+        if pkl_file.endswith("final_features.pkl"): # HelixFold3 - This one must be first
+            write_tsv(f"{id}_msa.tsv", format_msa_rows(data["feat"]["msa"]))
+        elif pkl_file.endswith("features.pkl"): # AlphaFold2.3
             # TODO: AlphaFold2.3 fills end rows with 0s in AlpahFold muliter for an alanine  nf-core/proteinfold Issue #300
-            write_tsv(f"{name}_msa.tsv", format_msa_rows(data["msa"]))
-        elif pkl_file.endswith("final_features.pkl"): # HelixFold3
-            write_tsv(f"{name}_msa.tsv", format_msa_rows(data["feat"]["msa"]))
+            write_tsv(f"{id}_msa.tsv", format_msa_rows(data["msa"]))
     # AlphaFold2.3 non-summary, for each pkl. TODO: Need to either read in ranking_debug.json to get the ranking order, or do it later in the workflow.
         else:
             model_id = os.path.basename(pkl_file).replace("result_model_", "").replace(".pkl", "")
@@ -145,22 +145,15 @@ def read_json(name, json_files):
             else:
                 write_tsv(f"{name}_{idx}_pae.tsv", format_pae_rows(data["pae"]))
 
-            if "ptm" not in data.keys():
-                print(f"No pTM/ipTM output in {json_file}, it was likely a monomer calculation")
-            else:
-                with open(f"{name}_{model_id}_ptm.tsv", 'w') as f:
-                    f.write(str(np.round(data['ptm'],3)))
-                with open(f"{name}_{model_id}_iptm.tsv", 'w') as f:
-                    f.write(str(np.round(data['iptm'],3)))
-
-
-def read_pt(name, pt_files):
+def read_pt(id, pt_files):
+    import torch # moved to a conditional import since too bulky import if not used
     for pt_file in pt_files:
         with open(pt_file, 'rb') as f:   # TODO: point to [protein]_aux.pt
             data = torch.load(f, map_location="cpu")
             if 'pae' in data:
-                # The pt file has the pae data as a tensor that needs to be cast to a list
-                write_tsv(f"{name}_pae.tsv", format_pae_rows(data["pae"].tolist()))
+                # The pt file contains a tensor that needs to be cast as an array
+                # Squeeze leading dimension (batch?)
+                write_tsv(f"{id}_pae.tsv", format_pae_rows(np.squeeze(data["pae"].numpy())))
 
 def main():
     parser = argparse.ArgumentParser()
@@ -182,7 +175,6 @@ def main():
     if args.jsons:
         read_json(args.name, args.jsons)
     if args.pts:
-        import torch # moved to a conditional import since too bulky import if not used
         read_pt(args.name, args.pts)
     if args.structs:
         extract_structs_plddt_to_tsv(args.name, args.structs)
