@@ -8,9 +8,20 @@ import numpy as np
 import csv
 from utils import plddt_from_struct_b_factor
 
-# TODO: add extraction of other values, iPTM, etc
+# TODO: Issue #309, make into a poper separate process, it its own module so that dependencies can be managed better
+# TODO: Need a sense of ranking, so that metrics can be traced back to correct model structure, even if they're not in sequential order. The enumerates() here are not sufficient.
+#       Needs to be program-dependent, (see item below).
 # TODO: look into have a --prog argument that could set filenames etc, logically seperate it?
 # {name}_{prog}_{metric}.tsv might be easier for MultiQC to parse a complex workdir, than without the .prog
+# TODO: read --prog from ${meta.model} in the NextFlow pipes. This also allows case switching in a proper EXTRACT_METRICS process.
+# E.g. in main.nf of EXTACT_METRICS process, we could have:
+# match ${meta.mode}:
+#     case 'alphafold2':
+#        ...
+#     case 'rosettafold_all_atom':
+#        ...
+#...
+# ^ overwrought with duplication, but can catch program specific weirdness, and lower barrier to adding new programs in the future.
 
 # Mapping of characters to integers for MSA parsing.
 # 20 is for unknown characters, and 21 is for gaps.
@@ -80,14 +91,13 @@ def read_pkl(name, pkl_files):
 
         # Process MSA data
         if pkl_file.endswith("final_features.pkl"): # HelixFold3 - This one must be first
-            write_tsv(f"{id}_msa.tsv", format_msa_rows(data["feat"]["msa"]))
+            write_tsv(f"{name}_msa.tsv", format_msa_rows(data["feat"]["msa"]))
         elif pkl_file.endswith("features.pkl"): # AlphaFold2.3
             # TODO: AlphaFold2.3 fills end rows with 0s in AlpahFold muliter for an alanine  nf-core/proteinfold Issue #300
-            write_tsv(f"{id}_msa.tsv", format_msa_rows(data["msa"]))
+            write_tsv(f"{name}_msa.tsv", format_msa_rows(data["msa"]))
     # AlphaFold2.3 non-summary, for each pkl. TODO: Need to either read in ranking_debug.json to get the ranking order, or do it later in the workflow.
         else:
             model_id = os.path.basename(pkl_file).replace("result_model_", "").replace(".pkl", "")
-            #write_tsv(f"{name}_{model_id}_lddt.tsv", format_msa_rows(data["plddt"]))
 
             if 'predicted_aligned_error' not in data.keys():
                 print(f"No PAE output in {pkl_file}, it was likely a monomer calculation")
@@ -145,7 +155,7 @@ def read_json(name, json_files):
             else:
                 write_tsv(f"{name}_{idx}_pae.tsv", format_pae_rows(data["pae"]))
 
-def read_pt(id, pt_files):
+def read_pt(name, pt_files):
     import torch # moved to a conditional import since too bulky import if not used
     for pt_file in pt_files:
         with open(pt_file, 'rb') as f:   # TODO: point to [protein]_aux.pt
@@ -153,7 +163,7 @@ def read_pt(id, pt_files):
             if 'pae' in data:
                 # The pt file contains a tensor that needs to be cast as an array
                 # Squeeze leading dimension (batch?)
-                write_tsv(f"{id}_pae.tsv", format_pae_rows(np.squeeze(data["pae"].numpy())))
+                write_tsv(f"{name}_pae.tsv", format_pae_rows(np.squeeze(data["pae"].numpy())))
 
 def main():
     parser = argparse.ArgumentParser()
