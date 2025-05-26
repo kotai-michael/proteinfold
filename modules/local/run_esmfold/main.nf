@@ -45,6 +45,9 @@ process RUN_ESMFOLD {
     extract_metrics.py --name ${meta.id} \\
         --structs ${meta.id}_esmfold.pdb
 
+    extract_metrics.py --name ${meta.id} \\
+        --structs ${meta.id}_esmfold.pdb
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         esm-fold: $VERSION

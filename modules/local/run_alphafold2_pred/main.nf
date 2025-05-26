@@ -43,7 +43,7 @@ process RUN_ALPHAFOLD2_PRED {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba:w
+    // Exit if running this module with -profile conda / -profile mamba
     // Note: --pkls ${fasta.baseName}/*.pkl redundantly processes the features.pkl file. The use of input: features makes the conceptural separation clear
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error("Local RUN_ALPHAFOLD2_PRED module does not support Conda. Please use Docker / Singularity / Podman instead.")
