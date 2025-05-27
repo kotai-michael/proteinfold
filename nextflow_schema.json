@@ -67,7 +67,7 @@
                 "db": {
                     "type": "string",
                     "format": "directory-path",
-                    "description": "The directory where reference data is stored. Individual methods can be overwritten with method-specific paths. ",
+                    "description": "The directory where reference data is stored. Individual methods can be overwritten with method-specific paths.",
                     "fa_icon": "fas fa-folder-open"
                 }
             }
