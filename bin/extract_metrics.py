@@ -115,7 +115,7 @@ def read_json(id, json_files):
             if json_file.endswith("_data.json"): #AF3 output with MSA info
                 # Can't just used format_msa_rows since there's FASTA headers in the json content
                 unpaired_MSAs = data['sequences'][0]['protein']['unpairedMsa']
-                msa_lines = [line for line in unpaired_MSAs.split("\n") if not line.startswith(">") and line.strip()]
+                msa_lines = [''.join(c for c in line if not c.islower()) for line in unpaired_MSAs.split("\n") if line.strip() and not line.startswith(">")]
                 msa_rows = [[str(AA_to_int.get(residue, 20)) for residue in line] for line in msa_lines]
                 write_tsv(f"{id}_msa.tsv", msa_rows)
             #AF3 output with PAE info, or HF3 PAE data. TODO: Need to make sure the workflow points to [protein]/[protein]_rank1/all_results.json
