@@ -64,7 +64,7 @@ workflow ALPHAFOLD3 {
             ch_uniprot
         )
         ch_versions = ch_versions.mix(RUN_ALPHAFOLD3.out.versions)
-        
+
         // Convert mmcif to pdbs
         RUN_ALPHAFOLD3
                 .out
@@ -126,7 +126,7 @@ workflow ALPHAFOLD3 {
                 [ meta, it[1] ]
             }
             .set { ch_msa_final }
-        
+
         // Prepare report input
         RUN_ALPHAFOLD3
             .out
