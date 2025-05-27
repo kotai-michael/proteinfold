@@ -213,7 +213,7 @@ workflow NFCORE_PROTEINFOLD {
                                 ALPHAFOLD3
                                     .out
                                     .pdb
-                                    .map { 
+                                    .map {
                                         [
                                             it[0],
                                             it[1].sort { path ->

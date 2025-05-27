@@ -168,7 +168,7 @@ workflow ALPHAFOLD2 {
                                     meta = it[0].clone();
                                     meta.model = "alphafold2";
                                     [ meta, it[1] ]
-                                }   
+                                }
 
     emit:
     top_ranked_pdb = ch_top_ranked_pdb_final // channel: [ meta, /path/to/*.pdb ]
