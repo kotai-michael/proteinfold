@@ -6,6 +6,16 @@ import json
 import string
 
 def parse_args(args=None):
+    """
+    Parse command line arguments for the script.
+    
+    Required arguments:
+        FILE_IN: Input fasta file path
+        ID: Identifier for the protein sequence (will be used in output filename and JSON)
+    
+    Optional arguments:
+        -ms/--model_seed: AlphaFold3 model seed(s) to use (default: [11])
+    """
     Description = "Convert fasta files to Alphafold3 json format."
     Epilog = "Example usage: python fasta_to_alphafold3_json.py <FILE_IN> <ID>"
 
@@ -34,86 +44,98 @@ def parse_args(args=None):
 
     return parser.parse_args(args)
 
-## Copied from alphafold3 so that our id in the file name is actually the same as the file name
-## created by alphafold3 source code here:
-## https://github.com/google-deepmind/alphafold3/blob/7fdf96161d61a6e18048e5c62bf7e1d711992943/src/alphafold3/common/folding_input.py#L1166-L1170
 def sanitised_name(id):
-    """Returns sanitised version of the name that can be used as a filename."""
+    """
+    Sanitize the input ID to create a valid filename.
+    
+    This function is copied from AlphaFold3 source code to ensure consistent naming:
+    https://github.com/google-deepmind/alphafold3/blob/7fdf96161d61a6e18048e5c62bf7e1d711992943/src/alphafold3/common/folding_input.py#L1166-L1170
+    It converts the ID to lowercase, replaces spaces with underscores, and removes
+    any characters that aren't allowed in filenames.
+    
+    Args:
+        id (str): Input identifier
+        
+    Returns:
+        str: Sanitized version of the ID suitable for use as a filename
+    """
     lower_spaceless_name = id.lower().replace(' ', '_')
     allowed_chars = set(string.ascii_lowercase + string.digits + '_-.')
     return ''.join(l for l in lower_spaceless_name if l in allowed_chars)
 
-
 def fasta_to_alphafold3_json(file_in, id):
     """
-    TODO
-    This function checks that the samplesheet follows the following structure:
-    sample,fastq_1,fastq_2,replicate,antibody,control,control_replicate
-    SPT5_T0,SRR1822153_1.fastq.gz,SRR1822153_2.fastq.gz,SPT5,1,SPT5_INPUT,1
-    SPT5_T0,SRR1822154_1.fastq.gz,SRR1822154_2.fastq.gz,SPT5,2,SPT5_INPUT,2
-    SPT5_INPUT,SRR5204809_Spt5-ChIP_Input1_SacCer_ChIP-Seq_ss100k_R1.fastq.gz,SRR5204809_Spt5-ChIP_Input1_SacCer_ChIP-Seq_ss100k_R2.fastq.gz,1,,,
-    SPT5_INPUT,SRR5204810_Spt5-ChIP_Input2_SacCer_ChIP-Seq_ss100k_R1.fastq.gz,SRR5204810_Spt5-ChIP_Input2_SacCer_ChIP-Seq_ss100k_R2.fastq.gz,2,,,
-    For an example see:
-    https://raw.githubusercontent.com/nf-core/test-datasets/chipseq/samplesheet/v2.1/samplesheet_test.csv
+    Convert a single-sequence FASTA file to AlphaFold3 JSON format.
+    
+    This function reads a FASTA file and converts it to the format required by AlphaFold3.
+    It only processes single-sequence FASTA files and raises an error for multi-sequence files.
+    
+    The function expects a samplesheet.csv with the following format:
+        id,fasta
+        T1024,path/to/T1024.fasta
+        T1026,path/to/T1026.fasta
+    
+    Args:
+        file_in (str): Path to input FASTA file
+        id (str): Identifier for the sequence
+        
+    Returns:
+        dict: Dictionary containing the sequence information in AlphaFold3 format
+        
+    Raises:
+        RuntimeError: If the input file contains multiple sequences
     """
-
     sequence_list = []
     sequence = None
     fasta_mapping_dict = {}
-    # hacerlo solo para single fasta
+    
     with open(file_in, "r", encoding="utf-8-sig") as fin:
         n_seq = 0
         for l in fin:
             l = l.strip()
             if l.startswith(">"):
-
                 if n_seq > 1:
                     raise RuntimeError("Multifasta files are not allowed")
-
                 n_seq += 1
                 if sequence:
                     sequence_list.append(sequence)
-                # id = l[1:6]
-
                 sequence = {"id": id, "sequence": ""}
             else:
                 sequence["sequence"] += l
 
-        # if sequence:
-        #     sequence_list.append(sequence)
-
-    # return sequence_list
     return sequence
 
-## Example from Alphafold3 docs
-# json_string = '''{
-#   "name": "2PV7",
-#   "sequences": [
-#     {
-#       "protein": {
-#         "id": ["A", "B"],
-#         "sequence": "GMRESYANENQFGFKTINSDIHKIVIVGGYGKLGGLFARYLRASGYPISILDREDWAVAESILANADVVIVSVPINLTLETIERLKPYLTENMLLADLTSVKREPLAKMLEVHTGAVLGLHPMFGADIASMAKQVVVRCDGRFPERYEWLLEQIQIWGAKIYQTNATEHDHNMTYIQALRHFSTFANGLHLSKQPINLANLLALSSPIYRLELAMIGRLFAQDAELYADIIMDKSENLAVIETLKQTYDEALTFFENNDRQGFIDAFHKVRDWFGDYSEQFLKESRQLLQQANDLKQG"
-#       }
-#     }
-#   ],
-#   "modelSeeds": [1],
-#   "dialect": "alphafold3",
-#   "version": 1
-# }'''
-
-
-# def create_json_dict(sequence_list):
 def create_json_dict(sequence, model_seed):
     """
-    This function ... TODO
+    Create the final JSON dictionary in AlphaFold3 format.
+    
+    The function creates a JSON structure that follows AlphaFold3's requirements:
+    {
+        "name": "sequence_id",
+        "sequences": [
+            {
+                "protein": {
+                    "id": "A",
+                    "sequence": "protein_sequence"
+                }
+            }
+        ],
+        "modelSeeds": [seed_values],
+        "dialect": "alphafold3",
+        "version": 1
+    }
+    
+    Args:
+        sequence (dict): Dictionary containing sequence information
+        model_seed (list): List of model seeds to use
+        
+    Returns:
+        dict: JSON-compatible dictionary in AlphaFold3 format
     """
-
     json_sequence_dict = {}
 
-    # for sequence in sequence_list:
     item = {
         "name": f"{sequence['id']}",
-
         "sequences": [
             {
                 "protein": {
@@ -132,6 +154,18 @@ def create_json_dict(sequence, model_seed):
     return json_sequence_dict
 
 def main(args=None):
+    """
+    Main function to process FASTA files and create AlphaFold3 JSON files.
+    
+    The script:
+    1. Parses command line arguments
+    2. Sanitizes the input ID for filename use
+    3. Reads and processes the FASTA file
+    4. Creates the JSON structure
+    5. Writes the output to a JSON file
+    
+    The output filename will be the sanitized ID with .json extension.
+    """
     args = parse_args(args)
     id = args.ID
 
@@ -146,15 +180,12 @@ def main(args=None):
     sequence = fasta_to_alphafold3_json(args.FILE_IN, reformatted_id)
     json_dict = create_json_dict(sequence, args.MODEL_SEED)
 
-    # for id, f_json in json_dict.items():
-
     print ("json file " + out_json)
     with open(out_json, "w") as fout:
         json.dump(json_dict[reformatted_id], fout, indent=4)
 
     with open(out_json, 'r') as f:
         json_str = f.read()
-
 
 if __name__ == "__main__":
     sys.exit(main())
