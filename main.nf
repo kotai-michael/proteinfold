@@ -195,7 +195,6 @@ workflow NFCORE_PROTEINFOLD {
         ALPHAFOLD3 (
             ch_samplesheet,
             ch_versions,
-            params.alphafold3_mode,
             PREPARE_ALPHAFOLD3_DBS.out.params,
             PREPARE_ALPHAFOLD3_DBS.out.small_bfd,
             PREPARE_ALPHAFOLD3_DBS.out.mgnify,
