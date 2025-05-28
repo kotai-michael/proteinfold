@@ -51,18 +51,17 @@ process RUN_ALPHAFOLD2_PRED {
     def args = task.ext.args ?: ''
     """
     if [ -d params/alphafold_params_* ]; then ln -r -s params/alphafold_params_*/* params/; fi
-    python3 /app/alphafold/run_predict.py \
-        --fasta_paths=${fasta} \
-        --model_preset=${alphafold2_model_preset} \
-        --output_dir=\$PWD \
-        --data_dir=\$PWD \
-        --msa_path=${features} \
-        $args
+    python3 /app/alphafold/run_predict.py \\
+        --fasta_paths=${fasta} \\
+        --model_preset=${alphafold2_model_preset} \\
+        --output_dir=\$PWD \\
+        --data_dir=\$PWD \\
+        --msa_path=${features} $args
 
     cp "${fasta.baseName}"/ranked_0.pdb ./"${meta.id}"_alphafold2.pdb
 
     extract_metrics.py --name ${meta.id} \\
-        --pkls ${features} ${fasta.baseName}/*.pkl\\
+        --pkls ${features} ${fasta.baseName}/*.pkl \\
         --structs ${fasta.baseName}/ranked*.pdb
 
     cat <<-END_VERSIONS > versions.yml
