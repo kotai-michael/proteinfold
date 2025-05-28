@@ -56,8 +56,7 @@ process RUN_BOLTZ {
     extract_metrics.py --name ${meta.id} \\
         --structs boltz_results_*/predictions/${meta.id}/*.pdb \\
         --jsons boltz_results_*/predictions/${meta.id}/confidence_*_model_*.json \\
-        --npzs boltz_results_*/processed/msa/*.npz \\
-        boltz_results_*/predictions/${meta.id}/pae_*_model_*.npz
+        --npzs boltz_results_*/predictions/${meta.id}/pae_*_model_*.npz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

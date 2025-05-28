@@ -124,7 +124,8 @@ def read_npz(name, npz_files):
         data = np.load(npz_file)
        #Boltz PAE files if --write_full_pae is used
         if npz_file.split('/')[-1].startswith('pae') and npz_file.endswith('.npz'):
-            write_tsv(f"{name}_{idx}_pae.tsv", format_pae_rows(data["pae"]))
+            model_id = os.path.basename(npz_file).split('_model_')[-1].split('.npz')[0]
+            write_tsv(f"{name}_{model_id}_pae.tsv", format_pae_rows(data["pae"]))
 
 def read_json(name, json_files):
     for idx, json_file in enumerate(json_files):
