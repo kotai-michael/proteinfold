@@ -383,7 +383,6 @@ workflow NFCORE_PROTEINFOLD {
             ch_versions,
             PREPARE_BOLTZ_DBS.out.boltz_ccd,
             PREPARE_BOLTZ_DBS.out.boltz_model,
-            PREPARE_COLABFOLD_DBS.out.params,
             PREPARE_COLABFOLD_DBS.out.colabfold_db,
             PREPARE_COLABFOLD_DBS.out.uniref30,
             params.boltz_use_msa_server
