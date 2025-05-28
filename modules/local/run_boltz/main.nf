@@ -53,10 +53,11 @@ process RUN_BOLTZ {
     boltz predict "${fasta}" ${args} --cache ./ --write_full_pae --output_format pdb
     cp boltz_results_*/predictions/*/*.pdb ./${meta.id}_boltz.pdb
 
-    extract_output.py --name ${meta.id} \\
-        --structs "boltz_results_*/predictions/*/*.pdb" \\
-        --jsons "boltz_results_*/predictions/confidence_*_model_*.json" \\
-        --npzs "boltz_results_*/processed/msa/*.npz" "boltz_results_*/predictions/pae_*_model_*.npz" \\
+    extract_metrics.py --name ${meta.id} \\
+        --structs boltz_results_*/predictions/${meta.id}/*.pdb \\
+        --jsons boltz_results_*/predictions/${meta.id}/confidence_*_model_*.json \\
+        --npzs boltz_results_*/processed/msa/*.npz \\
+        boltz_results_*/predictions/${meta.id}/pae_*_model_*.npz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
