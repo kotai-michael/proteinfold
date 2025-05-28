@@ -38,11 +38,11 @@ workflow ALPHAFOLD3 {
     ch_uniprot           // channel: path(uniprot)
 
     main:
-    ch_multiqc_files  = Channel.empty()
-    ch_pdb            = Channel.empty()
+    ch_pdb_final      = Channel.empty()
     ch_top_ranked_pdb = Channel.empty()
-    ch_msa            = Channel.empty()
+    ch_msa_final      = Channel.empty()
     ch_multiqc_report = Channel.empty()
+    ch_versions       = Channel.empty()
 
     FASTA_TO_ALPHAFOLD3_JSON(ch_samplesheet)
     ch_versions       = ch_versions.mix(FASTA_TO_ALPHAFOLD3_JSON.out.versions)
@@ -70,7 +70,7 @@ workflow ALPHAFOLD3 {
             .map {
                 meta, files ->
                 [ meta, files.flatten() ]
-            }.view()
+            }
 
     // Convert models mmcifs to pdbs
     MMCIF2PDB_MODELS (
