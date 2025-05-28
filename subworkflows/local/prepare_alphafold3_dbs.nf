@@ -46,14 +46,8 @@ workflow PREPARE_ALPHAFOLD3_DBS {
             small_bfd_link
         )
         ch_small_bfd = ARIA2_SMALL_BFD.out.db
-        ch_versions = ch_versions.mix(ARIA2_SMALL_BFD.out.versions)
+        ch_versions  = ch_versions.mix(ARIA2_SMALL_BFD.out.versions)
 
-        // TODO delete
-        // ARIA2_ALPHAFOLD3_PARAMS(
-        //     alphafold3_params_link
-        // )
-        // ch_params = ARIA2_ALPHAFOLD3_PARAMS.out.db
-        // ch_versions = ch_versions.mix(ARIA2_ALPHAFOLD3_PARAMS.out.versions)
         ch_params = Channel.value(file(alphafold3_params_path, checkIfExists: true))
 
         ARIA2_MGNIFY (

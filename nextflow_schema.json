@@ -123,14 +123,8 @@
                     "format": "path",
                     "exists": true,
                     "description": "Specifies the DB and PARAMS path used by 'AlphaFold3' mode",
-                    "fa_icon": "fas fa-database"
-                },
-                "alphafold3_mode": {
-                    "type": "string",
-                    "default": "standard",
-                    "description": "Specifies the mode in which Alphafold3 will be run",
-                    "enum": ["standard"],
-                    "fa_icon": "fas fa-exchange-alt"
+                    "fa_icon": "fas fa-database",
+                    "errorMessage": "Please provide a valid path to AlphaFold3 database"
                 }
             }
         },

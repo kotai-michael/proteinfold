@@ -59,12 +59,6 @@ workflow POST_PROCESSING {
                     , remainder:true
                 )
             )
-
-            // // TODO: Update when msa is provided
-            // ch_comparison_report_files = ch_comparison_report_files.mix(
-            //    ch_alphafold3_top_ranked_pdb
-            // )
-
             ch_comparison_report_files = ch_comparison_report_files.mix(
                 ch_top_ranked_model
                 .filter{it[0]["model"] != "alphafold2"}
