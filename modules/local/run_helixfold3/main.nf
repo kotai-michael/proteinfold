@@ -31,8 +31,8 @@ process RUN_HELIXFOLD3 {
     tuple val(meta), path ("${meta.id}_msa.tsv")        , emit: msa
     // If ${meta.id}-rank*/all_results.json" doesn't have PAE vales in the key, this will be empty
     tuple val(meta), path ("${meta.id}_*_pae.tsv")      , optional: true, emit: paes
-    tuple val(meta), path ("${meta.id}_*_ptms.tsv")     , optional: true, emit: ptms
-    tuple val(meta), path ("${meta.id}_*_iptms.tsv")    , optional: true, emit: iptms
+    tuple val(meta), path ("${meta.id}_*_ptm.tsv")      , optional: true, emit: ptms
+    tuple val(meta), path ("${meta.id}_*_iptm.tsv")     , optional: true, emit: iptms
     path ("versions.yml")                               , emit: versions
 
     when:

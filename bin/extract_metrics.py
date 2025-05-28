@@ -108,9 +108,9 @@ def read_pkl(name, pkl_files):
                 print(f"No pTM/iPTM output in {pkl_file}, it was likely a monomer calculation")
             else:
                 with open(f"{name}_{model_id}_ptm.tsv", 'w') as f:
-                    f.write(str(np.round(data['ptm'],3)))
+                    f.write(f"{np.round(data['ptm'],3)}\n")
                 with open(f"{name}_{model_id}_iptm.tsv", 'w') as f:
-                    f.write(str(np.round(data['iptm'],3)))
+                    f.write(f"{np.round(data['iptm'],3)}\n")
 
 
 def read_a3m(name, a3m_files):
@@ -139,21 +139,29 @@ def read_json(name, json_files):
             #AF3 output with PAE info, or HF3 PAE data. TODO: Need to make sure the workflow points to [protein]/[protein]_rank1/all_results.json
 
         # TODO: I think I need to capture model_id and inference_id
-            if '_alphafold2_ptm_model_' in json_file: # ColabFold, multimer or monomer
-            # Might want to cut more if I just want ${meta.id}_[metric].tsv
-                model_id = os.path.basename(json_file)
-                print(model_id)
+            #if '_alphafold2_ptm_model_' in json_file: # ColabFold, multimer or monomer
+            ## Might want to cut more if I just want ${meta.id}_[metric].tsv
+            #    model_id = os.path.basename(json_file)
+            #    print(model_id)
             if 'all_results' in json_file: # Individual predictions in HF3
                 # TODO: iPTM is 0 in some HF3 files. Check that's just no the one case
-                model_id = os.path.dirname(json_file).split('-rank')[1] #Use re-ranked output
+                model_id = os.path.dirname(json_file).split('-rank')[-1] #Use re-ranked output
             if 'predictions' in json_file: # Boltz-1 confnameences in predictions/[protein]/confidence_[protein]_model_*.json
             # TODO: haven't tested this for multiple models with --diffusion_samples
-                model_id = os.path.basename(json_file).split('_model_')[1]
+                model_id = os.path.basename(json_file).split('_model_')[-1].split('.json')[0]
 
             if "pae" not in data.keys():
                 print(f"No PAE output in {json_file}, it was likely a monomer calculation")
             else:
-                write_tsv(f"{name}_{idx}_pae.tsv", format_pae_rows(data["pae"]))
+                write_tsv(f"{name}_{model_id}_pae.tsv", format_pae_rows(data["pae"]))
+
+            if 'ptm' not in data.keys():
+                print(f"No pTM/iPTM output in {json_file}, it was likely a monomer calculation")
+            else:
+                with open(f"{name}_{model_id}_ptm.tsv", 'w') as f:
+                    f.write(f"{np.round(data['ptm'],3)}\n")
+                with open(f"{name}_{model_id}_iptm.tsv", 'w') as f:
+                    f.write(f"{np.round(data['iptm'],3)}\n")
 
 def read_pt(name, pt_files):
     import torch # moved to a conditional import since too bulky import if not used
