@@ -36,13 +36,6 @@ process RUN_ALPHAFOLD3 {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def af3_id = meta.id.toLowerCase()
-    // TODO this kind of conditionals should be implemented in case we allow for rna input
-    // if (alphafold3_model_preset == 'multimer') {
-    //     alphafold3_model_preset += " --pdb_seqres_database_path=./pdb_seqres/pdb_seqres.txt --uniprot_database_path=./uniprot/uniprot.fasta "
-    // }
-    // else {
-    //     alphafold3_model_preset += " --pdb70_database_path=./pdb70/pdb70_from_mmcif_200916/pdb70 "
-    // }
     """
     if [ -f pdb_seqres/pdb_seqres.txt ]
     then
