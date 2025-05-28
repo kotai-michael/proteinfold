@@ -63,14 +63,20 @@
                     "fa_icon": "fas fa-file-signature",
                     "maxLength": 100,
                     "errorMessage": "MultiQC title must be less than or equal to 100 characters"
+                },
+                "db": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "The directory where reference data is stored. Individual methods can be overwritten with method-specific paths.",
+                    "fa_icon": "fas fa-folder-open"
                 }
             }
         },
         "alphafold2_options": {
-            "title": "Alphafold2 options",
+            "title": "AlphaFold2 options",
             "type": "object",
             "fa_icon": "fas fa-dna",
-            "description": "Alphafold2 options.",
+            "description": "AlphaFold2 options.",
             "properties": {
                 "max_template_date": {
                     "type": "string",
@@ -80,14 +86,6 @@
                     "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
                     "errorMessage": "Date must be in YYYY-MM-DD format"
                 },
-                "alphafold2_db": {
-                    "type": "string",
-                    "format": "path",
-                    "exists": true,
-                    "description": "Specifies the DB and PARAMS path used by 'AlphaFold2' mode",
-                    "fa_icon": "fas fa-database",
-                    "errorMessage": "Please provide a valid path to AlphaFold2 database"
-                },
                 "full_dbs": {
                     "type": "boolean",
                     "description": "If true uses the full version of the BFD database otherwise, otherwise it uses its reduced version, small bfd",
@@ -96,7 +94,7 @@
                 "alphafold2_mode": {
                     "type": "string",
                     "default": "standard",
-                    "description": "Specifies the mode in which Alphafold2 will be run",
+                    "description": "Specifies the mode in which AlphaFold2 will be run",
                     "enum": ["standard", "split_msa_prediction"],
                     "fa_icon": "fas fa-exchange-alt"
                 },
@@ -129,23 +127,15 @@
             }
         },
         "colabfold_options": {
-            "title": "Colabfold options",
+            "title": "ColabFold options",
             "type": "object",
             "fa_icon": "fas fa-coins",
-            "description": "Colabfold options.",
+            "description": "ColabFold options.",
             "properties": {
-                "colabfold_db": {
-                    "type": "string",
-                    "format": "path",
-                    "exists": true,
-                    "description": "Specifies the PARAMS and DB path used by 'colabfold'  mode",
-                    "fa_icon": "fas fa-folder-open",
-                    "errorMessage": "Please provide a valid path to ColabFold database"
-                },
                 "colabfold_server": {
                     "type": "string",
                     "default": "webserver",
-                    "description": "Specifies the MSA server used by Colabfold",
+                    "description": "Specifies the MSA server used by ColabFold",
                     "enum": ["webserver", "local"],
                     "fa_icon": "fas fa-server"
                 },
@@ -154,8 +144,6 @@
                     "default": "alphafold2_ptm",
                     "description": "Model preset for 'colabfold' mode",
                     "enum": [
-                        "auto",
-                        "alphafold2",
                         "alphafold2_ptm",
                         "alphafold2_multimer_v1",
                         "alphafold2_multimer_v2",
@@ -166,7 +154,7 @@
                 "num_recycles_colabfold": {
                     "type": "integer",
                     "default": 3,
-                    "description": "Number of recycles for Colabfold",
+                    "description": "Number of recycles for ColabFold",
                     "fa_icon": "fas fa-recycle",
                     "minimum": 1,
                     "maximum": 20,
@@ -207,23 +195,15 @@
             }
         },
         "esmfold_options": {
-            "title": "Esmfold options",
+            "title": "ESMFold options",
             "type": "object",
             "fa_icon": "fas fa-coins",
-            "description": "Esmfold options.",
+            "description": "ESMFold options.",
             "properties": {
-                "esmfold_db": {
-                    "type": "string",
-                    "format": "path",
-                    "exists": true,
-                    "description": "Specifies the PARAMS path used by 'esmfold' mode",
-                    "fa_icon": "fas fa-folder-open",
-                    "errorMessage": "Please provide a valid path to ESMFold database"
-                },
                 "num_recycles_esmfold": {
                     "type": "integer",
                     "default": 4,
-                    "description": "Specifies the number of recycles used by Esmfold",
+                    "description": "Specifies the number of recycles used by ESMFold",
                     "fa_icon": "fas fa-server",
                     "minimum": 1,
                     "maximum": 20,
@@ -247,7 +227,8 @@
                 "boltz_use_msa_server": {
                     "type": "boolean",
                     "description": "Use the cloud MSA server",
-                    "icon": "fas folder-open"
+                    "icon": "fas folder-open",
+                    "default": true
                 }
             }
         },
@@ -282,26 +263,12 @@
                 }
             }
         },
-        "rosettafold_all_atom_options": {
-            "title": "RoseTTAFold All Atom options",
-            "type": "object",
-            "description": "RoseTTAFold All Atom options.",
-            "default": "",
-            "properties": {
-                "rosettafold_all_atom_db": {
-                    "type": "string"
-                }
-            }
-        },
         "helixfold3_options": {
             "title": "HelixFold3 options",
             "type": "object",
             "description": "HelixFold3 options",
             "default": "",
             "properties": {
-                "helixfold3_db": {
-                    "type": "string"
-                },
                 "model_name": {
                     "type": "string"
                 },
@@ -393,10 +360,10 @@
             }
         },
         "alphafold2_dbs_and_parameters_link_options": {
-            "title": "Alphafold2 DBs and parameters links options",
+            "title": "AlphaFold2 DBs and parameters links options",
             "type": "object",
             "fa_icon": "fas fa-database",
-            "description": "Parameters used to provide the links to the DBs and parameters public resources to Alphafold2.",
+            "description": "Parameters used to provide the links to the DBs and parameters public resources to AlphaFold2.",
             "properties": {
                 "bfd_link": {
                     "type": "string",
@@ -413,7 +380,7 @@
                 "alphafold2_params_link": {
                     "type": "string",
                     "default": "https://storage.googleapis.com/alphafold/alphafold_params_2022-12-06.tar",
-                    "description": "Link to the Alphafold2 parameters",
+                    "description": "Link to the AlphaFold2 parameters",
                     "fa_icon": "fas fa-link"
                 },
                 "alphafold2_mgnify_link": {
@@ -473,11 +440,19 @@
             }
         },
         "alphafold2_dbs_and_parameters_paths_options": {
-            "title": "Alphafold2 DBs and parameters paths options",
+            "title": "AlphaFold2 DBs and parameters paths options",
             "type": "object",
             "fa_icon": "fas fa-database",
-            "description": "Parameters used to provide the paths to the DBs and parameters for Alphafold2.",
+            "description": "Parameters used to provide the paths to the DBs and parameters for AlphaFold2.",
             "properties": {
+                "alphafold2_db": {
+                    "type": "string",
+                    "format": "path",
+                    "exists": true,
+                    "description": "Specifies the DB and PARAMS path used by 'AlphaFold2' mode",
+                    "fa_icon": "fas fa-database",
+                    "errorMessage": "Please provide a valid path to AlphaFold2 database"
+                },
                 "bfd_path": {
                     "type": "string",
                     "description": "Path to BFD dababase",
@@ -492,7 +467,7 @@
                 },
                 "alphafold2_params_path": {
                     "type": "string",
-                    "description": "Path to the Alphafold2 parameters",
+                    "description": "Path to the AlphaFold2 parameters",
                     "fa_icon": "fas fa-folder-open",
                     "default": "null/alphafold_params_*/*"
                 },
@@ -634,15 +609,15 @@
             }
         },
         "colabfold_dbs_and_parameters_link_options": {
-            "title": "Colabfold DBs and parameters links options",
+            "title": "ColabFold DBs and parameters links options",
             "type": "object",
-            "description": "Parameters used to provide the links to the DBs and parameters public resources to Colabfold.",
+            "description": "Parameters used to provide the links to the DBs and parameters public resources to ColabFold.",
             "fa_icon": "fas fa-database",
             "properties": {
                 "colabfold_db_link": {
                     "type": "string",
                     "default": "http://wwwuser.gwdg.de/~compbiol/colabfold/colabfold_envdb_202108.tar.gz",
-                    "description": "Link to the Colabfold database",
+                    "description": "Link to the ColabFold database",
                     "fa_icon": "fas fa-link"
                 },
                 "colabfold_uniref30_link": {
@@ -659,14 +634,22 @@
             }
         },
         "colabfold_dbs_and_parameters_paths_options": {
-            "title": "Colabfold DBs and parameters paths options",
+            "title": "ColabFold DBs and parameters paths options",
             "type": "object",
-            "description": "Parameters used to provide the paths to the DBs and parameters public resources to Colabfold.",
+            "description": "Parameters used to provide the paths to the DBs and parameters public resources to ColabFold.",
             "fa_icon": "fas fa-database",
             "properties": {
+                "colabfold_db": {
+                    "type": "string",
+                    "format": "path",
+                    "exists": true,
+                    "description": "Specifies the PARAMS and DB path used by 'colabfold'  mode",
+                    "fa_icon": "fas fa-folder-open",
+                    "errorMessage": "Please provide a valid path to ColabFold database"
+                },
                 "colabfold_db_path": {
                     "type": "string",
-                    "description": "Link to the Colabfold database",
+                    "description": "Link to the ColabFold database",
                     "fa_icon": "fas fa-folder-open",
                     "default": "null/colabfold_envdb_202108"
                 },
@@ -689,40 +672,48 @@
             }
         },
         "esmfold_parameters_link_options": {
-            "title": "Esmfold parameters links options",
+            "title": "ESMFold parameters links options",
             "type": "object",
-            "description": "Parameters used to provide the links to the parameters public resources to Esmfold.",
+            "description": "Parameters used to provide the links to the parameters public resources to ESMFold.",
             "fa_icon": "fas fa-database",
             "properties": {
                 "esmfold_3B_v1": {
                     "type": "string",
                     "default": "https://dl.fbaipublicfiles.com/fair-esm/models/esmfold_3B_v1.pt",
-                    "description": "Link to the Esmfold 3B-v1 model",
+                    "description": "Link to the ESMFold 3B-v1 model",
                     "fa_icon": "fas fa-link"
                 },
                 "esm2_t36_3B_UR50D": {
                     "type": "string",
                     "default": "https://dl.fbaipublicfiles.com/fair-esm/models/esm2_t36_3B_UR50D.pt",
-                    "description": "Link to the Esmfold t36-3B-UR50D model",
+                    "description": "Link to the ESMFold t36-3B-UR50D model",
                     "fa_icon": "fas fa-link"
                 },
                 "esm2_t36_3B_UR50D_contact_regression": {
                     "type": "string",
                     "default": "https://dl.fbaipublicfiles.com/fair-esm/regression/esm2_t36_3B_UR50D-contact-regression.pt",
-                    "description": "Link to the Esmfold t36-3B-UR50D-contact-regression model",
+                    "description": "Link to the ESMFold t36-3B-UR50D-contact-regression model",
                     "fa_icon": "fas fa-link"
                 }
             }
         },
         "esmfold_parameters_paths_options": {
-            "title": "Esmfold parameters paths options",
+            "title": "ESMFold parameters paths options",
             "type": "object",
-            "description": "Parameters used to provide the paths to the parameters public resources to Esmfold.",
+            "description": "Parameters used to provide the paths to the parameters public resources to ESMFold.",
             "fa_icon": "fas fa-database",
             "properties": {
+                "esmfold_db": {
+                    "type": "string",
+                    "format": "path",
+                    "exists": true,
+                    "description": "Specifies the PARAMS path used by 'esmfold' mode",
+                    "fa_icon": "fas fa-folder-open",
+                    "errorMessage": "Please provide a valid path to ESMFold database"
+                },
                 "esmfold_params_path": {
                     "type": "string",
-                    "description": "Link to the Esmfold parameters",
+                    "description": "Link to the ESMFold parameters",
                     "fa_icon": "fas fa-folder-open",
                     "default": "null/*"
                 }
@@ -911,6 +902,9 @@
             "description": "Parameters used to provide the paths to the DBs and parameters for RoseTTAFold All Atom.",
             "default": "",
             "properties": {
+                "rosettafold_all_atom_db": {
+                    "type": "string"
+                },
                 "uniref30_rosettafold_all_atom_path": {
                     "type": "string",
                     "default": "null/uniref30/UniRef30_2020_06/*"
@@ -930,11 +924,14 @@
             }
         },
         "helixfold3_dbs_and_parameters_paths_options": {
-            "title": "helixfold3 dbs and parameters paths options",
+            "title": "HelixFold3 dbs and parameters paths options",
             "type": "object",
             "description": "Parameters used to provide the paths to the DBs and parameters for HelixFold3.",
             "default": "",
             "properties": {
+                "helixfold3_db": {
+                    "type": "string"
+                },
                 "helixfold3_init_models_path": {
                     "type": "string",
                     "default": "null/HelixFold3-240814.pdparams"
@@ -990,7 +987,7 @@
             }
         },
         "helixfold3_dbs_and_parameters_link_options": {
-            "title": "helixfold3 dbs and parameters link options",
+            "title": "HelixFold3 dbs and parameters link options",
             "type": "object",
             "description": "Parameters used to provide the links to the parameters public resources to HelixFold3.",
             "default": "",
@@ -1074,9 +1071,6 @@
         },
         {
             "$ref": "#/$defs/foldseek_options"
-        },
-        {
-            "$ref": "#/$defs/rosettafold_all_atom_options"
         },
         {
             "$ref": "#/$defs/helixfold3_options"
