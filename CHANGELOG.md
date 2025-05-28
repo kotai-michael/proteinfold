@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[PR #307](https://github.com/nf-core/proteinfold/pull/307)] - Update Boltz-1 boilerplate and formatting.
 - [[PR #314](https://github.com/nf-core/proteinfold/pull/314)] - Fix extract metrics for broken modules.
 - [[PR #315](https://github.com/nf-core/proteinfold/pull/315)] - Add global db flag.
+- [[PR #316](https://github.com/nf-core/proteinfold/pull/316)] - Add process_gpu label to modules which use GPU.
 
 ### Parameters
 
