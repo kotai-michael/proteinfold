@@ -46,7 +46,7 @@ RUN pip3 install --upgrade pip --no-cache-dir \
     && pip3 install -r /app/alphafold/dev-requirements.txt --no-cache-dir \
     && pip3 install --no-deps /app/alphafold/ --no-cache-dir \
     && pip3 install --no-deps biopython
-    
+
 # # Build chemical components database (this binary was installed by pip).
 RUN build_data
 
