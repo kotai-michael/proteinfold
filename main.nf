@@ -19,11 +19,10 @@ if (params.mode.toLowerCase().split(",").contains("alphafold2")) {
     include { PREPARE_ALPHAFOLD2_DBS } from './subworkflows/local/prepare_alphafold2_dbs'
     include { ALPHAFOLD2             } from './workflows/alphafold2'
 }
-
-// TODO: check whether it works without the if (no warnings)
-include { PREPARE_ALPHAFOLD3_DBS } from './subworkflows/local/prepare_alphafold3_dbs'
-include { ALPHAFOLD3             } from './workflows/alphafold3'
-
+if (params.mode.toLowerCase().split(",").contains("alphafold3")) {
+    include { PREPARE_ALPHAFOLD3_DBS } from './subworkflows/local/prepare_alphafold3_dbs'
+    include { ALPHAFOLD3             } from './workflows/alphafold3'
+}
 if (params.mode.toLowerCase().split(",").contains("colabfold")) {
     include { COLABFOLD             } from './workflows/colabfold'
 }
@@ -46,6 +45,7 @@ if (params.mode.toLowerCase().split(",").contains("boltz")) {
 if (params.mode.toLowerCase().split(",").contains("colabfold") || params.mode.toLowerCase().split(",").contains("boltz")) {
     include { PREPARE_COLABFOLD_DBS } from './subworkflows/local/prepare_colabfold_dbs'
 }
+
 include { PIPELINE_INITIALISATION          } from './subworkflows/local/utils_nfcore_proteinfold_pipeline'
 include { PIPELINE_COMPLETION              } from './subworkflows/local/utils_nfcore_proteinfold_pipeline'
 include { getColabfoldAlphafold2Params     } from './subworkflows/local/utils_nfcore_proteinfold_pipeline'
