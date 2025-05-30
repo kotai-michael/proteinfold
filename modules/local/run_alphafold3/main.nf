@@ -13,7 +13,7 @@ process RUN_ALPHAFOLD3 {
     path "params/*"
     path "small_bfd/*"
     path "mgnify/*"
-    path "mmcif_files/*"
+    path "mmcif_files"
     path "uniref90/*"
     path "pdb_seqres/*"
     path "uniprot/*"
