@@ -21,7 +21,7 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     tuple val(meta), path ("${meta.id}_plddt.tsv")               , emit: multiqc
     tuple val(meta), path ("${meta.id}_msa.tsv")                 , emit: msa
     // I think there should always be PAE from the .pt PyTorch model. extract_metrics.py has condition import torch to handle this
-    tuple val(meta), path ("${meta.id}_*_pae.tsv")               , emit: paes
+    tuple val(meta), path ("${meta.id}_pae.tsv")                 , emit: paes
     path "versions.yml"                                          , emit: versions
 
     when:
@@ -36,15 +36,19 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     }
     def args = task.ext.args ?: ''
     """
-    mamba run --name RFAA python /app/RoseTTAFold-All-Atom/rf2aa/run_inference.py \
-    --config-dir /app/RoseTTAFold-All-Atom/rf2aa/config/inference \
-    --config-name "${yaml}" \
-    $args
+    mamba run --name RFAA python /app/RoseTTAFold-All-Atom/rf2aa/run_inference.py \\
+        --config-dir /app/RoseTTAFold-All-Atom/rf2aa/config/inference \\
+        --config-name "${yaml}" $args
+
+    # Temporary hack - maybe better to sanitize YAML - job_name -> meta.id?
+    yaml_name="\$(grep ^job_name ${yaml} | awk '{print \$2}' |  sed 's/\"//g')"
+
+    cp "\$yaml_name".pdb "${meta.id}"_rosettafold_all_atom.pdb
 
     mamba run --name RFAA extract_metrics.py --name ${meta.id} \\
-        --structs "${yaml.baseName}_rosettafold_all_atom.pdb" \\
-        --a3ms "${yaml.baseName}/A/t000_.msa0.a3m" \\
-        --pts ${yaml.baseName}_aux.pt
+        --structs "${meta.id}_rosettafold_all_atom.pdb" \\
+        --a3ms "\$yaml_name"/A/t000_.msa0.a3m \\
+        --pts "\$yaml_name"_aux.pt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -59,7 +63,7 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     touch "${meta.id}_aux.pt"
     touch "${meta.id}_plddt.tsv"
     touch "${meta.id}_msa.tsv"
-    touch "${meta.id}_0_pae.tsv"
+    touch "${meta.id}_pae.tsv"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
