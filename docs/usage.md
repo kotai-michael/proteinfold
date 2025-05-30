@@ -230,6 +230,45 @@ To provide the predownloaded AlphaFold2 databases and parameters you can specify
 ```
 </details>
 
+AlphaFold3 can be run using this command:
+
+```bash
+nextflow run nf-core/proteinfold \
+      --input samplesheet.csv \
+      --outdir <OUTDIR> \
+      --mode alphafold3 \
+      --alphafold3_db <null (default) | DB_PATH> \
+      --use_gpu <true/false> \
+      -profile <docker/singularity/.../institute>
+```
+
+> [!WARNING]
+> The AlphaFold3 model weights are not provided by the pipeline. You need to obtain them from DeepMind as described in the [AlphaFold3 repository](https://github.com/google-deepmind/alphafold3). Please follow their terms of use and licensing requirements.
+
+To provide the predownloaded AlphaFold3 databases and parameters you can specify the `--alphafold3_db <PATH>` parameter and the directory structure of your path should be like this:
+
+<details markdown="1">
+<summary>Directory structure</summary>
+```console
+├── mgnify
+│   └── mgy_clusters_2022_05.fa
+├── mmcif_files
+│   ├── 1g6g.cif
+│   ├── 1go4.cif
+│   └── ...
+├── params
+│   └── af3.bin
+├── pdb_seqres
+│   └── pdb_seqres_2022_09_28.fasta
+├── small_bfd
+│   └── bfd-first_non_consensus_sequences.fasta
+├── uniprot
+│   └── uniprot_all_2021_04.fa
+└── uniref90
+    └── uniref90_2022_05.fa
+```
+</details>
+
 Colabfold mode using use your own custom MMSeqs2 API server (`--colabfold_server local`) can be run using the following command:
 
 ```bash

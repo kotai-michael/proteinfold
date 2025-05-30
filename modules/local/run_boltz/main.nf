@@ -4,10 +4,9 @@
 process RUN_BOLTZ {
     tag "$meta.id"
     label 'process_medium'
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("Local RUN_BOLTZ module does not support Conda. Please use Docker / Singularity / Podman instead.")
-    }
-    container "quay.io/nf-core/proteinfold_boltz:dev"
+    label 'process_gpu'
+
+    container "nf-core/proteinfold_boltz:dev"
 
     input:
     tuple val(meta), path(fasta)
@@ -30,11 +29,15 @@ process RUN_BOLTZ {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error("Local RUN_BOLTZ module does not support Conda. Please use Docker / Singularity / Podman instead.")
+    }
     def version = "0.4.1"
     def args = task.ext.args ?: ''
 
     """
-    boltz predict "${fasta}" ${args} --cache ./
+    boltz predict "${fasta}" ${args} --cache ./ --write_full_pae --output_format pdb
     cp boltz_results_*/predictions/*/*.pdb ./${meta.id}_boltz.pdb
 
     echo -e Atom_serial_number"\\t"Atom_name"\\t"Residue_name"\\t"Residue_sequence_number"\\t"pLDDT > ${meta.id}_plddt_mqc.tsv
