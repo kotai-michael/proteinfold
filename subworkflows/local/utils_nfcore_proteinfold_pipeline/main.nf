@@ -278,12 +278,12 @@ def validateFasta(fasta) {
 }
 
 //
-// Print a warning if macs_gsize parameter has not been provided
+// Print a warning when using Alphafold3
 //
 def alphafold3Warn(log) {
     log.warn "=============================================================================\n" +
         "  You are using AlphaFold3 mode.\n" +
-        "  We aware that the predicted structures can not be used for commercial purposes.\n" +
+        "  Be aware that the predicted structures can not be used for commercial purposes.\n" +
         "  More information here: \"https://github.com/google-deepmind/alphafold3/blob/main/README.md#alphafold-3-source-code-and-model-parameters.\"\n" +
         "==================================================================================="
 }
