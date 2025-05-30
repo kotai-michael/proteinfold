@@ -318,6 +318,7 @@ version = "1.0.0"
 model_name = {
     "esmfold": "ESMFold",
     "alphafold2": "AlphaFold2",
+    "alphafold3": "Alphafold3",
     "colabfold": "ColabFold",
     "rosettafold_all_atom": "Rosettafold_All_Atom",
     "helixfold3": "HelixFold3",

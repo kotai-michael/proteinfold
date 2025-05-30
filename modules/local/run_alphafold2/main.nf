@@ -34,8 +34,8 @@ process RUN_ALPHAFOLD2 {
     // TODO: alphafold2_model_preset == "monomer" the pae file won't exist.
     // Default is monomer_ptm which does calculate metrics. Good default, metrics worth it for minor performance loss
     // Nevertheless PAE has to be optional since not all alphafold2 NN models are handled to generate PAE
-    tuple val(meta), path ("${meta.id}_*_pae.tsv")          , optional: true, emit: paes
-    path "versions.yml", emit: versions
+    tuple val(meta), path ("${meta.id}_*_pae.tsv")         , optional: true, emit: paes
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
