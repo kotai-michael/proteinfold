@@ -41,12 +41,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[PR #307](https://github.com/nf-core/proteinfold/pull/307)] - Update Boltz-1 boilerplate and formatting.
 - [[PR #314](https://github.com/nf-core/proteinfold/pull/314)] - Fix extract metrics for broken modules.
 - [[PR #312](https://github.com/nf-core/proteinfold/pull/312)] - pTM & ipTM metrics now extracted
+- [[PR #315](https://github.com/nf-core/proteinfold/pull/315)] - Add global db flag.
+- [[#263](https://github.com/nf-core/proteinfold/issues/263)] - Removed broken colabfold options (`auto` and `alphafold2`)
+- [[PR #316](https://github.com/nf-core/proteinfold/pull/316)] - Add process_gpu label to modules which use GPU.
 
 ### Parameters
 
-| Old parameter | New parameter         |
-| ------------- | --------------------- |
-|               | `--pdb_obsolete_path` |
+| Old parameter                | New parameter                  |
+| ---------------------------- | ------------------------------ |
+|                              | `--pdb_obsolete_path`          |
+| `--small_bfd_link`           | `--alphafold2_small_bfd_link`  |
+| `--mgnify_link`              | `--alphafold2_mgnify_link`     |
+| `--pdb_mmcif_link`           | `--alphafold2_pdb_mmcif_link`  |
+| `--uniref30_alphafold2_link` | `--alphafold2_uniref30_link`   |
+| `--uniref90_link`            | `--alphafold2_uniref90_link`   |
+| `--pdb_seqres_link`          | `--alphafold2_pdb_seqres_link` |
+| `--small_bfd_path`           | `--alphafold2_small_bfd_path`  |
+| `--mgnify_path_alphafold2`   | `--alphafold2_mgnify_path`     |
+| `--pdb_mmcif_path`           | `--alphafold2_pdb_mmcif_path`  |
+| `--uniref30_alphafold2_path` | `--alphafold2_uniref30_path`   |
+| `--uniref90_path`            | `--alphafold2_uniref90_path`   |
+| `--pdb_seqres_path`          | `--alphafold2_pdb_seqres_path` |
+| `--uniprot_path`             | `--alphafold2_uniprot_path`    |
+|                              | `--alphafold3_small_bfd_link`  |
+|                              | `--alphafold3_mgnify_link`     |
+|                              | `--alphafold3_uniref90_link`   |
+|                              | `--alphafold3_pdb_seqres_link` |
+|                              | `--uniprot_link`               |
+|                              | `--alphafold3_small_bfd_path`  |
+|                              | `--alphafold3_params_path`     |
+|                              | `--alphafold3_mgnify_path`     |
+|                              | `--alphafold3_pdb_mmcif_path`  |
+|                              | `--alphafold3_uniref90_path`   |
+|                              | `--alphafold3_pdb_seqres_path` |
+|                              | `--alphafold3_uniprot_path`    |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present.
 > **NB:** Parameter has been **added** if just the new parameter information is present.

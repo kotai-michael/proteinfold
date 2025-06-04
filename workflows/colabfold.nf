@@ -120,20 +120,22 @@ workflow COLABFOLD {
     COLABFOLD_BATCH
         .out
         .pdb
-    .map{
-        meta = it[0].clone();
-        meta.model = "colabfold";
-        [meta, it[1]]
-    }
-    .set{ch_pdb_final}
+        .map{
+            meta = it[0].clone();
+            meta.model = "colabfold";
+            [meta, it[1]]
+        }
+        .set{ch_pdb_final}
 
-    COLABFOLD_BATCH.out.msa
-    .map{
-        meta = it[0].clone();
-        meta.model = "colabfold";
-        [meta, it[1]]
-    }
-    .set{ch_msa_final}
+    COLABFOLD_BATCH
+        .out
+        .msa
+        .map{
+            meta = it[0].clone();
+            meta.model = "colabfold";
+            [meta, it[1]]
+        }
+        .set{ch_msa_final}
 
     COLABFOLD_BATCH
         .out
