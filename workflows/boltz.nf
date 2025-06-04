@@ -48,7 +48,6 @@ workflow BOLTZ {
     ch_versions     // channel: [ path(versions.yml) ]
     ch_boltz_ccd    // channel: [ path(boltz_ccd) ]
     ch_boltz_model  // channel: [ path(model) ]
-    ch_colabfold_params // channel: [ path(colabfold_params) ]
     ch_colabfold_db // channel: [ path(colabfold_db) ]
     ch_uniref30     // channel: [ path(uniref30) ]
     msa_server
@@ -76,7 +75,6 @@ workflow BOLTZ {
 
         MMSEQS_COLABFOLDSEARCH (
                 ch_input.monomer.mix(MULTIFASTA_TO_CSV.out.input_csv),
-                ch_colabfold_params,
                 ch_colabfold_db,
                 ch_uniref30
         )
