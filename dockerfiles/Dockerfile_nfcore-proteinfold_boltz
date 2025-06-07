@@ -12,6 +12,6 @@ RUN apt-get update && \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir
+RUN pip install --no-cache-dir boltz
 
 CMD ["boltz"]
