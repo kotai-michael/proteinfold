@@ -6,7 +6,7 @@ process RUN_BOLTZ {
     label 'process_medium'
     label 'process_gpu'
 
-    container "jscrh/proteinfold_boltz:2"
+    container "jscrh/proteinfold_boltz:2.0.2"
 
     input:
     tuple val(meta), path(fasta)
