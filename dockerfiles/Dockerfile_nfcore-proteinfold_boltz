@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.12-slim
 
 LABEL authors="Ziad Al-Bkhetan <ziad.albkhetan@gmail.com>" \
     title="nfcore/proteinfold_boltz" \
