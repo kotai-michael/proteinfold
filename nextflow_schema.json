@@ -743,6 +743,18 @@
                     "description": "Link to download model file",
                     "icon": "fas fa-link",
                     "default": "https://huggingface.co/boltz-community/boltz-1/resolve/main/boltz1_conf.ckpt"
+                },
+                "boltz2_aff_link": {
+                    "type": "string",
+                    "default": "https://huggingface.co/boltz-community/boltz-2/resolve/main/boltz2_aff.ckpt"
+                },
+                "boltz2_conf_link": {
+                    "type": "string",
+                    "default": "https://huggingface.co/boltz-community/boltz-2/resolve/main/boltz2_conf.ckpt"
+                },
+                "mols_link": {
+                    "type": "string",
+                    "default": "https://huggingface.co/boltz-community/boltz-2/resolve/main/mols.tar"
                 }
             }
         },
@@ -768,6 +780,18 @@
                     "description": "Path to boltz Model file",
                     "icon": "fas folder-open",
                     "default": "null/boltz1_conf.ckpt"
+                },
+                "boltz2_aff_path": {
+                    "type": "string",
+                    "default": "null/boltz2_aff.ckpt"
+                },
+                "boltz2_conf_path": {
+                    "type": "string",
+                    "default": "null/boltz2_conf.ckpt"
+                },
+                "mols_path": {
+                    "type": "string",
+                    "default": "null/mols/"
                 }
             }
         },
@@ -1133,31 +1157,5 @@
         {
             "$ref": "#/$defs/helixfold3_dbs_and_parameters_link_options"
         }
-    ],
-    "properties": {
-        "boltz2_aff_link": {
-            "type": "string",
-            "default": "https://huggingface.co/boltz-community/boltz-2/resolve/main/boltz2_aff.ckpt"
-        },
-        "boltz2_conf_link": {
-            "type": "string",
-            "default": "https://huggingface.co/boltz-community/boltz-2/resolve/main/boltz2_conf.ckpt"
-        },
-        "mols_link": {
-            "type": "string",
-            "default": "https://huggingface.co/boltz-community/boltz-2/resolve/main/mols.tar"
-        },
-        "boltz2_aff_path": {
-            "type": "string",
-            "default": "null/boltz2_aff.ckpt"
-        },
-        "boltz2_conf_path": {
-            "type": "string",
-            "default": "null/boltz2_conf.ckpt"
-        },
-        "mols_path": {
-            "type": "string",
-            "default": "null/mols/"
-        }
-    }
+    ]
 }
