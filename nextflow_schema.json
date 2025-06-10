@@ -1133,5 +1133,31 @@
         {
             "$ref": "#/$defs/helixfold3_dbs_and_parameters_link_options"
         }
-    ]
+    ],
+    "properties": {
+        "boltz2_aff_link": {
+            "type": "string",
+            "default": "https://huggingface.co/boltz-community/boltz-2/resolve/main/boltz2_aff.ckpt"
+        },
+        "boltz2_conf_link": {
+            "type": "string",
+            "default": "https://huggingface.co/boltz-community/boltz-2/resolve/main/boltz2_conf.ckpt"
+        },
+        "mols_link": {
+            "type": "string",
+            "default": "https://huggingface.co/boltz-community/boltz-2/resolve/main/mols.tar"
+        },
+        "boltz2_aff_path": {
+            "type": "string",
+            "default": "null/boltz2_aff.ckpt"
+        },
+        "boltz2_conf_path": {
+            "type": "string",
+            "default": "null/boltz2_conf.ckpt"
+        },
+        "mols_path": {
+            "type": "string",
+            "default": "null/mols/"
+        }
+    }
 }
