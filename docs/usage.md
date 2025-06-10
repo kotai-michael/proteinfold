@@ -119,7 +119,7 @@ To provide the predownloaded AlphaFold2 databases and parameters you can specify
 │   │   ├── 6sg9.cif
 │   │   ├── 6vi4.cif
 │   │   ├── 7sp5.cif
-│   │   └── ... 
+│   │   └── ...
 │   └── obsolete.dat
 ├── pdb_seqres
 │   └── pdb_seqres.txt

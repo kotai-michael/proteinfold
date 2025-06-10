@@ -664,7 +664,7 @@
                     "type": "string",
                     "description": "Link to the UniRef30 database",
                     "fa_icon": "fas fa-folder-open",
-                    "default": "null/uniref30/*"
+                    "default": "null/colabfold_uniref30/*"
                 },
                 "colabfold_alphafold2_params_path": {
                     "type": "string",
@@ -722,7 +722,7 @@
                     "type": "string",
                     "description": "Link to the ESMFold parameters",
                     "fa_icon": "fas fa-folder-open",
-                    "default": "null/*"
+                    "default": "null/params/*"
                 }
             }
         },
@@ -761,13 +761,13 @@
                     "type": "string",
                     "description": "Path to CCD file",
                     "icon": "fas folder-open",
-                    "default": "null/ccd.pkl"
+                    "default": "null/params/ccd.pkl"
                 },
                 "boltz_model_path": {
                     "type": "string",
                     "description": "Path to boltz Model file",
                     "icon": "fas folder-open",
-                    "default": "null/boltz1_conf.ckpt"
+                    "default": "null/params/boltz1_conf.ckpt"
                 }
             }
         },
@@ -926,7 +926,7 @@
                 },
                 "rfaa_paper_weights_path": {
                     "type": "string",
-                    "default": "null/RFAA_paper_weights.pt"
+                    "default": "null/params/RFAA_paper_weights.pt"
                 }
             }
         },
@@ -941,7 +941,7 @@
                 },
                 "helixfold3_init_models_path": {
                     "type": "string",
-                    "default": "null/HelixFold3-240814.pdparams"
+                    "default": "null/params/HelixFold3-240814.pdparams"
                 },
                 "helixfold3_uniclust30_path": {
                     "type": "string",
@@ -949,11 +949,11 @@
                 },
                 "helixfold3_ccd_preprocessed_path": {
                     "type": "string",
-                    "default": "null/ccd_preprocessed_etkdg.pkl.gz"
+                    "default": "null/params/ccd_preprocessed_etkdg.pkl.gz"
                 },
                 "helixfold3_rfam_path": {
                     "type": "string",
-                    "default": "null/Rfam-14.9_rep_seq.fasta"
+                    "default": "null/rfam/Rfam-14.9_rep_seq.fasta"
                 },
                 "helixfold3_bfd_path": {
                     "type": "string",
