@@ -6,7 +6,7 @@ process RUN_BOLTZ {
     label 'process_medium'
     label 'process_gpu'
 
-    container "jscrh/proteinfold_boltz:2.0.2"
+    container "jscrh/proteinfold_boltz:2.0.3"
 
     input:
     tuple val(meta), path(fasta)
@@ -15,7 +15,7 @@ process RUN_BOLTZ {
     path ('ccd.pkl')
     path ('boltz2_aff.ckpt')
     path ('boltz2_conf.ckpt')
-    path ('mols')
+    path ('*')
 
     output:
     tuple val(meta), path ("boltz_results_*/processed/msa/*.npz")               , emit: msa
@@ -36,7 +36,7 @@ process RUN_BOLTZ {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error("Local RUN_BOLTZ module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
-    def version = "0.4.1"
+    def version = "2.0.3"
     def args = task.ext.args ?: ''
 
     """
