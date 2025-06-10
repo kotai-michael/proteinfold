@@ -48,6 +48,9 @@ workflow BOLTZ {
     ch_versions     // channel: [ path(versions.yml) ]
     ch_boltz_ccd    // channel: [ path(boltz_ccd) ]
     ch_boltz_model  // channel: [ path(model) ]
+    ch_boltz2_aff   // channel: [ path(boltz2_aff) ]
+    ch_boltz2_conf  // channel: [ path(boltz2_conf) ]
+    ch_mols         // channel: [ path(mols) ]
     ch_colabfold_db // channel: [ path(colabfold_db) ]
     ch_uniref30     // channel: [ path(uniref30) ]
     msa_server
@@ -107,7 +110,10 @@ workflow BOLTZ {
         BOLTZ_FASTA.out.formatted_fasta.map{[it[0], it[1]]},
         BOLTZ_FASTA.out.formatted_fasta.map{it[2]},
         ch_boltz_model,
-        ch_boltz_ccd
+        ch_boltz_ccd,
+        ch_boltz2_aff,
+        ch_boltz2_conf,
+        ch_mols
     )
 
     RUN_BOLTZ

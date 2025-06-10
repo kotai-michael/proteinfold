@@ -13,6 +13,9 @@ process RUN_BOLTZ {
     path (files)
     path ('boltz1_conf.ckpt')
     path ('ccd.pkl')
+    path ('boltz2_aff.ckpt')
+    path ('boltz2_conf.ckpt')
+    path ('mols/')
 
     output:
     tuple val(meta), path ("boltz_results_*/processed/msa/*.npz")               , emit: msa

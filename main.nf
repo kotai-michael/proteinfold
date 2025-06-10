@@ -433,8 +433,14 @@ workflow NFCORE_PROTEINFOLD {
         PREPARE_BOLTZ_DBS(
             params.boltz_ccd_path,
             params.boltz_model_path,
+            params.boltz2_aff_path,
+            params.boltz2_conf_path,
+            params.mols_path,
             params.boltz_ccd_link,
-            params.boltz_model_link
+            params.boltz_model_link,
+            params.boltz2_aff_link,
+            params.boltz2_conf_link,
+            params.mols_link
         )
         ch_versions = ch_versions.mix(PREPARE_BOLTZ_DBS.out.versions)
 
@@ -456,6 +462,9 @@ workflow NFCORE_PROTEINFOLD {
             ch_versions,
             PREPARE_BOLTZ_DBS.out.boltz_ccd,
             PREPARE_BOLTZ_DBS.out.boltz_model,
+            PREPARE_BOLTZ_DBS.out.boltz2_aff,
+            PREPARE_BOLTZ_DBS.out.boltz2_conf,
+            PREPARE_BOLTZ_DBS.out.mols,
             PREPARE_COLABFOLD_DBS.out.colabfold_db,
             PREPARE_COLABFOLD_DBS.out.uniref30,
             params.boltz_use_msa_server
