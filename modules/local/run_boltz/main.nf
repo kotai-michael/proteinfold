@@ -15,7 +15,7 @@ process RUN_BOLTZ {
     path ('ccd.pkl')
     path ('boltz2_aff.ckpt')
     path ('boltz2_conf.ckpt')
-    path ('*')
+    path ('mols')
 
     output:
     tuple val(meta), path ("boltz_results_*/processed/msa/*.npz")               , emit: msa
@@ -40,7 +40,7 @@ process RUN_BOLTZ {
     def args = task.ext.args ?: ''
 
     """
-    boltz predict "${fasta}" ${args} --cache ./ --write_full_pae --output_format pdb
+    boltz predict "${fasta}" ${args} --cache ./
     cp boltz_results_*/predictions/*/*.pdb ./${meta.id}_boltz.pdb
 
     echo -e Atom_serial_number"\\t"Atom_name"\\t"Residue_name"\\t"Residue_sequence_number"\\t"pLDDT > ${meta.id}_plddt_mqc.tsv
