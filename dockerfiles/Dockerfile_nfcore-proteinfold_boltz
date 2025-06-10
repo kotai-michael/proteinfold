@@ -14,7 +14,4 @@ RUN apt-get update && \
 
 RUN pip install --no-cache-dir boltz
 
-ENV NUMBA_CACHE_DIR=/tmp
-ENV HOME=/tmp
-
 CMD ["boltz"]

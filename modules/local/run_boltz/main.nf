@@ -40,6 +40,9 @@ process RUN_BOLTZ {
     def args = task.ext.args ?: ''
 
     """
+    export NUMBA_CACHE_DIR=/tmp
+    export HOME=/tmp
+
     boltz predict "${fasta}" ${args} --cache ./
     cp boltz_results_*/predictions/*/*.pdb ./${meta.id}_boltz.pdb
 
