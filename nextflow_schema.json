@@ -227,8 +227,94 @@
                 "boltz_use_msa_server": {
                     "type": "boolean",
                     "description": "Use the cloud MSA server",
-                    "icon": "fas folder-open",
+                    "icon": "fas folder-open"
+                },
+                "boltz_out_dir": {
+                    "type": "string"
+                },
+                "boltz_cache": {
+                    "type": "string",
+                    "default": "./"
+                },
+                "boltz_checkpoint": {
+                    "type": "string"
+                },
+                "boltz_devices": {
+                    "type": "string"
+                },
+                "boltz_accelerator": {
+                    "type": "string"
+                },
+                "boltz_recycling_steps": {
+                    "type": "string"
+                },
+                "boltz_sampling_steps": {
+                    "type": "string"
+                },
+                "boltz_diffusion_samples": {
+                    "type": "string"
+                },
+                "boltz_max_parallel_samples": {
+                    "type": "string"
+                },
+                "boltz_step_scale": {
+                    "type": "string"
+                },
+                "boltz_output_format": {
+                    "type": "string",
+                    "default": "pdb"
+                },
+                "boltz_num_workers": {
+                    "type": "string"
+                },
+                "boltz_method": {
+                    "type": "string"
+                },
+                "boltz_preprocessing_threads": {
+                    "type": "string"
+                },
+                "boltz_affinity_mw_correction": {
+                    "type": "boolean"
+                },
+                "boltz_sampling_steps_affinity": {
+                    "type": "string"
+                },
+                "boltz_diffusion_samples_affinity": {
+                    "type": "string"
+                },
+                "boltz_affinity_checkpoint": {
+                    "type": "string"
+                },
+                "boltz_max_msa_seqs": {
+                    "type": "string"
+                },
+                "boltz_subsample_msa": {
+                    "type": "boolean"
+                },
+                "boltz_num_subsampled_msa": {
+                    "type": "string"
+                },
+                "boltz_no_trifast": {
+                    "type": "boolean"
+                },
+                "boltz_override": {
+                    "type": "boolean"
+                },
+                "boltz_msa_server_url": {
+                    "type": "string"
+                },
+                "boltz_msa_pairing_strategy": {
+                    "type": "string"
+                },
+                "boltz_use_potentials": {
+                    "type": "boolean"
+                },
+                "boltz_write_full_pae": {
+                    "type": "boolean",
                     "default": true
+                },
+                "boltz_write_full_pde": {
+                    "type": "boolean"
                 }
             }
         },

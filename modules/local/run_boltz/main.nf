@@ -43,7 +43,7 @@ process RUN_BOLTZ {
     export NUMBA_CACHE_DIR=/tmp
     export HOME=/tmp
 
-    boltz predict "${fasta}" ${args} --cache ./
+    boltz predict "${fasta}" ${args}
     cp boltz_results_*/predictions/*/*.pdb ./${meta.id}_boltz.pdb
 
     echo -e Atom_serial_number"\\t"Atom_name"\\t"Residue_name"\\t"Residue_sequence_number"\\t"pLDDT > ${meta.id}_plddt_mqc.tsv

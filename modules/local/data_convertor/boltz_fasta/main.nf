@@ -38,12 +38,20 @@ process BOLTZ_FASTA {
             if entity in header_lower:
                 return entity
         seq = sequence.strip()
-        if re.fullmatch(r"[A-Z]+", seq) and len(seq) > 20:
+        seq_set = set(seq)
+        # RNA: only A,C,U,G,N
+        if len(seq_set - set("ACUGN")) == 0:
+            return "rna"
+        # DNA: only A,C,T,G,N
+        if len(seq_set - set("ACTGN")) == 0:
+            return "dna"
+        # Protein: only 20 AA, not just A,C,T,G,U,N
+        protein_letters = set("ACDEFGHIKLMNPQRSTVWY")
+        if len(seq_set - protein_letters) == 0 and not (seq_set <= set("ACUGTN")):
             return "protein"
-        if re.fullmatch(r"[A-Za-z0-9@+\\-\\[\\]\\(\\)=#\$%]+", seq):
+        # SMILES: fallback
+        if re.fullmatch(r"[A-Za-z0-9@+\-\[\]\(\)=#\$%]+", seq):
             return "smiles"
-        if re.fullmatch(r"[A-Z0-9]{3,}", seq) and len(seq) <= 10:
-            return "ccd"
         return "unknown"
 
     os.makedirs("output_fasta", exist_ok=True)
