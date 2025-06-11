@@ -50,7 +50,7 @@ process BOLTZ_FASTA {
         if len(seq_set - protein_letters) == 0 and not (seq_set <= set("ACUGTN")):
             return "protein"
         # SMILES: fallback
-        if re.fullmatch(r"[A-Za-z0-9@+\-\[\]\(\)=#\$%]+", seq):
+        if re.fullmatch(r"[A-Za-z0-9@+\\-\\[\\]\\(\\)=#\\\$%]+", seq):
             return "smiles"
         return "unknown"
 
