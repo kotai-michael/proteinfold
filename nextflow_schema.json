@@ -315,6 +315,9 @@
                 },
                 "boltz_write_full_pde": {
                     "type": "boolean"
+                },
+                "boltz_model": {
+                    "type": "string"
                 }
             }
         },

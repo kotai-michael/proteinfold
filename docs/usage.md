@@ -683,6 +683,7 @@ nextflow run nf-core/proteinfold \
 
 | Parameter                            | Default | Description                                         |
 | ------------------------------------ | ------- | --------------------------------------------------- |
+| `--boltz_model`                      | `null`  | The model to use for prediction. Default is Boltz-2 |
 | `--boltz_out_dir`                    | `null`  | Output directory for Boltz predictions              |
 | `--boltz_cache`                      | `./`    | Boltz cache directory                               |
 | `--boltz_checkpoint`                 | `null`  | Optional checkpoint                                 |
