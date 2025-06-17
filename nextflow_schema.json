@@ -69,6 +69,10 @@
                     "format": "directory-path",
                     "description": "The directory where reference data is stored. Individual methods can be overwritten with method-specific paths.",
                     "fa_icon": "fas fa-folder-open"
+                },
+                "uniref30_prefix": {
+                    "type": "string",
+                    "default": "UniRef30_2023_02"
                 }
             }
         },
@@ -107,6 +111,10 @@
                 },
                 "random_seed": {
                     "type": "string"
+                },
+                "alphafold2_params_prefix": {
+                    "type": "string",
+                    "default": "alphafold_params_2022-12-06"
                 }
             }
         },
@@ -469,7 +477,7 @@
                     "type": "string",
                     "description": "Path to the AlphaFold2 parameters",
                     "fa_icon": "fas fa-folder-open",
-                    "default": "null/params/alphafold_params_*/*"
+                    "default": "null/params/alphafold_params_2022-12-06/*"
                 },
                 "alphafold2_mgnify_path": {
                     "type": "string",
@@ -1133,11 +1141,5 @@
         {
             "$ref": "#/$defs/helixfold3_dbs_and_parameters_link_options"
         }
-    ],
-    "properties": {
-        "uniref30_prefix": {
-            "type": "string",
-            "default": "UniRef30_2023_02"
-        }
-    }
+    ]
 }
