@@ -72,7 +72,10 @@
                 },
                 "uniref30_prefix": {
                     "type": "string",
-                    "default": "UniRef30_2023_02"
+                    "default": "UniRef30_2023_02",
+                    "description": "UniRef major release",
+                    "enum": ["UniRef30_2023_02", "UniRef30_2022_02", "UniRef30_2021_03"],
+                    "fa_icon": "fas fa-database"
                 }
             }
         },
@@ -114,7 +117,10 @@
                 },
                 "alphafold2_params_prefix": {
                     "type": "string",
-                    "default": "alphafold_params_2022-12-06"
+                    "default": "alphafold_params_2022-12-06",
+                    "description": "Alphafold2 parameters version",
+                    "enum": ["alphafold_params_2022-12-06", "alphafold_params_2022-03-02", "alphafold_params_2022-01-19", "alphafold_params_2021-07-14"],
+                    "fa_icon": "fas fa-database"
                 }
             }
         },
