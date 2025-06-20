@@ -119,9 +119,9 @@ workflow BOLTZ {
         )
 
     ch_input_by_ext.yaml
-    .map { [it[0], it[1], []] }  // already in YAML
-    .mix(BOLTZ_FASTA.out.formatted_fasta) // newly converted from FASTA
-    .set{ch_boltz_input}
+        .map { meta, file -> [meta, file, []] }  // already in YAML
+        .mix(BOLTZ_FASTA.out.formatted_fasta)    // newly converted from FASTA
+        .set { ch_boltz_input }
 
     RUN_BOLTZ(
         ch_boltz_input.map{[it[0], it[1]]},
