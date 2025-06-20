@@ -53,10 +53,12 @@ workflow BOLTZ {
     msa_server
 
     main:
-    ch_samplesheet.branch {
-    fasta: it[1].extension == "fasta" || it[1].extension == "fa"
-    yaml: it[1].extension == "yaml" || it[1].extension == "yml"
-    }.set { ch_input_by_ext }
+    ch_samplesheet
+        .branch {
+            fasta: it[1].extension == "fasta" || it[1].extension == "fa"
+            yaml: it[1].extension == "yaml" || it[1].extension == "yml"
+        }
+        .set { ch_input_by_ext }
 
     ch_input_by_ext.fasta.join(
         ch_input_by_ext.fasta.map{[it[0], it[1].text.findAll {letter -> letter == ">" }.size()]}
