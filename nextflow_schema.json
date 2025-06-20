@@ -119,7 +119,12 @@
                     "type": "string",
                     "default": "alphafold_params_2022-12-06",
                     "description": "Alphafold2 parameters version",
-                    "enum": ["alphafold_params_2022-12-06", "alphafold_params_2022-03-02", "alphafold_params_2022-01-19", "alphafold_params_2021-07-14"],
+                    "enum": [
+                        "alphafold_params_2022-12-06",
+                        "alphafold_params_2022-03-02",
+                        "alphafold_params_2022-01-19",
+                        "alphafold_params_2021-07-14"
+                    ],
                     "fa_icon": "fas fa-database"
                 }
             }
