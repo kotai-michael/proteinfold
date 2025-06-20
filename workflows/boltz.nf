@@ -60,8 +60,16 @@ workflow BOLTZ {
         }
         .set { ch_input_by_ext }
 
-    ch_input_by_ext.fasta.join(
-        ch_input_by_ext.fasta.map{[it[0], it[1].text.findAll {letter -> letter == ">" }.size()]}
+    ch_input_by_ext.fasta
+        .join(
+            ch_input_by_ext.fasta
+                .map { meta, file ->
+                    [
+                        meta,
+                        file.text.findAll { letter -> letter == ">" }.size()
+                    ]
+                }
+        )
     )
     .map{
         def meta = it[0].clone()
