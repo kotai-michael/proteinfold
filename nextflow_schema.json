@@ -187,7 +187,6 @@
                 },
                 "db_load_mode": {
                     "type": "integer",
-                    "default": 0,
                     "description": "Specify the way that MMSeqs2 will load the required databases in memory",
                     "fa_icon": "fas fa-download",
                     "enum": [0, 1, 2, 3],
