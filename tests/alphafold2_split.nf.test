@@ -1,8 +1,10 @@
 nextflow_pipeline {
 
-    name "Test pipeline"
+    name "Test alphafold2 split mode stub"
     script "../main.nf"
     tag "pipeline"
+    tag "test_alphafold2_split"
+    profile "test_alphafold2_split"
 
     test("-profile test_alphafold2_split") {
 
