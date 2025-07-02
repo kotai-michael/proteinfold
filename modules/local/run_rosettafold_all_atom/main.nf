@@ -11,9 +11,9 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     input:
     tuple val(meta), path(yaml)
     path ('bfd/*')
-    path ('UniRef30_2020_06/*')
+    path ('uniref30/*')
     path ('pdb100_2021Mar03/*')
-    path ('*')
+    path ('RFAA_paper_weights.pt')
     path (fasta_files)
 
     output:
@@ -36,6 +36,7 @@ process RUN_ROSETTAFOLD_ALL_ATOM {
     }
     def args = task.ext.args ?: ''
     """
+    export DB_UR30="uniref30/${params.uniref30_prefix}"
     mamba run --name RFAA python /app/RoseTTAFold-All-Atom/rf2aa/run_inference.py \\
         --config-dir /app/RoseTTAFold-All-Atom/rf2aa/config/inference \\
         --config-name "${yaml}" $args
