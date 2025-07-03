@@ -70,7 +70,7 @@ workflow BOLTZ {
                     ]
                 }
         )
-    )
+
     .map{
         def meta = it[0].clone()
         meta.cnt = it[2]
