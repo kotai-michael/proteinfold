@@ -40,7 +40,7 @@ if (params.mode.toLowerCase().split(",").contains("helixfold3")) {
 }
 if (params.mode.toLowerCase().split(",").contains("boltz")) {
     include { PREPARE_BOLTZ_DBS } from './subworkflows/local/prepare_boltz_dbs'
-    include { BOLTZ } from './workflows/boltz'
+    include { BOLTZ             } from './workflows/boltz'
 }
 if (params.mode.toLowerCase().split(",").contains("colabfold") || params.mode.toLowerCase().split(",").contains("boltz")) {
     include { PREPARE_COLABFOLD_DBS } from './subworkflows/local/prepare_colabfold_dbs'

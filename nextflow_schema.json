@@ -69,6 +69,13 @@
                     "format": "directory-path",
                     "description": "The directory where reference data is stored. Individual methods can be overwritten with method-specific paths.",
                     "fa_icon": "fas fa-folder-open"
+                },
+                "uniref30_prefix": {
+                    "type": "string",
+                    "default": "UniRef30_2023_02",
+                    "description": "UniRef major release",
+                    "enum": ["UniRef30_2023_02", "UniRef30_2022_02", "UniRef30_2021_03"],
+                    "fa_icon": "fas fa-database"
                 }
             }
         },
@@ -107,6 +114,18 @@
                 },
                 "random_seed": {
                     "type": "string"
+                },
+                "alphafold2_params_prefix": {
+                    "type": "string",
+                    "default": "alphafold_params_2022-12-06",
+                    "description": "Alphafold2 parameters version",
+                    "enum": [
+                        "alphafold_params_2022-12-06",
+                        "alphafold_params_2022-03-02",
+                        "alphafold_params_2022-01-19",
+                        "alphafold_params_2021-07-14"
+                    ],
+                    "fa_icon": "fas fa-database"
                 }
             }
         },
@@ -168,7 +187,6 @@
                 },
                 "db_load_mode": {
                     "type": "integer",
-                    "default": 0,
                     "description": "Specify the way that MMSeqs2 will load the required databases in memory",
                     "fa_icon": "fas fa-download",
                     "enum": [0, 1, 2, 3],
@@ -558,7 +576,7 @@
                     "type": "string",
                     "description": "Path to the AlphaFold2 parameters",
                     "fa_icon": "fas fa-folder-open",
-                    "default": "null/alphafold_params_*/*"
+                    "default": "null/params/alphafold_params_2022-12-06/*"
                 },
                 "alphafold2_mgnify_path": {
                     "type": "string",
@@ -570,7 +588,7 @@
                     "type": "string",
                     "description": "Path to the PDB70 database",
                     "fa_icon": "fas fa-folder-open",
-                    "default": "null/pdb70/**"
+                    "default": "null/pdb70/*"
                 },
                 "alphafold2_pdb_mmcif_path": {
                     "type": "string",
@@ -747,13 +765,13 @@
                     "type": "string",
                     "description": "Link to the ColabFold database",
                     "fa_icon": "fas fa-folder-open",
-                    "default": "null/colabfold_envdb_202108"
+                    "default": "null/colabfold_envdb/*"
                 },
                 "colabfold_uniref30_path": {
                     "type": "string",
                     "description": "Link to the UniRef30 database",
                     "fa_icon": "fas fa-folder-open",
-                    "default": "null/uniref30_2302"
+                    "default": "null/colabfold_uniref30/*"
                 },
                 "colabfold_alphafold2_params_path": {
                     "type": "string",
@@ -811,7 +829,7 @@
                     "type": "string",
                     "description": "Link to the ESMFold parameters",
                     "fa_icon": "fas fa-folder-open",
-                    "default": "null/*"
+                    "default": "null/params/*"
                 }
             }
         },
@@ -862,25 +880,25 @@
                     "type": "string",
                     "description": "Path to CCD file",
                     "icon": "fas folder-open",
-                    "default": "null/ccd.pkl"
+                    "default": "null/params/ccd.pkl"
                 },
                 "boltz_model_path": {
                     "type": "string",
                     "description": "Path to boltz Model file",
                     "icon": "fas folder-open",
-                    "default": "null/boltz1_conf.ckpt"
+                    "default": "null/params/boltz1_conf.ckpt"
                 },
                 "boltz2_aff_path": {
                     "type": "string",
-                    "default": "null/boltz2_aff.ckpt"
+                    "default": "null/params/boltz2_aff.ckpt"
                 },
                 "boltz2_conf_path": {
                     "type": "string",
-                    "default": "null/boltz2_conf.ckpt"
+                    "default": "null/params/boltz2_conf.ckpt"
                 },
                 "mols_path": {
                     "type": "string",
-                    "default": "null/mols/"
+                    "default": "null/params/mols/"
                 }
             }
         },
@@ -1027,7 +1045,7 @@
                 },
                 "uniref30_rosettafold_all_atom_path": {
                     "type": "string",
-                    "default": "null/uniref30/UniRef30_2020_06/*"
+                    "default": "null/uniref30/*"
                 },
                 "bfd_rosettafold_all_atom_path": {
                     "type": "string",
@@ -1035,11 +1053,11 @@
                 },
                 "pdb100_rosettafold_all_atom_path": {
                     "type": "string",
-                    "default": "null/pdb100_2021Mar03/*"
+                    "default": "null/pdb100/*"
                 },
                 "rfaa_paper_weights_path": {
                     "type": "string",
-                    "default": "null/RFAA_paper_weights.pt"
+                    "default": "null/params/RFAA_paper_weights.pt"
                 }
             }
         },
@@ -1054,19 +1072,19 @@
                 },
                 "helixfold3_init_models_path": {
                     "type": "string",
-                    "default": "null/HelixFold3-240814.pdparams"
+                    "default": "null/params/HelixFold3-240814.pdparams"
                 },
                 "helixfold3_uniclust30_path": {
                     "type": "string",
-                    "default": "null/uniclust30/*"
+                    "default": "null/uniref30/*"
                 },
                 "helixfold3_ccd_preprocessed_path": {
                     "type": "string",
-                    "default": "null/ccd_preprocessed_etkdg.pkl.gz"
+                    "default": "null/params/ccd_preprocessed_etkdg.pkl.gz"
                 },
                 "helixfold3_rfam_path": {
                     "type": "string",
-                    "default": "null/Rfam-14.9_rep_seq.fasta"
+                    "default": "null/rfam/Rfam-14.9_rep_seq.fasta"
                 },
                 "helixfold3_bfd_path": {
                     "type": "string",

@@ -219,13 +219,14 @@ def align_structures(structures):
     ref_structure = structures[0]
 
     common_atoms = set(
-        f"{atom.get_parent().get_id()[1]}-{atom.name}"
-        for atom in ref_structure.get_atoms()
+        f"{atom.get_parent().get_parent().get_id()}-{atom.get_parent().get_id()[1]}-{atom.name}"
+        for atom in ref_structure.get_atoms() if not atom.element == 'H'
     )
+    #print(common_atoms)
     for i, structure in enumerate(structures[1:], start=1):
         common_atoms = common_atoms.intersection(
             set(
-                f"{atom.get_parent().get_id()[1]}-{atom.name}"
+                f"{atom.get_parent().get_parent().get_id()}-{atom.get_parent().get_id()[1]}-{atom.name}"
                 for atom in structure.get_atoms()
             )
         )
@@ -233,7 +234,7 @@ def align_structures(structures):
     ref_atoms = [
         atom
         for atom in ref_structure.get_atoms()
-        if f"{atom.get_parent().get_id()[1]}-{atom.name}" in common_atoms
+        if f"{atom.get_parent().get_parent().get_id()}-{atom.get_parent().get_id()[1]}-{atom.name}" in common_atoms
     ]
     # print(ref_atoms)
     super_imposer = PDB.Superimposer()
@@ -243,7 +244,7 @@ def align_structures(structures):
         target_atoms = [
             atom
             for atom in structure.get_atoms()
-            if f"{atom.get_parent().get_id()[1]}-{atom.name}" in common_atoms
+            if f"{atom.get_parent().get_parent().get_id()}-{atom.get_parent().get_id()[1]}-{atom.name}" in common_atoms
         ]
 
         super_imposer.set_atoms(ref_atoms, target_atoms)
