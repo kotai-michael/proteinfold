@@ -69,6 +69,7 @@ process RUN_ALPHAFOLD2_MSA {
 
     stub:
     """
+    mkdir ./"${fasta.baseName}"
     touch ./"${fasta.baseName}"/features.pkl
 
     cat <<-END_VERSIONS > versions.yml

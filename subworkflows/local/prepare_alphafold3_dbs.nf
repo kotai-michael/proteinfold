@@ -33,10 +33,10 @@ workflow PREPARE_ALPHAFOLD3_DBS {
     ch_versions   = Channel.empty()
 
     if (alphafold3_db) {
-        ch_params         = Channel.value(file(alphafold3_params_path, checkIfExists: true))
-        ch_small_bfd      = Channel.value(file(small_bfd_path, checkIfExists: true))
-        ch_mgnify         = Channel.value(file(mgnify_path, checkIfExists: true))
-        ch_mmcif          = Channel.value(file(pdb_mmcif_path, checkIfExists: true))
+        ch_params         = Channel.value(file(alphafold3_params_path))
+        ch_small_bfd      = Channel.value(file(small_bfd_path))
+        ch_mgnify         = Channel.value(file(mgnify_path))
+        ch_mmcif          = Channel.value(file(pdb_mmcif_path))
         ch_uniref90       = Channel.value(file(uniref90_path))
         ch_pdb_seqres     = Channel.value(file(pdb_seqres_path))
         ch_uniprot        = Channel.value(file(uniprot_path))
