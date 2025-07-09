@@ -78,7 +78,6 @@ workflow COLABFOLD {
             ch_versions = ch_versions.mix(MULTIFASTA_TO_CSV.out.versions)
             MMSEQS_COLABFOLDSEARCH (
                 MULTIFASTA_TO_CSV.out.input_csv,
-                ch_colabfold_params,
                 ch_colabfold_db,
                 ch_uniref30
             )
@@ -86,7 +85,6 @@ workflow COLABFOLD {
         } else {
             MMSEQS_COLABFOLDSEARCH (
                 ch_samplesheet,
-                ch_colabfold_params,
                 ch_colabfold_db,
                 ch_uniref30
             )

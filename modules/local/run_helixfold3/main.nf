@@ -10,17 +10,17 @@ process RUN_HELIXFOLD3 {
 
     input:
     tuple val(meta), path(fasta)
-    path ('uniclust30/*')
-    path ('*')
-    path ('*')
+    path ('uniref30/*')
+    path ('ccd_preprocessed_etkdg.pkl.gz')
+    path ('Rfam-14.9_rep_seq.fasta')
     path ('bfd/*')
     path ('small_bfd/*')
     path ('uniprot/*')
     path ('pdb_seqres/*')
     path ('uniref90/*')
     path ('mgnify/*')
-    path ('*')
-    path ('*')
+    path ('mmcif_files')
+    path ('obsolete.dat')
     path ('init_models/*')
     path ('maxit_src')
 
@@ -57,7 +57,7 @@ process RUN_HELIXFOLD3 {
         --nhmmer_binary_path "nhmmer" \\
         --bfd_database_path="./bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt" \\
         --small_bfd_database_path="./small_bfd/bfd-first_non_consensus_sequences.fasta" \\
-        --uniclust30_database_path="./uniclust30/uniclust30_2018_08" \\
+        --uniclust30_database_path="./uniref30/${params.uniref30_prefix}" \\
         --uniprot_database_path="./uniprot/uniprot.fasta" \\
         --pdb_seqres_database_path="./pdb_seqres/pdb_seqres.txt" \\
         --rfam_database_path="./Rfam-14.9_rep_seq.fasta" \\
@@ -65,7 +65,7 @@ process RUN_HELIXFOLD3 {
         --obsolete_pdbs_path="./obsolete.dat" \\
         --ccd_preprocessed_path="./ccd_preprocessed_etkdg.pkl.gz" \\
         --uniref90_database_path "./uniref90/uniref90.fasta" \\
-        --mgnify_database_path "./mgnify/mgy_clusters_2018_12.fa" \\
+        --mgnify_database_path "./mgnify/mgy_clusters.fa" \\
         --input_json="${fasta}" \\
         --output_dir="\$PWD" $args
 

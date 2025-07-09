@@ -44,6 +44,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[PR #315](https://github.com/nf-core/proteinfold/pull/315)] - Add global db flag.
 - [[#263](https://github.com/nf-core/proteinfold/issues/263)] - Removed broken colabfold options (`auto` and `alphafold2`)
 - [[PR #316](https://github.com/nf-core/proteinfold/pull/316)] - Add process_gpu label to modules which use GPU.
+- [[PR #319](https://github.com/nf-core/proteinfold/pull/319)] - Update boltz workflow to accept YAML as input.
+- [[PR #322](https://github.com/nf-core/proteinfold/pull/322)] - Updates and reorganises the reference database directory structure.
+- [[PR #332](https://github.com/nf-core/proteinfold/pull/332)] - Fix rare superposition bug in reports.
+- [[PR #333](https://github.com/nf-core/proteinfold/pull/333)] - Updates the RFAA dockerfile for better versioning and smaller image size.
+- [[PR #335](https://github.com/nf-core/proteinfold/pull/335)] - Update pipeline template to [nf-core/tools 3.3.1](https://github.com/nf-core/tools/releases/tag/3.3.1).
 
 ### Parameters
 
