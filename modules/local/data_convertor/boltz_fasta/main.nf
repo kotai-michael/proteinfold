@@ -30,7 +30,7 @@ process BOLTZ_FASTA {
 
     all_combinations = list(string.ascii_uppercase) + list(string.ascii_lowercase) + [str(x) for x in range(0, 10)]
     msa_files = [${msa_files}]
-    ENTITY_TYPES = ["protein", "ccd", "smiles"]
+    ENTITY_TYPES = ["protein", "ccd", "smiles", "dna", "rna"]
 
     def infer_entity_type(header, sequence):
         header_lower = header.lower()
