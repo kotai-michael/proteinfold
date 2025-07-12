@@ -85,6 +85,8 @@ def read_pkl(name, pkl_files):
     """
     Adapted from the Galaxy AlphaFold tool (https://github.com/usegalaxy-au/tools-au/blob/de94df520c8dc7b8652aedb92e90f6ebb312f95f/tools/alphafold/scripts/outputs.py), originally authored by @neoformit and @graceahall and funded by Australian Biocommons and QCIF Australia.
     """
+    ptm_data = {}
+    iptm_data = {}
     for pkl_file in pkl_files:
         print(f"Processing {pkl_file}")
         data = pickle.load(open(pkl_file, "rb"))
@@ -107,10 +109,20 @@ def read_pkl(name, pkl_files):
             if 'ptm' not in data.keys():
                 print(f"No pTM/iPTM output in {pkl_file}, it was likely a monomer calculation")
             else:
-                with open(f"{name}_{model_id}_ptm.tsv", 'w') as f:
-                    f.write(f"{np.round(data['ptm'],3)}\n")
-                with open(f"{name}_{model_id}_iptm.tsv", 'w') as f:
-                    f.write(f"{np.round(data['iptm'],3)}\n")
+                #with open(f"{name}_{model_id}_ptm.tsv", 'w') as f:
+                #    f.write(f"{np.round(data['ptm'],3)}\n")
+                #with open(f"{name}_{model_id}_iptm.tsv", 'w') as f:
+                #    f.write(f"{np.round(data['iptm'],3)}\n")
+                ptm_data[f"{model_id}"] = f"{np.round(data['ptm'],3)}\n"
+                iptm_data[f"{model_id}"] = f"{np.round(data.get('iptm',0.),3)}\n"
+        if ptm_data:
+            with open(f"{name}_ptm.tsv", 'w') as f:
+                for k, v in ptm_data.items(): #probably better to be ordered
+                    f.write(f"{k} {v}")
+            with open(f"{name}_iptm.tsv", 'w') as f:
+                for k, v in iptm_data.items(): #probably better to be ordered
+                    f.write(f"{k} {v}")
+
 
 
 def read_a3m(name, a3m_files):
@@ -127,7 +139,22 @@ def read_npz(name, npz_files):
             model_id = os.path.basename(npz_file).split('_model_')[-1].split('.npz')[0]
             write_tsv(f"{name}_{model_id}_pae.tsv", format_pae_rows(data["pae"]))
 
+def read_csv(name, csv_files):
+   for idx, csv_file in enumerate(csv_files):
+        model_id = os.path.basename(csv_file).split('_')[-1].split('.csv')[0]
+        msa_lines = []
+        with open(csv_file) as f:
+            f.readline()
+            for line in f:
+                msa_lines.append(''.join(c for c in line.strip('\n').split(',')[1] if not c.islower()))
+        msa_rows = [[str(AA_to_int.get(residue, 20)) for residue in line] for line in msa_lines]
+        write_tsv(f"{name}_msa.tsv", msa_rows)
+        break # only 1 csv
+
 def read_json(name, json_files):
+    ptm_data = {}
+    iptm_data = {}
+    print("HELLO")
     for idx, json_file in enumerate(json_files):
         with open(json_file, 'r') as f:
             data = json.load(f)
@@ -145,9 +172,8 @@ def read_json(name, json_files):
             #    model_id = os.path.basename(json_file)
             #    print(model_id)
             if 'all_results' in json_file: # Individual predictions in HF3
-                # TODO: iPTM is 0 in some HF3 files. Check that's just no the one case
-                model_id = os.path.dirname(json_file).split('-rank')[-1] #Use re-ranked output
-            if 'predictions' in json_file: # Boltz-1 confnameences in predictions/[protein]/confidence_[protein]_model_*.json
+                model_id = int(os.path.dirname(json_file).split('-rank')[-1]) #Use re-ranked output
+            if 'predictions' in json_file: # Boltz-1 confidences in predictions/[protein]/confidence_[protein]_model_*.json
             # TODO: haven't tested this for multiple models with --diffusion_samples
                 model_id = os.path.basename(json_file).split('_model_')[-1].split('.json')[0]
 
@@ -159,10 +185,19 @@ def read_json(name, json_files):
             if 'ptm' not in data.keys():
                 print(f"No pTM/iPTM output in {json_file}, it was likely a monomer calculation")
             else:
-                with open(f"{name}_{model_id}_ptm.tsv", 'w') as f:
-                    f.write(f"{np.round(data['ptm'],3)}\n")
-                with open(f"{name}_{model_id}_iptm.tsv", 'w') as f:
-                    f.write(f"{np.round(data['iptm'],3)}\n")
+                #with open(f"{name}_{model_id}_ptm.tsv", 'w') as f:
+                #    f.write(f"{np.round(data['ptm'],3)}\n")
+                #with open(f"{name}_{model_id}_iptm.tsv", 'w') as f:
+                #    f.write(f"{np.round(data['iptm'],3)}\n")
+                ptm_data[model_id] = f"{np.round(data['ptm'],3)}\n"
+                iptm_data[model_id] = f"{np.round(data['iptm'],3)}\n"
+        if ptm_data:
+            with open(f"{name}_ptm.tsv", 'w') as f:
+                for k, v in sorted(ptm_data.items(), key=lambda x: x[0]):
+                    f.write(f"{k} {v}")
+            with open(f"{name}_iptm.tsv", 'w') as f:
+                for k, v in sorted(iptm_data.items(), key=lambda x: x[0]):
+                    f.write(f"{k} {v}")
 
 def read_pt(name, pt_files):
     import torch # moved to a conditional import since too bulky import if not used
@@ -178,7 +213,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--pkls", dest="pkls", required=False, nargs="+") # For reading both HelixFold3 and AlphaFold2 MSA formats
     parser.add_argument("--npzs", dest="npzs", required=False, nargs="+") # For reading the Boltz-1 PAE formats. TODO: Boltz-1 MSA not implemented (go straight to .a3m file), implement
-    parser.add_argument("--a3ms", dest="a3ms", required=False, nargs="+") # For reading the RosettaFold-All-Atom, ColabFold, and Boltz-1 MSA formats
+    parser.add_argument("--a3ms", dest="a3ms", required=False, nargs="+") # For reading the RosettaFold-All-Atom, ColabFold MSA formats
+    parser.add_argument("--csvs", dest="csvs", required=False, nargs="+") # For reading boltz csvs
     parser.add_argument("--jsons", dest="jsons", required=False, nargs="+") # For reading the AF3 MSA & PAE, HF3 PAE
     parser.add_argument("--pts", dest="pts", required=False, nargs="+") # For read RFAA pytorch model to get PAE data
     parser.add_argument("--structs", dest="structs", required=False, nargs="+")
@@ -189,6 +225,8 @@ def main():
         read_pkl(args.name, args.pkls)
     if args.a3ms:
         read_a3m(args.name, args.a3ms)
+    if args.csvs:
+        read_csv(args.name, args.csvs)
     if args.npzs:
         read_npz(args.name, args.npzs)
     if args.jsons:
