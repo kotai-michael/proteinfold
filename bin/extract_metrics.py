@@ -154,7 +154,6 @@ def read_csv(name, csv_files):
 def read_json(name, json_files):
     ptm_data = {}
     iptm_data = {}
-    print("HELLO")
     for idx, json_file in enumerate(json_files):
         with open(json_file, 'r') as f:
             data = json.load(f)
