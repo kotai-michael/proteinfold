@@ -33,11 +33,9 @@ process RUN_ALPHAFOLD2_PRED {
     // TODO: re-label multiqc -> plddt so multiqc channel can take in all metrics
     tuple val(meta), path ("${meta.id}_plddt.tsv")          , emit: multiqc
     // TODO: alphafold2_model_preset == "monomer" the pae file won't exist.
-    // Default is monomer_ptm which does calculate metrics. Good default, metrics worth it for minor performance loss
-    // Nevertheless PAE has to be optional since not all alphafold2 NN models are handled to generate PAE
     tuple val(meta), path ("${meta.id}_*_pae.tsv")          , optional: true, emit: paes
-    tuple val(meta), path ("${meta.id}_*_ptm.tsv")          , optional: true, emit: ptms
-    tuple val(meta), path ("${meta.id}_*_iptm.tsv")         , optional: true, emit: iptms
+    tuple val(meta), path ("${meta.id}_ptm.tsv")            , optional: true, emit: ptms
+    tuple val(meta), path ("${meta.id}_iptm.tsv")           , optional: true, emit: iptms
     path "versions.yml"                                     , emit: versions
 
     when:
@@ -77,8 +75,12 @@ process RUN_ALPHAFOLD2_PRED {
     touch "${meta.id}_plddt.tsv"
     touch "${meta.id}_msa.tsv"
     touch "${meta.id}_0_pae.tsv"
-    touch "${meta.id}_0_ptm.tsv"
-    touch "${meta.id}_0_iptm.tsv"
+    touch "${meta.id}_1_pae.tsv"
+    touch "${meta.id}_2_pae.tsv"
+    touch "${meta.id}_3_pae.tsv"
+    touch "${meta.id}_4_pae.tsv"
+    touch "${meta.id}_ptm.tsv"
+    touch "${meta.id}_iptm.tsv"
     mkdir "${fasta.baseName}"
     touch "${fasta.baseName}/ranked_0.pdb"
     touch "${fasta.baseName}/ranked_1.pdb"
