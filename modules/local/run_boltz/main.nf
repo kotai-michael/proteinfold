@@ -25,11 +25,11 @@ process RUN_BOLTZ {
     tuple val(meta), path ("boltz_results_*/predictions/*/*.pdb")               , emit: pdb
     tuple val(meta), path ("boltz_results_*/predictions/*/plddt_*model_0.npz")  , emit: plddt
     tuple val(meta), path ("boltz_results_*/predictions/*/pae_*model_0.npz")    , emit: pae
-    tuple val(meta), path ("${meta.id}_plddt.tsv")                              , optional: true, emit: plddt_raw
-    tuple val(meta), path ("${meta.id}_msa.tsv")                                , optional: true, emit: msa_raw
+    tuple val(meta), path ("${meta.id}_plddt.tsv")                              , emit: plddt_raw
+    tuple val(meta), path ("${meta.id}_msa.tsv")                                , emit: msa_raw
     tuple val(meta), path ("${meta.id}_*_pae.tsv")                              , optional: true, emit: pae_raw
-    tuple val(meta), path ("${meta.id}_*_ptm.tsv")                              , optional: true, emit: ptm_raw
-    tuple val(meta), path ("${meta.id}_*_iptm.tsv")                             , optional: true, emit: iptm_raw
+    tuple val(meta), path ("${meta.id}_ptm.tsv")                                , emit: ptm_raw
+    tuple val(meta), path ("${meta.id}_iptm.tsv")                               , emit: iptm_raw
 
     path "versions.yml", emit: versions
 
@@ -56,7 +56,8 @@ process RUN_BOLTZ {
     extract_metrics.py --name ${meta.id} \\
         --structs boltz_results_*/predictions/${meta.id}/*.pdb \\
         --jsons boltz_results_*/predictions/${meta.id}/confidence_*_model_*.json \\
-        --npzs boltz_results_*/predictions/${meta.id}/pae_*_model_*.npz
+        --npzs boltz_results_*/predictions/${meta.id}/pae_*_model_*.npz \\
+        --csvs boltz_results_*/msa/${meta.id}_*.csv \\
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
