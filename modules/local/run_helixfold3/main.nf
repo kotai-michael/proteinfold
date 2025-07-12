@@ -80,7 +80,7 @@ process RUN_HELIXFOLD3 {
     [ ! -d ${meta.id} ] && mkdir ${meta.id}
     for i in 1 2 3 4 5; do
         cp "${fasta.baseName}/${fasta.baseName}-rank\$i/predicted_structure.pdb" "${meta.id}-ranked_\$i.pdb"
-		
+
     done
 
     cat <<-END_VERSIONS > versions.yml
