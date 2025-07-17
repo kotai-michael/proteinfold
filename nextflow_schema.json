@@ -1190,5 +1190,11 @@
         {
             "$ref": "#/$defs/helixfold3_dbs_and_parameters_link_options"
         }
-    ]
+    ],
+    "properties": {
+        "boltz_output_format": {
+            "type": "string",
+            "default": "pdb"
+        }
+    }
 }
