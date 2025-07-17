@@ -591,38 +591,14 @@ nextflow run nf-core/proteinfold \
 
 ### Boltz parameter descriptions
 
-| Parameter                            | Default | Description                                         |
-| ------------------------------------ | ------- | --------------------------------------------------- |
-| `--boltz_model`                      | `null`  | The model to use for prediction. Default is Boltz-2 |
-| `--boltz_out_dir`                    | `null`  | Output directory for Boltz predictions              |
-| `--boltz_cache`                      | `./`    | Boltz cache directory                               |
-| `--boltz_checkpoint`                 | `null`  | Optional checkpoint                                 |
-| `--boltz_devices`                    | `null`  | Number of devices to use                            |
-| `--boltz_accelerator`                | `null`  | Accelerator type (`gpu`, `cpu`, `tpu`)              |
-| `--boltz_recycling_steps`            | `null`  | Number of recycling steps                           |
-| `--boltz_sampling_steps`             | `null`  | Number of sampling steps                            |
-| `--boltz_diffusion_samples`          | `null`  | Number of diffusion samples                         |
-| `--boltz_max_parallel_samples`       | `null`  | Maximum number of samples to predict in parallel    |
-| `--boltz_step_scale`                 | `null`  | Step scale (float)                                  |
-| `--boltz_output_format`              | `pdb`   | Output format (`pdb` or `mmcif`)                    |
-| `--boltz_num_workers`                | `null`  | Number of dataloader workers                        |
-| `--boltz_method`                     | `null`  | Method to use for prediction                        |
-| `--boltz_preprocessing_threads`      | `null`  | Number of threads for preprocessing                 |
-| `--boltz_affinity_mw_correction`     | `null`  | Add MW correction to affinity value head (flag)     |
-| `--boltz_sampling_steps_affinity`    | `null`  | Number of sampling steps for affinity prediction    |
-| `--boltz_diffusion_samples_affinity` | `null`  | Number of diffusion samples for affinity prediction |
-| `--boltz_affinity_checkpoint`        | `null`  | Optional checkpoint for affinity                    |
-| `--boltz_max_msa_seqs`               | `null`  | Maximum number of MSA sequences                     |
-| `--boltz_subsample_msa`              | `null`  | Subsample the MSA (flag)                            |
-| `--boltz_num_subsampled_msa`         | `null`  | Number of MSA sequences to subsample                |
-| `--boltz_no_trifast`                 | `null`  | Do not use trifast kernels (flag)                   |
-| `--boltz_override`                   | `null`  | Override existing predictions (flag)                |
-| `--boltz_use_msa_server`             | `null`  | Use MSA server to generate MSAs (flag)              |
-| `--boltz_msa_server_url`             | `null`  | MSA server URL                                      |
-| `--boltz_msa_pairing_strategy`       | `null`  | MSA pairing strategy (`greedy`, `complete`)         |
-| `--boltz_use_potentials`             | `null`  | Use inference time potentials (flag)                |
-| `--boltz_write_full_pae`             | `true`  | Save the full PAE matrix as a file (flag)           |
-| `--boltz_write_full_pde`             | `null`  | Save the full PDE matrix as a file (flag)           |
+| Parameter                | Default | Description                                         |
+| ------------------------ | ------- | --------------------------------------------------- |
+| `--boltz_model`          | `null`  | The model to use for prediction. Default is Boltz-2 |
+| `--boltz_out_dir`        | `null`  | Output directory for Boltz predictions              |
+| `--boltz_use_msa_server` | `null`  | Use MSA server to generate MSAs (flag)              |
+| `--boltz_msa_server_url` | `null`  | MSA server URL                                      |
+| `--boltz_use_potentials` | `null`  | Use inference time potentials (flag)                |
+| `--boltz_write_full_pae` | `true`  | Save the full PAE matrix as a file (flag)           |
 
 > You can override any of these parameters via the command line or a params file.
 
