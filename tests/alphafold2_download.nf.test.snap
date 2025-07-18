@@ -4,10 +4,10 @@
             21,
             {
                 "ARIA2": {
-                    "aria2": null
+                    "aria2": "1.37.0"
                 },
                 "ARIA2_PDB_SEQRES": {
-                    "aria2": null
+                    "aria2": "1.37.0"
                 },
                 "COMBINE_UNIPROT": {
                     "awk": null
@@ -68,8 +68,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "25.04.4"
         },
-        "timestamp": "2025-07-01T22:40:17.147742"
+        "timestamp": "2025-07-18T15:19:40.464849224"
     }
 }

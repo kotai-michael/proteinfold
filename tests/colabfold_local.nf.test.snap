@@ -7,8 +7,8 @@
                     "colabfold_batch": "1.5.2"
                 },
                 "GENERATE_REPORT": {
-                    "python": "3.12.7",
-                    "generate_report.py": "Python 3.12.7"
+                    "python": "3.11.10",
+                    "generate_report.py": "Python 3.11.10"
                 },
                 "MMSEQS_COLABFOLDSEARCH": {
                     "colabfold_search": "1.5.2"
@@ -64,8 +64,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "25.04.4"
         },
-        "timestamp": "2025-07-01T23:12:47.221555"
+        "timestamp": "2025-07-18T15:20:12.854844081"
     }
 }
