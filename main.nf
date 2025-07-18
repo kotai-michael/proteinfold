@@ -443,10 +443,10 @@ workflow NFCORE_PROTEINFOLD {
             params.colabfold_server,
             params.colabfold_alphafold2_params_path,
             params.colabfold_db_path,
-            params.uniref30_colabfold_path,
+            params.colabfold_uniref30_path,
             params.colabfold_alphafold2_params_link,
             params.colabfold_db_link,
-            params.uniref30_colabfold_link,
+            params.colabfold_uniref30_link,
             params.create_colabfold_index
         )
         ch_versions = ch_versions.mix(PREPARE_COLABFOLD_DBS.out.versions)
