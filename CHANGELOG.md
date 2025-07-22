@@ -162,8 +162,8 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 | `--uniprot_sprot`     | `--uniprot_sprot_link`                   |
 | `--uniprot_trembl`    | `--uniprot_trembl_link`                  |
 | `--uniclust30_path`   | `--uniref30_alphafold2_path`             |
-| `--uniref30`          | `--uniref30_colabfold_link`              |
-| `--uniref30_path`     | `--uniref30_colabfold_path`              |
+| `--uniref30`          | `--colabfold_uniref30_link`              |
+| `--uniref30_path`     | `--colabfold_uniref30_path`              |
 | `--num_recycle`       | `--num_recycles_colabfold`               |
 |                       | `--num_recycles_esmfold`                 |
 |                       | `--uniref30_alphafold2_link`             |
