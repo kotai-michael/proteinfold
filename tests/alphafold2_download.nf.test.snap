@@ -10,10 +10,10 @@
                     "aria2": "1.37.0"
                 },
                 "COMBINE_UNIPROT": {
-                    "awk": null
+                    "awk": "5.3.1, API 4.0, PMA Avon 8-g1, (GNU MPFR 4.2.1, GNU MP 6.3.0)"
                 },
                 "DOWNLOAD_PDBMMCIF": {
-                    "awk": null
+                    "awk": "5.3.1, API 4.0, PMA Avon 8-g1, (GNU MPFR 4.2.1, GNU MP 6.3.0)"
                 },
                 "Workflow": {
                     "nf-core/proteinfold": "v1.2.0dev"
@@ -68,8 +68,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.4"
+            "nextflow": "24.10.6"
         },
-        "timestamp": "2025-07-18T15:19:40.464849224"
+        "timestamp": "2025-07-22T18:31:47.575262"
     }
 }
