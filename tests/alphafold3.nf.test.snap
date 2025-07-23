@@ -4,20 +4,20 @@
             11,
             {
                 "FASTA_TO_ALPHAFOLD3_JSON": {
-                    "python": "3.12.3"
+                    "python": "3.13.0"
                 },
                 "GENERATE_REPORT": {
-                    "python": "3.12.3",
-                    "generate_report.py": "Python 3.12.3"
+                    "python": "3.12.7",
+                    "generate_report.py": "Python 3.12.7"
                 },
                 "MMCIF2PDB_MODELS": {
-                    "python": "3.12.3"
+                    "python": "3.12.7"
                 },
                 "MMCIF2PDB_TOP_RANKED": {
-                    "python": "3.12.3"
+                    "python": "3.12.7"
                 },
                 "RUN_ALPHAFOLD3": {
-                    "python": "3.12.3"
+                    "python": null
                 },
                 "Workflow": {
                     "nf-core/proteinfold": "v1.2.0dev"
@@ -107,8 +107,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nextflow": "24.10.5"
         },
-        "timestamp": "2025-07-23T14:03:04.18611438"
+        "timestamp": "2025-07-01T23:02:05.225476"
     }
 }
