@@ -7,8 +7,8 @@
                     "colabfold_batch": "1.5.2"
                 },
                 "GENERATE_REPORT": {
-                    "python": "3.10.16",
-                    "generate_report.py": "Python 3.10.16"
+                    "python": "3.12.3",
+                    "generate_report.py": "Python 3.12.3"
                 },
                 "Workflow": {
                     "nf-core/proteinfold": "v1.2.0dev"
@@ -61,8 +61,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.6"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-07-22T18:35:19.268583"
+        "timestamp": "2025-07-23T14:03:28.216927732"
     }
 }
