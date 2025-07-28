@@ -35,7 +35,7 @@ process RUN_ALPHAFOLD2 {
     tuple val(meta), path ("${meta.id}_*_pae.tsv")         , optional: true, emit: paes
     tuple val(meta), path ("${meta.id}_ptm.tsv")           , optional: true, emit: ptms
     tuple val(meta), path ("${meta.id}_iptm.tsv")          , optional: true, emit: iptms
-    path "versions.yml", emit: versions
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
