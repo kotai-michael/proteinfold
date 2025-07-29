@@ -431,6 +431,7 @@ workflow NFCORE_PROTEINFOLD {
     //
     if (params.mode.toLowerCase().split(",").contains("boltz")) {
         PREPARE_BOLTZ_DBS(
+            params.boltz_db,
             params.boltz_ccd_path,
             params.boltz_model_path,
             params.boltz2_aff_path,
