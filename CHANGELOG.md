@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [[PR #316](https://github.com/nf-core/proteinfold/pull/316)] - Add process_gpu label to modules which use GPU.
 - [[PR #319](https://github.com/nf-core/proteinfold/pull/319)] - Update boltz workflow to accept YAML as input.
 - [[PR #322](https://github.com/nf-core/proteinfold/pull/322)] - Updates and reorganises the reference database directory structure.
+- [[PR #329](https://github.com/nf-core/proteinfold/pull/329)] - Updates Boltz module to include Boltz-2.
 - [[PR #332](https://github.com/nf-core/proteinfold/pull/332)] - Fix rare superposition bug in reports.
 - [[PR #333](https://github.com/nf-core/proteinfold/pull/333)] - Updates the RFAA dockerfile for better versioning and smaller image size.
 - [[PR #335](https://github.com/nf-core/proteinfold/pull/335)] - Update pipeline template to [nf-core/tools 3.3.1](https://github.com/nf-core/tools/releases/tag/3.3.1).
@@ -80,6 +81,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 |                              | `--alphafold3_uniref90_path`   |
 |                              | `--alphafold3_pdb_seqres_path` |
 |                              | `--alphafold3_uniprot_path`    |
+|                              | `--boltz_model`                |
+|                              | `--boltz_out_dir`              |
+|                              | `--boltz_output_format`        |
+|                              | `--boltz_use_msa_server`       |
+|                              | `--boltz_msa_server_url`       |
+|                              | `--boltz_use_potentials`       |
+|                              | `--boltz_write_full_pae`       |
+|                              | `--boltz2_aff_path`            |
+|                              | `--boltz2_conf_path`           |
+|                              | `--boltz2_mols_path`           |
+|                              | `--boltz_model_path`           |
+|                              | `--boltz_ccd_path`             |
+|                              | `--boltz_db`                   |
+|                              | `--boltz2_aff_link`            |
+|                              | `--boltz2_conf_link`           |
+|                              | `--boltz2_mols_link`           |
+|                              | `--boltz_model_link`           |
+|                              | `--boltz_ccd_link`             |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present.
 > **NB:** Parameter has been **added** if just the new parameter information is present.
@@ -162,8 +181,8 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 | `--uniprot_sprot`     | `--uniprot_sprot_link`                   |
 | `--uniprot_trembl`    | `--uniprot_trembl_link`                  |
 | `--uniclust30_path`   | `--uniref30_alphafold2_path`             |
-| `--uniref30`          | `--uniref30_colabfold_link`              |
-| `--uniref30_path`     | `--uniref30_colabfold_path`              |
+| `--uniref30`          | `--colabfold_uniref30_link`              |
+| `--uniref30_path`     | `--colabfold_uniref30_path`              |
 | `--num_recycle`       | `--num_recycles_colabfold`               |
 |                       | `--num_recycles_esmfold`                 |
 |                       | `--uniref30_alphafold2_link`             |

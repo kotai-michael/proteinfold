@@ -13,6 +13,9 @@ process RUN_BOLTZ {
     path (files)
     path ('boltz1_conf.ckpt')
     path ('ccd.pkl')
+    path ('boltz2_aff.ckpt')
+    path ('boltz2_conf.ckpt')
+    path ('mols')
 
     output:
     tuple val(meta), path ("boltz_results_*/processed/msa/*.npz")               , emit: msa
@@ -33,11 +36,14 @@ process RUN_BOLTZ {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error("Local RUN_BOLTZ module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
-    def version = "0.4.1"
+    def version = "2.0.3"
     def args = task.ext.args ?: ''
 
     """
-    boltz predict "${fasta}" ${args} --cache ./ --write_full_pae --output_format pdb
+    export NUMBA_CACHE_DIR=/tmp
+    export HOME=/tmp
+
+    boltz predict "${fasta}" ${args}
     cp boltz_results_*/predictions/*/*.pdb ./${meta.id}_boltz.pdb
 
     echo -e Atom_serial_number"\\t"Atom_name"\\t"Residue_name"\\t"Residue_sequence_number"\\t"pLDDT > ${meta.id}_plddt_mqc.tsv

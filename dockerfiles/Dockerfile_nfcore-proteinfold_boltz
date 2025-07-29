@@ -1,16 +1,17 @@
-FROM python:3.9-slim
+FROM python:3.12-slim
 
 LABEL authors="Ziad Al-Bkhetan <ziad.albkhetan@gmail.com>" \
     title="nfcore/proteinfold_boltz" \
     Version="1.2.0dev" \
     description="Docker image containing all software requirements to run boltz using the nf-core/proteinfold pipeline"
 
-RUN  apt-get update && \
+RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
     procps \
+    && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install boltz
+RUN pip install --no-cache-dir boltz
 
 CMD ["boltz"]

@@ -431,10 +431,17 @@ workflow NFCORE_PROTEINFOLD {
     //
     if (params.mode.toLowerCase().split(",").contains("boltz")) {
         PREPARE_BOLTZ_DBS(
+            params.boltz_db,
             params.boltz_ccd_path,
             params.boltz_model_path,
+            params.boltz2_aff_path,
+            params.boltz2_conf_path,
+            params.boltz2_mols_path,
             params.boltz_ccd_link,
-            params.boltz_model_link
+            params.boltz_model_link,
+            params.boltz2_aff_link,
+            params.boltz2_conf_link,
+            params.boltz2_mols_link
         )
         ch_versions = ch_versions.mix(PREPARE_BOLTZ_DBS.out.versions)
 
@@ -443,10 +450,10 @@ workflow NFCORE_PROTEINFOLD {
             params.colabfold_server,
             params.colabfold_alphafold2_params_path,
             params.colabfold_db_path,
-            params.uniref30_colabfold_path,
+            params.colabfold_uniref30_path,
             params.colabfold_alphafold2_params_link,
             params.colabfold_db_link,
-            params.uniref30_colabfold_link,
+            params.colabfold_uniref30_link,
             params.create_colabfold_index
         )
         ch_versions = ch_versions.mix(PREPARE_COLABFOLD_DBS.out.versions)
@@ -456,6 +463,9 @@ workflow NFCORE_PROTEINFOLD {
             ch_versions,
             PREPARE_BOLTZ_DBS.out.boltz_ccd,
             PREPARE_BOLTZ_DBS.out.boltz_model,
+            PREPARE_BOLTZ_DBS.out.boltz2_aff,
+            PREPARE_BOLTZ_DBS.out.boltz2_conf,
+            PREPARE_BOLTZ_DBS.out.boltz2_mols,
             PREPARE_COLABFOLD_DBS.out.colabfold_db,
             PREPARE_COLABFOLD_DBS.out.uniref30,
             params.boltz_use_msa_server

@@ -245,8 +245,23 @@
                 "boltz_use_msa_server": {
                     "type": "boolean",
                     "description": "Use the cloud MSA server",
-                    "icon": "fas folder-open",
+                    "icon": "fas folder-open"
+                },
+                "boltz_out_dir": {
+                    "type": "string"
+                },
+                "boltz_msa_server_url": {
+                    "type": "string"
+                },
+                "boltz_use_potentials": {
+                    "type": "boolean"
+                },
+                "boltz_write_full_pae": {
+                    "type": "boolean",
                     "default": true
+                },
+                "boltz_model": {
+                    "type": "string"
                 }
             }
         },
@@ -761,6 +776,18 @@
                     "description": "Link to download model file",
                     "icon": "fas fa-link",
                     "default": "https://huggingface.co/boltz-community/boltz-1/resolve/main/boltz1_conf.ckpt"
+                },
+                "boltz2_aff_link": {
+                    "type": "string",
+                    "default": "https://huggingface.co/boltz-community/boltz-2/resolve/main/boltz2_aff.ckpt"
+                },
+                "boltz2_conf_link": {
+                    "type": "string",
+                    "default": "https://huggingface.co/boltz-community/boltz-2/resolve/main/boltz2_conf.ckpt"
+                },
+                "boltz2_mols_link": {
+                    "type": "string",
+                    "default": "https://huggingface.co/boltz-community/boltz-2/resolve/main/mols.tar"
                 }
             }
         },
@@ -786,6 +813,18 @@
                     "description": "Path to boltz Model file",
                     "icon": "fas folder-open",
                     "default": "null/params/boltz1_conf.ckpt"
+                },
+                "boltz2_aff_path": {
+                    "type": "string",
+                    "default": "null/params/boltz2_aff.ckpt"
+                },
+                "boltz2_conf_path": {
+                    "type": "string",
+                    "default": "null/params/boltz2_conf.ckpt"
+                },
+                "boltz2_mols_path": {
+                    "type": "string",
+                    "default": "null/params/mols/"
                 }
             }
         },
@@ -1151,5 +1190,11 @@
         {
             "$ref": "#/$defs/helixfold3_dbs_and_parameters_link_options"
         }
-    ]
+    ],
+    "properties": {
+        "boltz_output_format": {
+            "type": "string",
+            "default": "pdb"
+        }
+    }
 }

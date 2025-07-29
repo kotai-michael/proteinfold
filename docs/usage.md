@@ -574,3 +574,32 @@ We recommend adding the following line to your environment to limit this (typica
 ```bash
 NXF_OPTS='-Xms1g -Xmx4g'
 ```
+
+## Boltz mode
+
+To run the pipeline in Boltz mode, use the following command:
+
+```bash
+nextflow run nf-core/proteinfold \
+      --input samplesheet.csv \
+      --outdir <OUTDIR> \
+      --mode boltz \
+      --boltz_use_msa_server \
+      --use_gpu <true/false> \
+      -profile <docker/singularity/podman/shifter/charliecloud/conda/institute>
+```
+
+### Boltz parameter descriptions
+
+| Parameter                | Default | Description                                         |
+| ------------------------ | ------- | --------------------------------------------------- |
+| `--boltz_model`          | `null`  | The model to use for prediction. Default is Boltz-2 |
+| `--boltz_out_dir`        | `null`  | Output directory for Boltz predictions              |
+| `--boltz_use_msa_server` | `null`  | Use MSA server to generate MSAs (flag)              |
+| `--boltz_msa_server_url` | `null`  | MSA server URL                                      |
+| `--boltz_use_potentials` | `null`  | Use inference time potentials (flag)                |
+| `--boltz_write_full_pae` | `true`  | Save the full PAE matrix as a file (flag)           |
+
+> You can override any of these parameters via the command line or a params file.
+
+---
