@@ -80,6 +80,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 |                              | `--alphafold3_uniref90_path`   |
 |                              | `--alphafold3_pdb_seqres_path` |
 |                              | `--alphafold3_uniprot_path`    |
+|                              | `--boltz_model`                |
+|                              | `--boltz_out_dir`              |
+|                              | `--boltz_output_format`        |
+|                              | `--boltz_use_msa_server`       |
+|                              | `--boltz_msa_server_url`       |
+|                              | `--boltz_use_potentials`       |
+|                              | `--boltz_write_full_pae`       |
+|                              | `--boltz2_aff_path`            |
+|                              | `--boltz2_conf_path`           |
+|                              | `--boltz2_mols_path`           |
+|                              | `--boltz_model_path`           |
+|                              | `--boltz_ccd_path`             |
+|                              | `--boltz_db`                   |
+|                              | `--boltz2_aff_link`            |
+|                              | `--boltz2_conf_link`           |
+|                              | `--boltz2_mols_link`           |
+|                              | `--boltz_model_link`           |
+|                              | `--boltz_ccd_link`             |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present.
 > **NB:** Parameter has been **added** if just the new parameter information is present.
