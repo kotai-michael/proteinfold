@@ -12,26 +12,27 @@ include {
 
 workflow PREPARE_BOLTZ_DBS {
     take:
+    boltz_db
     boltz_ccd
     boltz_model
     boltz2_aff
     boltz2_conf
-    mols
+    boltz2_mols
     boltz_ccd_link
     boltz_model_link
     boltz2_aff_link
     boltz2_conf_link
-    mols_link
+    boltz2_mols_link
 
     main:
     ch_versions     = Channel.empty()
 
-    if (boltz_ccd && boltz_model && boltz2_aff && boltz2_conf && mols) {
+    if (boltz_db) {
         ch_boltz_ccd    = Channel.value(file(boltz_ccd))
         ch_boltz_model  = Channel.value(file(boltz_model))
         ch_boltz2_aff   = Channel.value(file(boltz2_aff))
         ch_boltz2_conf  = Channel.value(file(boltz2_conf))
-        ch_mols         = Channel.value(file(mols))
+        ch_boltz2_mols  = Channel.value(file(boltz2_mols))
     } else {
         ARIA2_BOLTZ_CCD(
             [
@@ -72,10 +73,10 @@ workflow PREPARE_BOLTZ_DBS {
         ARIA2_MOLS(
             [
                 [:],
-                mols_link
+                boltz2_mols_link
             ]
         )
-        ch_mols = ARIA2_MOLS.out.downloaded_file.map{ it[1] }
+        ch_boltz2_mols = ARIA2_MOLS.out.downloaded_file.map{ it[1] }
         ch_versions = ch_versions.mix(ARIA2_MOLS.out.versions)
     }
 
@@ -84,6 +85,6 @@ workflow PREPARE_BOLTZ_DBS {
     boltz_model  = ch_boltz_model
     boltz2_aff   = ch_boltz2_aff
     boltz2_conf  = ch_boltz2_conf
-    mols         = ch_mols
+    boltz2_mols  = ch_boltz2_mols
     versions     = ch_versions
 }
