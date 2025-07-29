@@ -785,7 +785,7 @@
                     "type": "string",
                     "default": "https://huggingface.co/boltz-community/boltz-2/resolve/main/boltz2_conf.ckpt"
                 },
-                "mols_link": {
+                "boltz2_mols_link": {
                     "type": "string",
                     "default": "https://huggingface.co/boltz-community/boltz-2/resolve/main/mols.tar"
                 }
@@ -822,7 +822,7 @@
                     "type": "string",
                     "default": "null/params/boltz2_conf.ckpt"
                 },
-                "mols_path": {
+                "boltz2_mols_path": {
                     "type": "string",
                     "default": "null/params/mols/"
                 }
