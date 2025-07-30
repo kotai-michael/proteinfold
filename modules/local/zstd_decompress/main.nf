@@ -2,7 +2,7 @@ process ZSTD_DECOMPRESS {
     tag "$archive"
     label 'process_single'
 
-    conda "conda-forge::sed=4.7"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0a/0a27033ae5d8add5059f44c62a6004bfcd061d33020edee095fbb204e6f32fee/data' :
         'community.wave.seqera.io/library/zstd:b5faa75d5b75be7f' }"
