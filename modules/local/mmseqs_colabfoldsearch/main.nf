@@ -6,8 +6,8 @@ process MMSEQS_COLABFOLDSEARCH {
 
     input:
     tuple val(meta), path(fasta)
-    path colabfold_db
-    path uniref30
+    path ('db/*')
+    path ('db/*')
 
     output:
     tuple val(meta), path("**.a3m"), emit: a3m
@@ -25,11 +25,7 @@ process MMSEQS_COLABFOLDSEARCH {
     def VERSION = '1.5.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    mkdir ./db
-    ln -r -s $uniref30/uniref30_* ./db
-    ln -r -s $colabfold_db/colabfold_envdb* ./db
-
-    /localcolabfold/colabfold-conda/bin/colabfold_search \\
+    colabfold_search \\
         $args \\
         --threads $task.cpus ${fasta} \\
         ./db \\

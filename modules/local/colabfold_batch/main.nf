@@ -32,7 +32,9 @@ process COLABFOLD_BATCH {
     def VERSION = '1.5.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    ln -r -s params/alphafold_params_*/* params/
+    ln -s \$(realpath params/alphafold_params_*/*) params/
+    touch params/download_finished.txt
+
     colabfold_batch \\
         $args \\
         --num-recycle ${numRec} \\
