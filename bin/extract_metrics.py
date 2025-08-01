@@ -23,6 +23,10 @@ from utils import plddt_from_struct_b_factor
 #...
 # ^ overwrought with duplication, but can catch program specific weirdness, and lower barrier to adding new programs in the future.
 
+# TODO: Chain-wise iPTM since the relevant interface might not always be the average of all.
+# Would complete Issue #308
+# Proposed format is pair-interfaces in rows, structure inference number in cols: https://github.com/nf-core/proteinfold/pull/312#issuecomment-2917709432
+
 # Mapping of characters to integers for MSA parsing.
 # 20 is for unknown characters, and 21 is for gaps.
 AA_to_int = {
