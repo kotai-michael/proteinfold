@@ -62,6 +62,26 @@ def format_msa_rows(msa_data):
 def format_pae_rows(pae_data):
     return [[f"{num:.4f}" for num in row] for row in pae_data]
 
+def chain_iptm_matrix_to_pairs(chain_iptm_data):
+    """
+    Convert a chain-wise iPTM matrix to pair values by taking off-diagonal elements.
+    """
+    # From AlphaFold3 output docs:
+    # 'chain_pair_iptm': An [num_chains, num_chains] array. 
+    # Off-diagonal element (i, j) of the array contains the ipTM restricted to tokens from chains i and j. 
+    # Diagonal element (i, i) contains the pTM restricted to chain i. 
+    
+    # TODO: load the chain-wise iPTM matrix from a file into np matrix
+
+    # TODO: turn the matrix into a list of pairs by taking off-diagonal elements
+
+    # TODO: discard duplicates due to symmetry, e.g. (A,B) and (B,A) are the same pair
+
+    # TODO: append the chain names in front of value, e.g. "A:B 0.85, A:C 0.90, A:D 0.80, B:C 0.75, B:D 0.70, C:D 0.65"
+    
+    # TODO: return the list of pairs as a string rows to be passed to write_tsv() to write to a metrics file
+    raise NotImplementedError("Chain-wise iPTM matrix to pairs conversion is not implemented yet.")
+
 def write_tsv(file_path, rows):
     with open(file_path, 'w') as out_f:
         writer = csv.writer(out_f, delimiter='\t')
