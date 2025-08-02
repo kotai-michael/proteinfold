@@ -239,7 +239,7 @@ workflow NFCORE_PROTEINFOLD {
         //
         PREPARE_COLABFOLD_DBS (
             params.colabfold_db,
-            params.colabfold_server,
+            params.use_msa_server,
             params.colabfold_alphafold2_params_path,
             params.colabfold_db_path,
             params.colabfold_uniref30_path,
@@ -447,7 +447,7 @@ workflow NFCORE_PROTEINFOLD {
 
         PREPARE_COLABFOLD_DBS (
             params.colabfold_db,
-            params.colabfold_server,
+            params.use_msa_server,
             params.colabfold_alphafold2_params_path,
             params.colabfold_db_path,
             params.colabfold_uniref30_path,
@@ -468,7 +468,7 @@ workflow NFCORE_PROTEINFOLD {
             PREPARE_BOLTZ_DBS.out.boltz2_mols,
             PREPARE_COLABFOLD_DBS.out.colabfold_db,
             PREPARE_COLABFOLD_DBS.out.uniref30,
-            params.boltz_use_msa_server
+            params.use_msa_server
         )
         ch_multiqc                  = ch_multiqc.mix(BOLTZ.out.multiqc_report)
         ch_versions                 = ch_versions.mix(BOLTZ.out.versions)
