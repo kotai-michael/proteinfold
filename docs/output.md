@@ -11,9 +11,12 @@ Most of the plots are taken from the MultiQC report, which summarises results at
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and predicts protein structures using the following methods:
 
 - [AlphaFold2](https://github.com/deepmind/alphafold)
-- [ColabFold](https://github.com/sokrypton/ColabFold) - MMseqs2 (API server or local search) followed by ColabFold
 - [ESMFold](https://github.com/facebookresearch/esm)
+- [ColabFold](https://github.com/sokrypton/ColabFold) - MMseqs2 (API server or local search) followed by ColabFold
+- [RoseTTAFold2NA](https://github.com/uw-ipd/RoseTTAFold2NA)
 - [RoseTTAFold-All-Atom](https://github.com/baker-laboratory/RoseTTAFold-All-Atom/)
+- [AlphaFold3](https://github.com/deepmind/alphafold)
+- [Boltz](https://github.com/jwohlwend/boltz/)
 - [HelixFold3](https://github.com/PaddlePaddle/PaddleHelix/tree/dev/apps/protein_folding/helixfold3)
 
 See main [README.md](https://github.com/nf-core/proteinfold/blob/master/README.md) for a condensed overview of the steps in the pipeline, and the bioinformatics tools used at each step.
