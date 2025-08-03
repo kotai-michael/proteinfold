@@ -16,8 +16,8 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and predicts pr
 - [RoseTTAFold2NA](https://github.com/uw-ipd/RoseTTAFold2NA)
 - [RoseTTAFold-All-Atom](https://github.com/baker-laboratory/RoseTTAFold-All-Atom/)
 - [AlphaFold3](https://github.com/deepmind/alphafold)
-- [Boltz](https://github.com/jwohlwend/boltz/)
 - [HelixFold3](https://github.com/PaddlePaddle/PaddleHelix/tree/dev/apps/protein_folding/helixfold3)
+- [Boltz](https://github.com/jwohlwend/boltz/)
 
 See main [README.md](https://github.com/nf-core/proteinfold/blob/master/README.md) for a condensed overview of the steps in the pipeline, and the bioinformatics tools used at each step.
 
