@@ -67,7 +67,7 @@ process RUN_ALPHAFOLD2 {
         --output_dir=\$PWD \
         --data_dir=\$PWD \
         --uniref90_database_path=./uniref90/uniref90.fasta \
-        --mgnify_database_path=./mgnify/mgy_clusters.fa \
+        --mgnify_database_path=./mgnify/mgy_clusters_2022_05.fa \
         --template_mmcif_dir=./mmcif_files \
         --obsolete_pdbs_path=./obsolete_pdb/obsolete.dat \
         $args
