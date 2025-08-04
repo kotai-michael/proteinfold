@@ -97,7 +97,7 @@
             "fa_icon": "fas fa-dna",
             "description": "AlphaFold2 options.",
             "properties": {
-                "max_template_date": {
+                "alphafold2_max_template_date": {
                     "type": "string",
                     "default": "2038-01-19",
                     "description": "Maximum date of the PDB templates used by 'AlphaFold2' mode",
@@ -105,7 +105,7 @@
                     "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
                     "errorMessage": "Date must be in YYYY-MM-DD format"
                 },
-                "full_dbs": {
+                "alphafold2_full_dbs": {
                     "type": "boolean",
                     "description": "If true uses the full version of the BFD database otherwise, otherwise it uses its reduced version, small bfd",
                     "fa_icon": "fas fa-battery-full"
@@ -124,8 +124,9 @@
                     "enum": ["monomer", "monomer_casp14", "monomer_ptm", "multimer"],
                     "fa_icon": "fas fa-stream"
                 },
-                "random_seed": {
-                    "type": "string"
+                "alphafold2_random_seed": {
+                    "type": "string",
+                    "description": "Random seed to control stochastic alphafold inference."
                 },
                 "alphafold2_params_prefix": {
                     "type": "string",
