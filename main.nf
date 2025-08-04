@@ -305,7 +305,7 @@ workflow NFCORE_PROTEINFOLD {
             ch_samplesheet,
             ch_versions,
             PREPARE_ESMFOLD_DBS.out.params,
-            params.num_recycles_esmfold
+            params.esmfold_num_recycles
         )
 
         ch_multiqc                = ch_multiqc.mix(ESMFOLD.out.multiqc_report.collect())

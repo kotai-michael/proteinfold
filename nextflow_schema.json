@@ -216,7 +216,7 @@
             "fa_icon": "fas fa-coins",
             "description": "ESMFold options.",
             "properties": {
-                "num_recycles_esmfold": {
+                "esmfold_num_recycles": {
                     "type": "integer",
                     "default": 4,
                     "description": "Specifies the number of recycles used by ESMFold",
