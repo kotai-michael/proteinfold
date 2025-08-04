@@ -16,12 +16,12 @@ workflow PREPARE_COLABFOLD_DBS {
     colabfold_db                     // directory: path/to/colabfold/DBs and params
     use_msa_server                   //      bool: Specifies whether to use web msa server
     colabfold_alphafold2_params_path // directory: /path/to/colabfold/alphafold2/params/
-    colabfold_db_path                // directory: /path/to/colabfold/db/
+    colabfold_envdb_path             // directory: /path/to/colabfold/db/
     colabfold_uniref30_path          // directory: /path/to/uniref30/colabfold/
     colabfold_alphafold2_params_link //    string: Specifies the link to download colabfold alphafold2 params
     colabfold_db_link                //    string: Specifies the link to download colabfold db
     colabfold_uniref30_link          //    string: Specifies the link to download uniref30
-    create_colabfold_index           //   boolean: Create index for colabfold db
+    colabfold_create_index           //   boolean: Create index for colabfold db
 
     main:
     ch_params       = Channel.empty()
@@ -32,7 +32,7 @@ workflow PREPARE_COLABFOLD_DBS {
     if (colabfold_db) {
         ch_params = Channel.value(file(colabfold_alphafold2_params_path, type: 'any'))
         if (!use_msa_server) {
-            ch_colabfold_db = Channel.value(file(colabfold_db_path, type: 'any'))
+            ch_colabfold_db = Channel.value(file(colabfold_envdb_path, type: 'any'))
             ch_uniref30     = Channel.value(file(colabfold_uniref30_path, type: 'any'))
         }
     }
@@ -74,7 +74,7 @@ workflow PREPARE_COLABFOLD_DBS {
             ch_uniref30 = MMSEQS_TSV2EXPROFILEDB_UNIPROT30.out.db_exprofile
             ch_versions = ch_versions.mix(MMSEQS_TSV2EXPROFILEDB_UNIPROT30.out.versions)
 
-            if (create_colabfold_index) {
+            if (colabfold_create_index) {
                 MMSEQS_CREATEINDEX_UNIPROT30 (
                     MMSEQS_TSV2EXPROFILEDB_UNIPROT30.out.db_exprofile
                 )

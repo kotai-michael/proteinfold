@@ -76,6 +76,18 @@
                     "description": "UniRef major release",
                     "enum": ["UniRef30_2023_02", "UniRef30_2022_02", "UniRef30_2021_03"],
                     "fa_icon": "fas fa-database"
+                },
+                "use_msa_server": {
+                    "type": "boolean",
+                    "description": "Use the cloud MSA server",
+                    "icon": "fas folder-open"
+                },
+                "msa_server_url": {
+                    "type": "string",
+                    "description": "Specify your custom MMSeqs2 API server url",
+                    "fa_icon": "fas fa-link",
+                    "format": "uri",
+                    "errorMessage": "Please provide a valid URL for the MMSeqs2 API server"
                 }
             }
         },
@@ -151,11 +163,6 @@
             "fa_icon": "fas fa-coins",
             "description": "ColabFold options.",
             "properties": {
-                "use_msa_server": {
-                    "type": "boolean",
-                    "description": "Use the cloud MSA server",
-                    "icon": "fas folder-open"
-                },
                 "colabfold_model_preset": {
                     "type": "string",
                     "default": "alphafold2_ptm",
@@ -168,7 +175,7 @@
                     ],
                     "fa_icon": "fas fa-stream"
                 },
-                "num_recycles_colabfold": {
+                "colabfold_num_recycles": {
                     "type": "integer",
                     "default": 3,
                     "description": "Number of recycles for ColabFold",
@@ -177,33 +184,26 @@
                     "maximum": 20,
                     "errorMessage": "Number of recycles must be a whole number between 1 and 20"
                 },
-                "use_amber": {
+                "colabfold_use_amber": {
                     "type": "boolean",
                     "default": true,
                     "description": "Use Amber minimization to refine the predicted structures",
                     "fa_icon": "fas fa-compress-alt"
                 },
-                "db_load_mode": {
+                "colabfold_db_load_mode": {
                     "type": "integer",
                     "description": "Specify the way that MMSeqs2 will load the required databases in memory",
                     "fa_icon": "fas fa-download",
                     "enum": [0, 1, 2, 3],
                     "errorMessage": "DB load mode must be 0, 1, 2, or 3"
                 },
-                "msa_server_url": {
-                    "type": "string",
-                    "description": "Specify your custom MMSeqs2 API server url",
-                    "fa_icon": "fas fa-link",
-                    "format": "uri",
-                    "errorMessage": "Please provide a valid URL for the MMSeqs2 API server"
-                },
-                "use_templates": {
+                "colabfold_use_templates": {
                     "type": "boolean",
                     "default": true,
                     "description": "Use PDB templates",
                     "fa_icon": "fas fa-paste"
                 },
-                "create_colabfold_index": {
+                "colabfold_create_index": {
                     "type": "boolean",
                     "description": "Create databases indexes when running colabfold_local mode",
                     "fa_icon": "fas fa-bezier-curve"
@@ -684,7 +684,7 @@
                     "fa_icon": "fas fa-folder-open",
                     "errorMessage": "Please provide a valid path to ColabFold database"
                 },
-                "colabfold_db_path": {
+                "colabfold_envdb_path": {
                     "type": "string",
                     "description": "Link to the ColabFold database",
                     "fa_icon": "fas fa-folder-open",

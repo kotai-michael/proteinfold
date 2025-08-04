@@ -241,12 +241,12 @@ workflow NFCORE_PROTEINFOLD {
             params.colabfold_db,
             params.use_msa_server,
             params.colabfold_alphafold2_params_path,
-            params.colabfold_db_path,
+            params.colabfold_envdb_path,
             params.colabfold_uniref30_path,
             params.colabfold_alphafold2_params_link,
             params.colabfold_db_link,
             params.colabfold_uniref30_link,
-            params.create_colabfold_index
+            params.colabfold_create_index
         )
         ch_versions = ch_versions.mix(PREPARE_COLABFOLD_DBS.out.versions)
 
@@ -260,7 +260,7 @@ workflow NFCORE_PROTEINFOLD {
             PREPARE_COLABFOLD_DBS.out.params,
             PREPARE_COLABFOLD_DBS.out.colabfold_db,
             PREPARE_COLABFOLD_DBS.out.uniref30,
-            params.num_recycles_colabfold
+            params.colabfold_num_recycles
         )
 
         ch_multiqc                  = ch_multiqc.mix(COLABFOLD.out.multiqc_report)
@@ -449,7 +449,7 @@ workflow NFCORE_PROTEINFOLD {
             params.colabfold_db,
             params.use_msa_server,
             params.colabfold_alphafold2_params_path,
-            params.colabfold_db_path,
+            params.colabfold_envdb_path,
             params.colabfold_uniref30_path,
             params.colabfold_alphafold2_params_link,
             params.colabfold_db_link,
