@@ -295,8 +295,9 @@
                 "model_name": {
                     "type": "string"
                 },
-                "preset": {
-                    "type": "string"
+                "helixfold3_full_dbs": {
+                    "type": "boolean",
+                    "description": "If true uses the full version of the BFD database otherwise, otherwise it uses its reduced version, small bfd"
                 },
                 "init_model": {
                     "type": "string"
@@ -304,15 +305,21 @@
                 "logging_level": {
                     "type": "string"
                 },
-                "precision": {
-                    "type": "string"
+                "helixfold3_precision": {
+                    "type": "string",
+                    "enum": ["bf16", "fp32"],
+                    "description": "The numerical precision used by the HelixFold3 model."
                 },
-                "infer_times": {
-                    "type": "string"
+                "helixfold3_infer_times": {
+                    "type": "integer",
+                    "default": 4,
+                    "minimum": 1,
+                    "description": "Number of independent predictions made with the HelixFold3 model"
                 },
                 "helixfold3_max_template_date": {
                     "type": "string",
-                    "default": "2038-01-19"
+                    "default": "2038-01-19",
+                    "description": "No PDB template released after this date will be used to guide predictions."
                 }
             }
         },
