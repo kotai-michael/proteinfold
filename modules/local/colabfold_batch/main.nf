@@ -43,10 +43,8 @@ process COLABFOLD_BATCH {
         \$PWD
     for i in `find *.png -maxdepth 0`; do cp \$i \${i%'.png'}_mqc.png; done
     if [ ! -e `find *_relaxed_rank_001_*.pdb` ]; then
-        #for i in `find *_relaxed_rank_001*.pdb`; do cp \$i `echo \$i | sed "s|_relaxed_rank_|\t|g" | cut -f1`"_colabfold.pdb"; done
         cp *_relaxed_rank_001*.pdb ${meta.id}_colabfold.pdb
     else
-        #for i in `find *_unrelaxed_rank_001*.pdb`; do cp \$i `echo \$i | sed "s|_unrelaxed_rank_|\t|g" | cut -f1`"_colabfold.pdb"; done
         cp *_unrelaxed_rank_001*.pdb ${meta.id}_colabfold.pdb
     fi
 
