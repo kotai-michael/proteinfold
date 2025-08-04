@@ -498,7 +498,7 @@
                     "type": "string",
                     "description": "Path to the PDB70 database",
                     "fa_icon": "fas fa-folder-open",
-                    "default": "null/pdb70/*"
+                    "default": "null/pdb70/**"
                 },
                 "alphafold2_pdb_mmcif_path": {
                     "type": "string",
