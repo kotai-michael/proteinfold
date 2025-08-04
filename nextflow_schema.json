@@ -225,15 +225,8 @@
             "fa_icon": "fas fa-database",
             "description": "Boltz options.",
             "properties": {
-                "boltz_out_dir": {
-                    "type": "string"
-                },
                 "boltz_use_potentials": {
                     "type": "boolean"
-                },
-                "boltz_write_full_pae": {
-                    "type": "boolean",
-                    "default": true
                 },
                 "boltz_model": {
                     "type": "string"
@@ -277,18 +270,9 @@
             "description": "HelixFold3 options",
             "default": "",
             "properties": {
-                "model_name": {
-                    "type": "string"
-                },
                 "helixfold3_full_dbs": {
                     "type": "boolean",
                     "description": "If true uses the full version of the BFD database otherwise, otherwise it uses its reduced version, small bfd"
-                },
-                "init_model": {
-                    "type": "string"
-                },
-                "logging_level": {
-                    "type": "string"
                 },
                 "helixfold3_precision": {
                     "type": "string",
@@ -1177,11 +1161,5 @@
         {
             "$ref": "#/$defs/helixfold3_dbs_and_parameters_link_options"
         }
-    ],
-    "properties": {
-        "boltz_output_format": {
-            "type": "string",
-            "default": "pdb"
-        }
-    }
+    ]
 }
