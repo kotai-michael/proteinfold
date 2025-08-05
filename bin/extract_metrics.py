@@ -94,6 +94,9 @@ def chain_iptm_matrix_to_pairs(iptm_matrix):
     # Diagonal element (i, i) contains the pTM restricted to chain i. 
     return [(idx, val) for idx, val in np.ndenumerate(iptm_matrix) if idx[0] != idx[1]]
 
+def chainwise_iptm_matrix_to_ptms(iptm_matrix):
+    return [(idx, val) for idx, val in np.ndenumerate(iptm_matrix) if idx[0] == idx[1]]
+
 def write_tsv(file_path, rows):
     with open(file_path, 'w') as out_f:
         writer = csv.writer(out_f, delimiter='\t')
@@ -202,7 +205,7 @@ def read_json(name, json_files):
                 write_tsv(f"{name}_msa.tsv", msa_rows)
             #AF3 output with PAE info, or HF3 PAE data. TODO: Need to make sure the workflow points to [protein]/[protein]_rank1/all_results.json
 
-        # TODO: I think I need to capture model_id and inference_id
+        # TODO: I think I need to capture model_id and inference_id  -- MUST FIX since this is so fragile and will be different for different programs.
             #if '_alphafold2_ptm_model_' in json_file: # ColabFold, multimer or monomer
             ## Might want to cut more if I just want ${meta.id}_[metric].tsv
             #    model_id = os.path.basename(json_file)
@@ -212,7 +215,9 @@ def read_json(name, json_files):
             if 'predictions' in json_file: # Boltz-1 confidences in predictions/[protein]/confidence_[protein]_model_*.json
             # TODO: haven't tested this for multiple models with --diffusion_samples
                 model_id = os.path.basename(json_file).split('_model_')[-1].split('.json')[0]
-
+            if 'summary_confidences' in json_file: #Prevent crash when model_id is not defined
+                model_id = os.path.basename(json_file).split('summary_confidences_')[-1].split('.json')[0]
+                
             if "pae" not in data.keys():
                 print(f"No PAE output in {json_file}, it was likely a monomer calculation")
             else:
@@ -225,18 +230,17 @@ def read_json(name, json_files):
                 #    f.write(f"{np.round(data['ptm'],3)}\n")
                 #with open(f"{name}_{model_id}_iptm.tsv", 'w') as f:
                 #    f.write(f"{np.round(data['iptm'],3)}\n")
-                ptm_data[model_id] = f"{np.round(data['ptm'],3)}\n"
-                iptm_data[model_id] = f"{np.round(data['iptm'],3)}\n"
-            
-                if ptm_data:
+                if data['ptm']:
+                    ptm_data[model_id] = f"{np.round(data['ptm'],3)}\n"
                     with open(f"{name}_ptm.tsv", 'w') as f:
                         for k, v in sorted(ptm_data.items(), key=lambda x: x[0]):
                             f.write(f"{k} {v}")
-                if iptm_data:
+                if data['iptm']:
+                    iptm_data[model_id] = f"{np.round(data['iptm'],3)}\n"
                     with open(f"{name}_iptm.tsv", 'w') as f:
                         for k, v in sorted(iptm_data.items(), key=lambda x: x[0]):
                             f.write(f"{k} {v}")
-
+            
             if 'chain_pair_iptm' not in data.keys() and 'pair_chains_iptm' not in data.keys():
                 print(f"No chain-wise iPTM output in {json_file}, it was likely a monomer calculation")
             else:
@@ -246,9 +250,16 @@ def read_json(name, json_files):
                     chain_pair_iptm_data = data['pair_chains_iptm']
                 else:
                     raise ValueError("No chain-wise iPTM data found in the JSON file.")
-                chain_iptm_matrix = np.array([[chain_pair_iptm_data[row][col] for col in sorted(chain_pair_iptm_data[row])] for row in sorted(chain_pair_iptm_data)])
+               
+                if isinstance(chain_pair_iptm_data, dict):
+                    chain_iptm_matrix = np.array([[chain_pair_iptm_data[row][col] for col in sorted(chain_pair_iptm_data[row])] for row in sorted(chain_pair_iptm_data)])
+                elif isinstance(chain_pair_iptm_data, list):
+                    chain_iptm_matrix = np.array(chain_pair_iptm_data)
+                
                 chain_pair_entries = chain_iptm_matrix_to_pairs(chain_iptm_matrix)
-                write_tsv(f"{name}_{model_id}_chain-wise_iptm.tsv", format_iptm_rows(chain_pair_entries))
+                write_tsv(f"{name}_{model_id}_chainwise_iptm.tsv", format_iptm_rows(chain_pair_entries))
+                chainwise_ptms = chainwise_iptm_matrix_to_ptms(chain_iptm_matrix)
+                write_tsv(f"{name}_{model_id}_chainwise_ptm.tsv", format_iptm_rows(chainwise_ptms))
     
 
 def read_pt(name, pt_files):
