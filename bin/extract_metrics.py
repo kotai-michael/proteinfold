@@ -6,6 +6,7 @@ import json
 #import torch moved to a conditional import since too bulky import if not used
 import numpy as np
 import csv
+import string
 from utils import plddt_from_struct_b_factor
 
 # TODO: Issue #309, make into a poper separate process, it its own module so that dependencies can be managed better
@@ -26,6 +27,7 @@ from utils import plddt_from_struct_b_factor
 # TODO: Chain-wise iPTM since the relevant interface might not always be the average of all.
 # Would complete Issue #308
 # Proposed format is pair-interfaces in rows, structure inference number in cols: https://github.com/nf-core/proteinfold/pull/312#issuecomment-2917709432
+# KR - changed to have both sides of the matrix, because it's not symmetrical (see comment in Issue #306)
 
 # Mapping of characters to integers for MSA parsing.
 # 20 is for unknown characters, and 21 is for gaps.
@@ -62,7 +64,27 @@ def format_msa_rows(msa_data):
 def format_pae_rows(pae_data):
     return [[f"{num:.4f}" for num in row] for row in pae_data]
 
-def chain_iptm_matrix_to_pairs(chain_iptm_data):
+def format_iptm_rows(chain_pair_entries):
+    """
+    Format iPTM data into a list of rows for writing to a TSV file.
+    Each row contains: the chain-pair in uppercase, e.g. "A:B", "B:A", A:C", etc. and then the iPTM value formatted to 4 decimal places.
+    """
+    def idx_to_letter(idx):
+        """ Convert the index integer of the matrix to a letter representation that wraps to double representation, e.g. 0 -> A, 1 -> B, ..., 25 -> Z, 26 -> AA, 27 -> AB, etc. 
+            This is somewhat compatible with how protein structure chain names are numbered by biochemists. 
+            But we should move away from fixed-format PDB files -- we have nothing to lose but our chains."""
+        result = ""
+        while idx >= 0:
+            result = string.ascii_uppercase[idx % 26] + result
+            idx = idx // 26 - 1
+            if idx < 0:
+                break
+        return result
+
+    return [[f"{idx_to_letter(idx[0])}:{idx_to_letter(idx[1])}", f"{val:.4f}"] for idx, val in chain_pair_entries]
+
+
+def chain_iptm_matrix_to_pairs(iptm_matrix):
     """
     Convert a chain-wise iPTM matrix to pair values by taking off-diagonal elements.
     """
@@ -70,17 +92,7 @@ def chain_iptm_matrix_to_pairs(chain_iptm_data):
     # 'chain_pair_iptm': An [num_chains, num_chains] array. 
     # Off-diagonal element (i, j) of the array contains the ipTM restricted to tokens from chains i and j. 
     # Diagonal element (i, i) contains the pTM restricted to chain i. 
-    
-    # TODO: load the chain-wise iPTM matrix from a file into np matrix
-
-    # TODO: turn the matrix into a list of pairs by taking off-diagonal elements
-
-    # TODO: discard duplicates due to symmetry, e.g. (A,B) and (B,A) are the same pair
-
-    # TODO: append the chain names in front of value, e.g. "A:B 0.85, A:C 0.90, A:D 0.80, B:C 0.75, B:D 0.70, C:D 0.65"
-    
-    # TODO: return the list of pairs as a string rows to be passed to write_tsv() to write to a metrics file
-    raise NotImplementedError("Chain-wise iPTM matrix to pairs conversion is not implemented yet.")
+    return [(idx, val) for idx, val in np.ndenumerate(iptm_matrix) if idx[0] != idx[1]]
 
 def write_tsv(file_path, rows):
     with open(file_path, 'w') as out_f:
@@ -178,6 +190,7 @@ def read_csv(name, csv_files):
 def read_json(name, json_files):
     ptm_data = {}
     iptm_data = {}
+    chain_pair_iptm_data = {} # For iPTM data to be converted into formatted pairs with non-self elements
     for idx, json_file in enumerate(json_files):
         with open(json_file, 'r') as f:
             data = json.load(f)
@@ -214,13 +227,29 @@ def read_json(name, json_files):
                 #    f.write(f"{np.round(data['iptm'],3)}\n")
                 ptm_data[model_id] = f"{np.round(data['ptm'],3)}\n"
                 iptm_data[model_id] = f"{np.round(data['iptm'],3)}\n"
-        if ptm_data:
-            with open(f"{name}_ptm.tsv", 'w') as f:
-                for k, v in sorted(ptm_data.items(), key=lambda x: x[0]):
-                    f.write(f"{k} {v}")
-            with open(f"{name}_iptm.tsv", 'w') as f:
-                for k, v in sorted(iptm_data.items(), key=lambda x: x[0]):
-                    f.write(f"{k} {v}")
+            
+                if ptm_data:
+                    with open(f"{name}_ptm.tsv", 'w') as f:
+                        for k, v in sorted(ptm_data.items(), key=lambda x: x[0]):
+                            f.write(f"{k} {v}")
+                if iptm_data:
+                    with open(f"{name}_iptm.tsv", 'w') as f:
+                        for k, v in sorted(iptm_data.items(), key=lambda x: x[0]):
+                            f.write(f"{k} {v}")
+
+            if 'chain_pair_iptm' not in data.keys() and 'pair_chains_iptm' not in data.keys():
+                print(f"No chain-wise iPTM output in {json_file}, it was likely a monomer calculation")
+            else:
+                if 'chain_pair_iptm' in data.keys(): #HelixFold3 key, coincidentally also AF3
+                    chain_pair_iptm_data = data['chain_pair_iptm']
+                elif 'pair_chains_iptm' in data.keys(): #Boltz key
+                    chain_pair_iptm_data = data['pair_chains_iptm']
+                else:
+                    raise ValueError("No chain-wise iPTM data found in the JSON file.")
+                chain_iptm_matrix = np.array([[chain_pair_iptm_data[row][col] for col in sorted(chain_pair_iptm_data[row])] for row in sorted(chain_pair_iptm_data)])
+                chain_pair_entries = chain_iptm_matrix_to_pairs(chain_iptm_matrix)
+                write_tsv(f"{name}_{model_id}_chain-wise_iptm.tsv", format_iptm_rows(chain_pair_entries))
+    
 
 def read_pt(name, pt_files):
     import torch # moved to a conditional import since too bulky import if not used
