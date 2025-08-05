@@ -46,6 +46,9 @@ process RUN_BOLTZ {
     // TODO: MSA processing for Boltz is not solid yet. They can come from webserver, local mmseq, or a custom paired .csv (see docs below)
     // https://github.com/jwohlwend/boltz/blob/main/docs/prediction.md#yaml-format
     // TODO: what I really need to do is add a function to read /processed/msa/*.npz and convert it to a .tsv file
+
+    // TODO: Boltz is the example to do chain-wise summary files. This will be better if model_id was properly written per prog and EXTRACT_METRICs was a process
+    //  paste will fail gracefully if a blank file is passed, so don't worry about overwriting summary_chainwise...tsv. model_0 has the labels, the rest are cut to col 2.
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error("Local RUN_BOLTZ module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
@@ -64,6 +67,17 @@ process RUN_BOLTZ {
         --jsons boltz_results_*/predictions/${meta.id}/confidence_*_model_*.json \\
         --npzs boltz_results_*/predictions/${meta.id}/pae_*_model_*.npz \\
         --csvs boltz_results_*/msa/${meta.id}_*.csv \\
+
+    cp ${meta.id}_0_chainwise_ptm.tsv ${meta.id}_summary_chainwise_ptm.tsv
+    for i in {1..4}; do
+        paste ${meta.id}_summary_chainwise_ptm.tsv <(cut -f2 ${meta.id}_${i}_chainwise_ptm.tsv) > temp && mv temp ${meta.id}_summary_chainwise_ptm.tsv
+    done
+
+    cp ${meta.id}_0_chainwise_iptm.tsv ${meta.id}_summary_chainwise_iptm.tsv
+    for i in {1..4}; do
+        paste ${meta.id}_summary_chainwise_iptm.tsv <(cut -f2 ${meta.id}_${i}_chainwise_iptm.tsv) > temp && mv temp ${meta.id}_summary_chainwise_iptm.tsv
+    done
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
