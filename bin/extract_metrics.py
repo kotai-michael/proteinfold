@@ -70,8 +70,8 @@ def format_iptm_rows(chain_pair_entries):
     Each row contains: the chain-pair in uppercase, e.g. "A:B", "B:A", A:C", etc. and then the iPTM value formatted to 4 decimal places.
     """
     def idx_to_letter(idx):
-        """ Convert the index integer of the matrix to a letter representation that wraps to double representation, e.g. 0 -> A, 1 -> B, ..., 25 -> Z, 26 -> AA, 27 -> AB, etc. 
-            This is somewhat compatible with how protein structure chain names are numbered by biochemists. 
+        """ Convert the index integer of the matrix to a letter representation that wraps to double representation, e.g. 0 -> A, 1 -> B, ..., 25 -> Z, 26 -> AA, 27 -> AB, etc.
+            This is somewhat compatible with how protein structure chain names are numbered by biochemists.
             But we should move away from fixed-format PDB files -- we have nothing to lose but our chains."""
         result = ""
         while idx >= 0:
@@ -89,9 +89,9 @@ def chain_iptm_matrix_to_pairs(iptm_matrix):
     Convert a chain-wise iPTM matrix to pair values by taking off-diagonal elements.
     """
     # From AlphaFold3 output docs:
-    # 'chain_pair_iptm': An [num_chains, num_chains] array. 
-    # Off-diagonal element (i, j) of the array contains the ipTM restricted to tokens from chains i and j. 
-    # Diagonal element (i, i) contains the pTM restricted to chain i. 
+    # 'chain_pair_iptm': An [num_chains, num_chains] array.
+    # Off-diagonal element (i, j) of the array contains the ipTM restricted to tokens from chains i and j.
+    # Diagonal element (i, i) contains the pTM restricted to chain i.
     return [(idx, val) for idx, val in np.ndenumerate(iptm_matrix) if idx[0] != idx[1]]
 
 def chainwise_iptm_matrix_to_ptms(iptm_matrix):
@@ -217,7 +217,7 @@ def read_json(name, json_files):
                 model_id = os.path.basename(json_file).split('_model_')[-1].split('.json')[0]
             if 'summary_confidences' in json_file: #Prevent crash when model_id is not defined
                 model_id = os.path.basename(json_file).split('summary_confidences_')[-1].split('.json')[0]
-                
+
             if "pae" not in data.keys():
                 print(f"No PAE output in {json_file}, it was likely a monomer calculation")
             else:
@@ -240,7 +240,7 @@ def read_json(name, json_files):
                     with open(f"{name}_iptm.tsv", 'w') as f:
                         for k, v in sorted(iptm_data.items(), key=lambda x: x[0]):
                             f.write(f"{k} {v}")
-            
+
             if 'chain_pair_iptm' not in data.keys() and 'pair_chains_iptm' not in data.keys():
                 print(f"No chain-wise iPTM output in {json_file}, it was likely a monomer calculation")
             else:
@@ -250,17 +250,17 @@ def read_json(name, json_files):
                     chain_pair_iptm_data = data['pair_chains_iptm']
                 else:
                     raise ValueError("No chain-wise iPTM data found in the JSON file.")
-               
+
                 if isinstance(chain_pair_iptm_data, dict):
                     chain_iptm_matrix = np.array([[chain_pair_iptm_data[row][col] for col in sorted(chain_pair_iptm_data[row])] for row in sorted(chain_pair_iptm_data)])
                 elif isinstance(chain_pair_iptm_data, list):
                     chain_iptm_matrix = np.array(chain_pair_iptm_data)
-                
+
                 chain_pair_entries = chain_iptm_matrix_to_pairs(chain_iptm_matrix)
                 write_tsv(f"{name}_{model_id}_chainwise_iptm.tsv", format_iptm_rows(chain_pair_entries))
                 chainwise_ptms = chainwise_iptm_matrix_to_ptms(chain_iptm_matrix)
                 write_tsv(f"{name}_{model_id}_chainwise_ptm.tsv", format_iptm_rows(chainwise_ptms))
-    
+
 
 def read_pt(name, pt_files):
     import torch # moved to a conditional import since too bulky import if not used
