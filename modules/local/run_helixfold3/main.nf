@@ -46,10 +46,7 @@ process RUN_HELIXFOLD3 {
     }
     def args = task.ext.args ?: ''
     """
-    init_model_path=\$(ls ./init_models/*.pdparams | head -n 1)
-
-    mamba run --name helixfold python3.9 /app/helixfold3/inference.py \\
-        --maxit_binary "./maxit_src/bin/maxit" \\
+    mamba run --name helixfold python3.10 /app/helixfold3/inference.py \\
         --jackhmmer_binary_path "jackhmmer" \\
         --hhblits_binary_path "hhblits" \\
         --hhsearch_binary_path "hhsearch" \\
@@ -58,7 +55,7 @@ process RUN_HELIXFOLD3 {
         --hmmbuild_binary_path "hmmbuild" \\
         --nhmmer_binary_path "nhmmer" \\
         --bfd_database_path="./bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt" \\
-        --small_bfd_database_path="./small_bfd/bfd-first_non_consensus_sequences.fasta" \\
+        --reduced_bfd_database_path="./small_bfd/bfd-first_non_consensus_sequences.fasta" \\
         --uniclust30_database_path="./uniref30/${params.uniref30_prefix}" \\
         --uniprot_database_path="./uniprot/uniprot.fasta" \\
         --pdb_seqres_database_path="./pdb_seqres/pdb_seqres.txt" \\
@@ -67,10 +64,9 @@ process RUN_HELIXFOLD3 {
         --obsolete_pdbs_path="./obsolete.dat" \\
         --ccd_preprocessed_path="./ccd_preprocessed_etkdg.pkl.gz" \\
         --uniref90_database_path "./uniref90/uniref90.fasta" \\
-        --mgnify_database_path "./mgnify/mgy_clusters.fa" \\
+        --mgnify_database_path "./mgnify/mgy_clusters_2018_12.fa" \\
         --input_json="${fasta}" \\
         --output_dir="\$PWD" \\
-        --init_model "\$init_model_path" \\
         $args
 
     cp "${fasta.baseName}/${fasta.baseName}-rank1/predicted_structure.pdb" "./${meta.id}_helixfold3.pdb"
