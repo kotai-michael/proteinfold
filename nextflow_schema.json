@@ -247,18 +247,11 @@
                     "description": "Use the cloud MSA server",
                     "icon": "fas folder-open"
                 },
-                "boltz_out_dir": {
-                    "type": "string"
-                },
                 "boltz_msa_server_url": {
                     "type": "string"
                 },
                 "boltz_use_potentials": {
                     "type": "boolean"
-                },
-                "boltz_write_full_pae": {
-                    "type": "boolean",
-                    "default": true
                 },
                 "boltz_model": {
                     "type": "string"
@@ -302,16 +295,7 @@
             "description": "HelixFold3 options",
             "default": "",
             "properties": {
-                "model_name": {
-                    "type": "string"
-                },
                 "preset": {
-                    "type": "string"
-                },
-                "init_model": {
-                    "type": "string"
-                },
-                "logging_level": {
                     "type": "string"
                 },
                 "precision": {
@@ -1190,11 +1174,5 @@
         {
             "$ref": "#/$defs/helixfold3_dbs_and_parameters_link_options"
         }
-    ],
-    "properties": {
-        "boltz_output_format": {
-            "type": "string",
-            "default": "pdb"
-        }
-    }
+    ]
 }
