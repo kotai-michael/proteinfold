@@ -60,6 +60,7 @@ process RUN_BOLTZ {
     cp boltz_results_*/predictions/*/*.pdb ./${meta.id}_boltz.pdb
 
     extract_metrics.py --name ${meta.id} \\
+        --output_format "pdb" \\
         --structs boltz_results_*/predictions/${meta.id}/*.pdb \\
         --jsons boltz_results_*/predictions/${meta.id}/confidence_*_model_*.json \\
         --npzs boltz_results_*/predictions/${meta.id}/pae_*_model_*.npz \\
