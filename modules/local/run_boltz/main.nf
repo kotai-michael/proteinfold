@@ -72,7 +72,7 @@ process RUN_BOLTZ {
     """
 
     stub:
-    def version = "0.4.1"
+    def version = "2.0.3"
     """
     mkdir -p boltz_results_${meta.id}/processed/msa/
     mkdir -p boltz_results_${meta.id}/processed/structures/
