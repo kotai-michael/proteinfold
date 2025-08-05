@@ -31,15 +31,12 @@ workflow ARIA2_UNCOMPRESS {
     } else if (source_url.toString().endsWith('.zip')) {
         ch_db = UNZIP (ARIA2.out.downloaded_file)
                     .unzipped_archive
-                    //.map { it[1] }
                     .map { meta, dir ->
-                        // Get the nested directory
                         def nestedDir = dir.listFiles()[0]
                         // Find the .pdparams file
                         def pdparamsFile = nestedDir.listFiles().find { it.getName().endsWith('.pdparams') }
                         [ pdparamsFile ]
                     }
-        ch_db.view()
     } else {
         ch_db = ARIA2.out.downloaded_file.map { it[1] }
     }
