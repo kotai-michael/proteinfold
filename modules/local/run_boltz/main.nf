@@ -33,6 +33,9 @@ process RUN_BOLTZ {
     tuple val(meta), path ("${meta.id}_*_pae.tsv")                              , optional: true, emit: pae_raw
     tuple val(meta), path ("${meta.id}_ptm.tsv")                                , emit: ptm_raw
     tuple val(meta), path ("${meta.id}_iptm.tsv")                               , emit: iptm_raw
+    tuple val(meta), path ("${meta.id}_summary_chainwise_ptm.tsv")              , optional: true, emit: summary_chainwise_ptm_raw
+    tuple val(meta), path ("${meta.id}_*_chainwise_iptm.tsv")                   , optional: true, emit: chainwise_iptm_raw
+    tuple val(meta), path ("${meta.id}_summary_chainwise_iptm.tsv")             , optional: true, emit: summary_chainwise_iptm_raw
 
     path "versions.yml", emit: versions
 
@@ -105,6 +108,10 @@ process RUN_BOLTZ {
     touch "${meta.id}_0_pae.tsv"
     touch "${meta.id}_0_ptm.tsv"
     touch "${meta.id}_0_iptm.tsv"
+    touch "${meta.id}_0_chainwise_ptm.tsv"
+    touch "${meta.id}_summary_chainwise_ptm.tsv"
+    touch "${meta.id}_0_chainwise_iptm.tsv"
+    touch "${meta.id}_summary_chainwise_iptm.tsv"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
