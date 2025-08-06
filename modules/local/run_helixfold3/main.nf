@@ -49,7 +49,7 @@ process RUN_HELIXFOLD3 {
     init_model_path=\$(ls ./init_models/*.pdparams | head -n 1)
     mgnify_db_path=\$(ls -v ./mgnify/mgy_clusters*.fa | tail -n 1)
 
-    mamba run --name helixfold python3.10 /app/helixfold3/inference.py \\
+    mamba run --name helixfold python3.9 /app/helixfold3/inference.py \\
         --maxit_binary "./maxit_src/bin/maxit" \\
         --jackhmmer_binary_path "jackhmmer" \\
         --hhblits_binary_path "hhblits" \\
@@ -59,7 +59,7 @@ process RUN_HELIXFOLD3 {
         --hmmbuild_binary_path "hmmbuild" \\
         --nhmmer_binary_path "nhmmer" \\
         --bfd_database_path="./bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt" \\
-        --reduced_bfd_database_path="./small_bfd/bfd-first_non_consensus_sequences.fasta" \\
+        --small_bfd_database_path="./small_bfd/bfd-first_non_consensus_sequences.fasta" \\
         --uniclust30_database_path="./uniref30/${params.uniref30_prefix}" \\
         --uniprot_database_path="./uniprot/uniprot.fasta" \\
         --pdb_seqres_database_path="./pdb_seqres/pdb_seqres.txt" \\
