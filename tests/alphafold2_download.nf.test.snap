@@ -22,13 +22,13 @@
             [
                 "DBs",
                 "DBs/alphafold2",
-                "DBs/alphafold2/UniRef30_2021_03",
+                "DBs/alphafold2/UniRef30_2023_02_hhsuite",
                 "DBs/alphafold2/alphafold_params_2022-12-06",
                 "DBs/alphafold2/bfd-first_non_consensus_sequences.fasta",
-                "DBs/alphafold2/mgy_clusters_2022_05.fa",
+                "DBs/alphafold2/mgy_clusters.fa",
                 "DBs/alphafold2/mmcif_files",
                 "DBs/alphafold2/obsolete.dat",
-                "DBs/alphafold2/pdb70_from_mmcif_200916",
+                "DBs/alphafold2/pdb70_from_mmcif_220313",
                 "DBs/alphafold2/pdb_seqres.txt",
                 "DBs/alphafold2/uniprot.fasta",
                 "DBs/alphafold2/uniprot_sprot.fasta",
@@ -69,6 +69,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-08-04T13:20:28.422801993"
+        "timestamp": "2025-08-06T17:07:06.871556244"
     }
 }
