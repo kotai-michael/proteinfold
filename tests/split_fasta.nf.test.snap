@@ -4,14 +4,16 @@
             7,
             {
                 "COLABFOLD_BATCH": {
-                    "colabfold_batch": "1.5.2"
+                    "colabfold_batch": null
                 },
                 "GENERATE_REPORT": {
                     "python": "3.12.7",
                     "generate_report.py": "Python 3.12.7"
                 },
                 "MMSEQS_COLABFOLDSEARCH": {
-                    "colabfold_search": "1.5.2"
+                    "colabfold_search": null,
+                    "alphafold_colabfold": null,
+                    "mmseqs": null
                 },
                 "Workflow": {
                     "nf-core/proteinfold": "v1.2.0dev"
@@ -66,6 +68,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-08-04T13:24:37.804124192"
+        "timestamp": "2025-08-04T15:03:51.792622381"
     }
 }
