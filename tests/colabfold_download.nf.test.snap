@@ -20,8 +20,7 @@
             [
                 "DBs",
                 "DBs/colabfold",
-                "DBs/colabfold/standard",
-                "DBs/colabfold/standard/alphafold_params_2021-07-14",
+                "DBs/colabfold/alphafold_params_2021-07-14",
                 "colabfold",
                 "colabfold/webserver",
                 "colabfold/webserver/T1024_colabfold.pdb",
