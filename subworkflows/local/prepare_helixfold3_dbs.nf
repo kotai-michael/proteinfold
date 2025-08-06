@@ -139,7 +139,7 @@ workflow PREPARE_HELIXFOLD3_DBS {
         )
         ch_helixfold3_uniprot = COMBINE_UNIPROT.out.ch_db
         ch_versions =  ch_versions.mix(COMBINE_UNIPROT.out.versions)
-        
+
 	ARIA2_MAXIT(helixfold3_maxit_src_link)
         ch_helixfold3_maxit_src = ARIA2_MAXIT.out.db
         ch_versions = ch_versions.mix(ARIA2_MAXIT.out.versions)
