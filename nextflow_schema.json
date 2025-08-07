@@ -112,14 +112,14 @@
                 },
                 "alphafold2_mode": {
                     "type": "string",
-                    "default": "standard",
+                    "default": "split_msa_prediction",
                     "description": "Specifies the mode in which AlphaFold2 will be run",
                     "enum": ["standard", "split_msa_prediction"],
                     "fa_icon": "fas fa-exchange-alt"
                 },
                 "alphafold2_model_preset": {
                     "type": "string",
-                    "default": "monomer",
+                    "default": "monomer_ptm",
                     "description": "Model preset for 'AlphaFold2' mode",
                     "enum": ["monomer", "monomer_casp14", "monomer_ptm", "multimer"],
                     "fa_icon": "fas fa-stream"
@@ -384,13 +384,13 @@
                 },
                 "alphafold2_mgnify_link": {
                     "type": "string",
-                    "default": "https://storage.googleapis.com/alphafold-databases/v2.3/mgy_clusters_2022_05.fa.gz",
+                    "default": "https://ftp.ebi.ac.uk/pub/databases/metagenomics/peptide_database/2024_04/mgy_clusters.fa.gz",
                     "description": "Link to the MGnify database",
                     "fa_icon": "fas fa-link"
                 },
                 "pdb70_link": {
                     "type": "string",
-                    "default": "http://wwwuser.gwdg.de/~compbiol/data/hhsuite/databases/hhsuite_dbs/old-releases/pdb70_from_mmcif_200916.tar.gz",
+                    "default": "https://wwwuser.gwdguser.de/~compbiol/data/hhsuite/databases/hhsuite_dbs/pdb70_from_mmcif_220313.tar.gz",
                     "description": "Link to the PDB70 database",
                     "fa_icon": "fas fa-link"
                 },
@@ -408,7 +408,7 @@
                 },
                 "alphafold2_uniref30_link": {
                     "type": "string",
-                    "default": "https://storage.googleapis.com/alphafold-databases/v2.3/UniRef30_2021_03.tar.gz",
+                    "default": "https://wwwuser.gwdguser.de/~compbiol/uniclust/2023_02/UniRef30_2023_02_hhsuite.tar.gz",
                     "description": "Link to the Uniclust30 database",
                     "fa_icon": "fas fa-link"
                 },
@@ -480,7 +480,7 @@
                     "type": "string",
                     "description": "Path to the PDB70 database",
                     "fa_icon": "fas fa-folder-open",
-                    "default": "null/pdb70/*"
+                    "default": "null/pdb70/**"
                 },
                 "alphafold2_pdb_mmcif_path": {
                     "type": "string",
@@ -918,7 +918,7 @@
             "properties": {
                 "rosettafold_all_atom_uniref30_link": {
                     "type": "string",
-                    "default": "http://wwwuser.gwdg.de/~compbiol/uniclust/2020_06/UniRef30_2020_06_hhsuite.tar.gz"
+                    "default": "https://wwwuser.gwdguser.de/~compbiol/uniclust/2023_02/UniRef30_2023_02_hhsuite.tar.gz"
                 },
                 "rosettafold_all_atom_bfd_link": {
                     "type": "string",
@@ -1036,7 +1036,7 @@
                 },
                 "helixfold3_uniclust30_link": {
                     "type": "string",
-                    "default": "https://storage.googleapis.com/alphafold-databases/casp14_versions/uniclust30_2018_08_hhsuite.tar.gz"
+                    "default": "https://wwwuser.gwdguser.de/~compbiol/uniclust/2023_02/UniRef30_2023_02_hhsuite.tar.gz"
                 },
                 "helixfold3_ccd_preprocessed_link": {
                     "type": "string",
@@ -1064,7 +1064,7 @@
                 },
                 "helixfold3_mgnify_link": {
                     "type": "string",
-                    "default": "https://storage.googleapis.com/alphafold-databases/casp14_versions/mgy_clusters_2018_12.fa.gz"
+                    "default": "https://ftp.ebi.ac.uk/pub/databases/metagenomics/peptide_database/2024_04/mgy_clusters.fa.gz"
                 },
                 "helixfold3_pdb_mmcif_link": {
                     "type": "string",
@@ -1084,6 +1084,10 @@
                 "helixfold3_obsolete_link": {
                     "type": "string",
                     "default": "https://files.rcsb.org/pub/pdb/data/status/obsolete.dat"
+                },
+                "helixfold3_maxit_src_link": {
+                    "type": "string",
+                    "default": "https://proteinfold-dataset.s3.amazonaws.com/test-data/db/helixfold3/maxit-v11.200-prod-src.tar.gz"
                 }
             }
         }
