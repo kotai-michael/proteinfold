@@ -86,7 +86,7 @@ def format_iptm_rows(chain_pair_entries, chain_ids=None):
         iptm_rows = [[""]+[f"{chain_ids[idx[0]]}:{chain_ids[idx[1]]}" for idx, val in next(iter(chain_pair_entries.values()))]]
     else:
         iptm_rows = [[""]+[f"{idx_to_letter(idx[0])}:{idx_to_letter(idx[1])}" for idx, val in next(iter(chain_pair_entries.values()))]]
-           
+
     for model_idx, chain_pair_entries_values in chain_pair_entries.items():
         iptm_rows.append([model_idx]+[f"{val:.4f}" for idx, val in chain_pair_entries_values])
 
@@ -247,7 +247,7 @@ def read_json(name, json_files):
                 print(f"No pTM/iPTM output in {json_file}, it was likely a monomer calculation")
             else:
                 iptm_data[model_id] = f"{np.round(data['iptm'],3)}\n"
-                
+
             if 'chain_pair_iptm' not in data.keys() and 'pair_chains_iptm' not in data.keys():
                 print(f"No chain-wise iPTM output in {json_file}, it was likely a monomer calculation")
             else:
@@ -260,25 +260,25 @@ def read_json(name, json_files):
                     chain_iptm_matrix = np.array([[chain_pair_iptm_data[row][col] for col in sorted(chain_pair_iptm_data[row], key=int)] for row in sorted(chain_pair_iptm_data, key=int)])
                     basename = os.path.basename(json_file)
                     dirname = os.path.dirname(json_file)
-                    pdb_name = ".".join(basename[11:].split('.')[:-1])+'.pdb' #TODO: Fix magic number 
+                    pdb_name = ".".join(basename[11:].split('.')[:-1])+'.pdb' #TODO: Fix magic number
                     chain_ids = get_chain_ids(os.path.join(dirname,pdb_name))
                 else:
                     raise ValueError("No chain-wise iPTM data found in the JSON file.")
-                
+
                 chain_pair_entries[model_id] = chain_iptm_matrix_to_pairs(chain_iptm_matrix)
                 chainwise_ptms[model_id] = chainwise_iptm_matrix_to_ptms(chain_iptm_matrix)
 
     if chainwise_ptms:
         write_tsv(f"{name}_chainwise_ptm.tsv", format_iptm_rows(chainwise_ptms, chain_ids=chain_ids))
-    
+
     if chain_pair_entries:
         write_tsv(f"{name}_chainwise_iptm.tsv", format_iptm_rows(chain_pair_entries, chain_ids=chain_ids))
 
-    if ptm_data:        
+    if ptm_data:
         with open(f"{name}_ptm.tsv", 'w') as f:
             for k, v in sorted(ptm_data.items(), key=lambda x: x[0]):
                 f.write(f"{k} {v}")
-    
+
     if iptm_data:
         with open(f"{name}_iptm.tsv", 'w') as f:
             for k, v in sorted(iptm_data.items(), key=lambda x: x[0]):
