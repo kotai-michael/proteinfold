@@ -55,7 +55,7 @@ workflow PREPARE_COLABFOLD_DBS {
             ch_colabfold_db = MMSEQS_TSV2EXPROFILEDB_COLABFOLDDB.out.db_exprofile
             ch_versions = ch_versions.mix(MMSEQS_TSV2EXPROFILEDB_COLABFOLDDB.out.versions)
 
-            if (params.create_colabfold_index) {
+            if (params.colabfold_create_index) {
                 MMSEQS_CREATEINDEX_COLABFOLDDB (
                     MMSEQS_TSV2EXPROFILEDB_COLABFOLDDB.out.db_exprofile
                 )
