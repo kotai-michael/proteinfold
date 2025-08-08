@@ -455,7 +455,7 @@ workflow NFCORE_PROTEINFOLD {
             params.colabfold_alphafold2_params_link,
             params.colabfold_db_link,
             params.colabfold_uniref30_link,
-            params.create_colabfold_index
+            params.colabfold_create_index
         )
         ch_versions = ch_versions.mix(PREPARE_COLABFOLD_DBS.out.versions)
 
