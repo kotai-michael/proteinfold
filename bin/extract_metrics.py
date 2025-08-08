@@ -164,12 +164,12 @@ def read_pkl(name, pkl_files):
                 ptm_data[f"{model_id}"] = f"{np.round(data['ptm'],3)}\n"
                 iptm_data[f"{model_id}"] = f"{np.round(data.get('iptm',0.),3)}\n"
     if ptm_data:
-        with open(f"{name}_ptm.tsv", 'w') as f:
-            for k, v in ptm_data.items(): #probably better to be ordered
-                f.write(f"{k} {v}")
-        with open(f"{name}_iptm.tsv", 'w') as f:
-            for k, v in iptm_data.items(): #probably better to be ordered
-                f.write(f"{k} {v}")
+        ptm_rows = [[k, v.strip()] for k, v in ptm_data.items()]
+        write_tsv(f"{name}_ptm.tsv", ptm_rows)
+
+    if iptm_data:
+        iptm_rows = [[k, v.strip()] for k, v in iptm_data.items()]
+        write_tsv(f"{name}_iptm.tsv", iptm_rows)
 
 
 
@@ -275,14 +275,12 @@ def read_json(name, json_files):
         write_tsv(f"{name}_chainwise_iptm.tsv", format_iptm_rows(chain_pair_entries, chain_ids=chain_ids))
 
     if ptm_data:
-        with open(f"{name}_ptm.tsv", 'w') as f:
-            for k, v in sorted(ptm_data.items(), key=lambda x: x[0]):
-                f.write(f"{k} {v}")
+        ptm_rows = [[k, v.strip()] for k, v in sorted(ptm_data.items(), key=lambda x: x[0])]
+        write_tsv(f"{name}_ptm.tsv", ptm_rows)
 
     if iptm_data:
-        with open(f"{name}_iptm.tsv", 'w') as f:
-            for k, v in sorted(iptm_data.items(), key=lambda x: x[0]):
-                f.write(f"{k} {v}")
+        iptm_rows = [[k, v.strip()] for k, v in sorted(iptm_data.items(), key=lambda x: x[0])]
+        write_tsv(f"{name}_iptm.tsv", iptm_rows)
 
 
 def read_pt(name, pt_files):
