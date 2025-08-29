@@ -19,7 +19,8 @@ workflow PREPARE_ESMFOLD_DBS {
     ch_versions   = channel.empty()
 
     if (esmfold_db) {
-        ch_params     = channel.value(file(esmfold_params_path, checkIfExists: true ))
+        // ch_params     = channel.value(file(esmfold_params_path, checkIfExists: true ))
+        Channel.fromPath(esmfold_db).collect().set { ch_params }
     }
     else {
         ARIA2_ESMFOLD_3B_V1 (
