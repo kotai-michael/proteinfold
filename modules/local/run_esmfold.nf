@@ -10,7 +10,7 @@ process RUN_ESMFOLD {
 
     input:
     tuple val(meta), path(fasta)
-    path ('./checkpoints/')
+    path ('./')
     val numRec
 
     output:
